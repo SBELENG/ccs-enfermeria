@@ -1,0 +1,346 @@
+/* CCS · Landing page styles */
+
+.page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* === HERO === */
+.hero {
+    background: linear-gradient(135deg, #1a2b5e 0%, #1e3a8a 40%, #1e8f7a 100%);
+    padding: 60px 40px 80px;
+    position: relative;
+    overflow: hidden;
+}
+
+.heroDecor1 {
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(45, 201, 168, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.heroDecor2 {
+    position: absolute;
+    bottom: -60px;
+    left: 30%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(123, 181, 232, 0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.heroInner {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 48px;
+    align-items: center;
+}
+
+.logoWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 200px;
+    height: 200px;
+    background: transparent;
+    padding: 0;
+    transition: transform 0.3s ease;
+}
+
+.logoWrap:hover {
+    transform: scale(1.05);
+}
+
+.logoIconImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+    transition: transform 0.3s ease;
+}
+
+.heroText h1 {
+    font-family: var(--font-heading, 'Plus Jakarta Sans'), sans-serif;
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    color: white;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1.25;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.accent {
+    color: #7eecd8;
+}
+
+.heroText p {
+    color: #b8d9f5;
+    margin-top: 14px;
+    font-size: 1.05rem;
+    max-width: 580px;
+    line-height: 1.65;
+}
+
+.heroCtas {
+    display: flex;
+    gap: 14px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+}
+
+.btnPrimary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #2dc9a8, #1e8f7a);
+    color: white;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(45, 201, 168, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btnPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(45, 201, 168, 0.5);
+}
+
+.btnOutline {
+    display: inline-flex;
+    align-items: center;
+    padding: 14px 28px;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    color: white;
+    border-radius: 14px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.btnOutline:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* === MAIN === */
+.main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+    flex: 1;
+    width: 100%;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+    margin-top: 60px;
+}
+
+.sectionHeader:first-child {
+    margin-top: 0;
+}
+
+.sectionNum {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #1a2b5e, #3a6bc8);
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading, 'Plus Jakarta Sans'), sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* === ROLES GRID === */
+.rolesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+}
+
+.roleCard {
+    border-radius: 16px;
+    padding: 22px 18px;
+    border: 1.5px solid color-mix(in srgb, var(--role-color) 25%, transparent);
+    background: color-mix(in srgb, var(--role-color) 6%, transparent);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: default;
+}
+
+.roleCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.10);
+}
+
+.roleIcon {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.roleName {
+    font-family: var(--font-heading, 'Plus Jakarta Sans'), sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: color-mix(in srgb, var(--role-color) 90%, #000);
+}
+
+.roleDesc {
+    font-size: 0.76rem;
+    margin-top: 5px;
+    line-height: 1.45;
+    color: #5a7191;
+}
+
+/* === CÓMO FUNCIONA === */
+.stepsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+}
+
+.stepCard {
+    background: white;
+    border-radius: 16px;
+    padding: 24px 20px;
+    border: 1px solid #e2eaf2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stepCard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.stepNum {
+    display: inline-flex;
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #1a2b5e, #3a6bc8);
+    color: white;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.stepIcon {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+}
+
+.stepCard h3 {
+    font-family: var(--font-heading, 'Plus Jakarta Sans'), sans-serif;
+    font-size: 0.95rem;
+    color: #1a2b5e;
+    margin-bottom: 6px;
+}
+
+.stepCard p {
+    font-size: 0.78rem;
+    color: #5a7191;
+    line-height: 1.45;
+}
+
+/* === CTA DOCENTE === */
+.ctaSection {
+    margin-top: 60px;
+}
+
+.ctaBox {
+    background: linear-gradient(135deg, #1a2b5e, #1e4080);
+    border-radius: 20px;
+    padding: 40px 44px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ctaBox h2 {
+    font-family: var(--font-heading, 'Plus Jakarta Sans'), sans-serif;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.ctaBox p {
+    color: #b8d9f5;
+    font-size: 1rem;
+    max-width: 480px;
+}
+
+.btnTeal {
+    display: inline-flex;
+    align-items: center;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #2dc9a8, #1e8f7a);
+    color: white;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    margin-top: 8px;
+    align-self: flex-start;
+    box-shadow: 0 4px 16px rgba(45, 201, 168, 0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btnTeal:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(45, 201, 168, 0.45);
+}
+
+/* === FOOTER === */
+.footer {
+    background: #1a2b5e;
+    color: #b8d9f5;
+    text-align: center;
+    padding: 24px;
+    font-size: 0.82rem;
+}
+
+.footer strong {
+    color: #7eecd8;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 700px) {
+    .heroInner {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        padding: 40px 20px 60px;
+    }
+
+    .ctaBox {
+        padding: 28px 24px;
+    }
+}

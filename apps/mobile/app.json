@@ -1,0 +1,44 @@
+{
+    "expo": {
+        "name": "CCS",
+        "slug": "ccs-competencias-colaborativas",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/icon.png",
+        "userInterfaceStyle": "light",
+        "newArchEnabled": true,
+        "splash": {
+            "image": "./assets/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#1a2b5e"
+        },
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "edu.unrc.ccs"
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/adaptive-icon.png",
+                "backgroundColor": "#1a2b5e"
+            },
+            "package": "edu.unrc.ccs"
+        },
+        "web": {
+            "favicon": "./assets/favicon.png"
+        },
+        "plugins": [
+            "expo-router",
+            [
+                "expo-notifications",
+                {
+                    "icon": "./assets/notification-icon.png",
+                    "color": "#2dc9a8"
+                }
+            ]
+        ],
+        "scheme": "ccs",
+        "experiments": {
+            "typedRoutes": true
+        }
+    }
+}

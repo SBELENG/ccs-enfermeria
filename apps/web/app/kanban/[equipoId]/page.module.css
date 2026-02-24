@@ -1,0 +1,476 @@
+/* CCS · Kanban Board */
+
+.page {
+    min-height: 100vh;
+    background: #f0f5fb;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
+.header {
+    background: #1a2b5e;
+    padding: 0 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+.headerInner {
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.back {
+    color: #7bb5e8;
+    font-size: 0.82rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.back:hover {
+    color: white;
+}
+
+.headerTitle {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: white;
+}
+
+.headerSub {
+    font-size: 0.72rem;
+    color: #7bb5e8;
+    margin-top: 1px;
+}
+
+/* COUNTDOWN */
+.countdown {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.countdownBadge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.ok {
+    background: #d0f5ec;
+    color: #1e8f7a;
+}
+
+.warning {
+    background: #fff3d0;
+    color: #b07000;
+}
+
+.urgent {
+    background: #fde8e8;
+    color: #c42b2b;
+    animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.progressBadge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.progressBarMini {
+    width: 80px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progressFillMini {
+    height: 100%;
+    background: #2dc9a8;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+.progressBadge span {
+    font-size: 0.73rem;
+    color: #b8d9f5;
+    white-space: nowrap;
+}
+
+.btnAdd {
+    padding: 8px 18px;
+    background: linear-gradient(135deg, #2dc9a8, #1e8f7a);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 2px 10px rgba(45, 201, 168, 0.35);
+    transition: transform 0.2s;
+}
+
+.btnAdd:hover {
+    transform: translateY(-1px);
+}
+
+/* MODAL */
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 43, 94, 0.45);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 20px;
+}
+
+.modal {
+    background: white;
+    border-radius: 20px;
+    padding: 28px 28px 24px;
+    max-width: 480px;
+    width: 100%;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+}
+
+.modal h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    color: #1a2b5e;
+    margin-bottom: 16px;
+}
+
+.modalInput {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #e2eaf2;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    resize: vertical;
+    outline: none;
+    color: #16243a;
+    transition: border-color 0.2s;
+}
+
+.modalInput:focus {
+    border-color: #3a6bc8;
+}
+
+.rolSelector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 14px 0;
+    align-items: center;
+}
+
+.rolSelector span {
+    font-size: 0.78rem;
+    color: #5a7191;
+    font-weight: 600;
+}
+
+.rolChip {
+    padding: 4px 10px;
+    border: 1.5px solid #e2eaf2;
+    border-radius: 14px;
+    font-size: 0.72rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.rolChipActive {
+    border-color: color-mix(in srgb, var(--rc) 50%, transparent);
+    background: color-mix(in srgb, var(--rc) 12%, white);
+    color: color-mix(in srgb, var(--rc) 90%, #000);
+    font-weight: 700;
+}
+
+.modalActions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.btnCancel {
+    padding: 9px 18px;
+    border: 2px solid #e2eaf2;
+    border-radius: 10px;
+    background: white;
+    color: #5a7191;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+}
+
+.btnCreate {
+    padding: 9px 20px;
+    background: linear-gradient(135deg, #1a2b5e, #3a6bc8);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btnCreate:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* KANBAN BOARD */
+.board {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(240px, 1fr));
+    gap: 16px;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    overflow-x: auto;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .board {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 560px) {
+    .board {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* COLUMN */
+.column {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.columnDragOver {
+    border-color: #7bb5e8;
+}
+
+.colHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    border-radius: 14px 14px 0 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #16243a;
+}
+
+.colCount {
+    background: white;
+    border-radius: 10px;
+    padding: 2px 8px;
+    font-size: 0.78rem;
+    color: #5a7191;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.cards {
+    padding: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* CARD */
+.card {
+    background: #fafbfd;
+    border: 1.5px solid #e2eaf2;
+    border-radius: 12px;
+    padding: 12px;
+    cursor: grab;
+    transition: box-shadow 0.2s, transform 0.15s, opacity 0.2s;
+}
+
+.card:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.card:active {
+    cursor: grabbing;
+}
+
+.cardDragging {
+    opacity: 0.4;
+    transform: rotate(2deg);
+}
+
+.cardRolBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--rc) 12%, white);
+    color: color-mix(in srgb, var(--rc) 90%, #000);
+    border: 1px solid color-mix(in srgb, var(--rc) 25%, transparent);
+    margin-bottom: 8px;
+}
+
+.cardDesc {
+    font-size: 0.84rem;
+    color: #16243a;
+    line-height: 1.45;
+    margin-bottom: 10px;
+}
+
+.cardFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cardActions {
+    display: flex;
+    gap: 4px;
+}
+
+.moveBtn {
+    padding: 3px 7px;
+    border: 1px solid #e2eaf2;
+    border-radius: 7px;
+    background: white;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.moveBtn:hover {
+    background: #f0f5ff;
+}
+
+.deleteBtn {
+    padding: 3px 8px;
+    border: 1px solid #fde8e8;
+    border-radius: 7px;
+    background: white;
+    color: #e05555;
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.deleteBtn:hover {
+    background: #fde8e8;
+}
+
+/* EMPTY */
+.emptyCol {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    border: 2px dashed #e2eaf2;
+    border-radius: 10px;
+    min-height: 80px;
+}
+
+.emptyCol p {
+    color: #b0bec5;
+    font-size: 0.78rem;
+    text-align: center;
+}
+
+/* PROGRESS BAR GLOBAL (fondo) */
+.progressBar {
+    height: 4px;
+    background: #e2eaf2;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #2dc9a8, #3a6bc8);
+    transition: width 0.5s ease;
+}
+
+/* LOADING */
+.loadingWrap {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: #5a7191;
+}
+
+.spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid #e2eaf2;
+    border-top-color: #2dc9a8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

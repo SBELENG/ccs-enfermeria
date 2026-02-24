@@ -1,0 +1,369 @@
+/* CCS · Resultados 360° */
+
+.page {
+    min-height: 100vh;
+    background: #f0f5fb;
+}
+
+/* HEADER */
+.header {
+    background: #1a2b5e;
+    padding: 0 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+.headerInner {
+    max-width: 900px;
+    margin: 0 auto;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.back {
+    color: #7bb5e8;
+    text-decoration: none;
+    font-size: 0.82rem;
+}
+
+.back:hover {
+    color: white;
+}
+
+.title {
+    font-family: 'Syne', sans-serif;
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+/* MAIN */
+.main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 24px 80px;
+}
+
+/* EMPTY */
+.emptyState {
+    text-align: center;
+    padding: 60px;
+    background: white;
+    border-radius: 20px;
+    border: 2px dashed #e2eaf2;
+}
+
+.emptyIcon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+
+.emptyState h2 {
+    font-family: 'Syne', sans-serif;
+    color: #1a2b5e;
+    margin-bottom: 8px;
+}
+
+.emptyState p {
+    color: #5a7191;
+    font-size: 0.84rem;
+}
+
+/* INSIGNIA PRINCIPAL */
+.insigniaCard {
+    background: linear-gradient(135deg, #1a2b5e 0%, #1e4080 60%, #1e8f7a 100%);
+    border-radius: 20px;
+    padding: 28px 28px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    box-shadow: 0 8px 32px rgba(26, 43, 94, 0.2);
+}
+
+.insigniaEmoji {
+    font-size: 3.5rem;
+    flex-shrink: 0;
+}
+
+.insigniaInfo {
+    flex: 1;
+}
+
+.insigniaBadge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #7eecd8;
+    margin-bottom: 6px;
+}
+
+.insigniaInfo h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    color: white;
+    margin-bottom: 4px;
+}
+
+.insigniaInfo p {
+    font-size: 0.82rem;
+    color: #b8d9f5;
+}
+
+.insigniaRol {
+    font-size: 0.75rem;
+    color: #7eecd8;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 6px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    white-space: nowrap;
+}
+
+/* SCORES GRID */
+.scoresGrid {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+@media (max-width: 700px) {
+    .scoresGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.scoreCard {
+    background: white;
+    border-radius: 18px;
+    padding: 22px;
+    border: 1.5px solid #e2eaf2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Círculo */
+.scoreCircle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 5px solid color-mix(in srgb, var(--score-color) 30%, transparent);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    position: relative;
+}
+
+.scoreNum {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--score-color);
+    line-height: 1;
+}
+
+.scoreMax {
+    font-size: 0.7rem;
+    color: #b0bec5;
+}
+
+.scoreLabel {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1a2b5e;
+    margin-bottom: 4px;
+}
+
+.scoreN {
+    font-size: 0.7rem;
+    color: #b0bec5;
+}
+
+/* Dimensión */
+.scoreDimension {
+    width: 100%;
+}
+
+.scoreDimTitle {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #1a2b5e;
+    margin-bottom: 12px;
+}
+
+.scoreDimBar {
+    height: 10px;
+    background: #f0f4fa;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.scoreDimFill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.8s ease;
+}
+
+.scoreDimNum {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #1a2b5e;
+    margin-bottom: 8px;
+}
+
+.scoreDimDesc {
+    font-size: 0.73rem;
+    color: #5a7191;
+    line-height: 1.4;
+}
+
+/* INSIGNIAS GRID */
+.allInsignias {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.allInsignias h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    color: #1a2b5e;
+    margin-bottom: 18px;
+}
+
+.insigniasGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.insigniaMini {
+    border-radius: 14px;
+    padding: 16px 14px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.ganada {
+    background: linear-gradient(135deg, #e8f5f0, #f0fff9);
+    border: 1.5px solid #2dc9a8;
+}
+
+.bloqueada {
+    background: #f4f6fa;
+    border: 1.5px solid #e2eaf2;
+    opacity: 0.7;
+}
+
+.insigniaMini:hover {
+    transform: translateY(-2px);
+}
+
+.mEmoji {
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+}
+
+.mLabel {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1a2b5e;
+    margin-bottom: 3px;
+}
+
+.mDesc {
+    font-size: 0.65rem;
+    color: #5a7191;
+    line-height: 1.3;
+}
+
+.lockIcon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 0.75rem;
+}
+
+/* COMENTARIOS */
+.comentariosSection {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.comentariosSection h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    color: #1a2b5e;
+    margin-bottom: 16px;
+}
+
+.comentarios {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.comentario {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px;
+    background: #fafbfd;
+    border-radius: 12px;
+    border: 1px solid #e8eef7;
+}
+
+.comentarioAvatar {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.comentario p {
+    font-size: 0.84rem;
+    color: #16243a;
+    line-height: 1.5;
+}
+
+/* LOADING */
+.loadingWrap {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: #5a7191;
+}
+
+.spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid #e2eaf2;
+    border-top-color: #2dc9a8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

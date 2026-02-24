@@ -1,0 +1,398 @@
+/* CCS · Dashboard Docente */
+
+.page {
+    min-height: 100vh;
+    background: #f0f5fb;
+}
+
+/* HEADER */
+.header {
+    background: linear-gradient(135deg, #1a2b5e, #1e4080);
+    padding: 0 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.headerInner {
+    max-width: 1100px;
+    margin: 0 auto;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.headerTitle {
+    font-family: 'Syne', sans-serif;
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.headerRight {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.headerUser {
+    color: #b8d9f5;
+    font-size: 0.82rem;
+}
+
+.navBtn {
+    padding: 7px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+/* MAIN */
+.main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+}
+
+/* BIENVENIDA */
+.welcome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.welcome h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #1a2b5e;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+}
+
+.sub {
+    color: #5a7191;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.btnCrear {
+    padding: 11px 22px;
+    background: linear-gradient(135deg, #2dc9a8, #1e8f7a);
+    color: white;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(45, 201, 168, 0.35);
+    transition: transform 0.2s;
+}
+
+.btnCrear:hover {
+    transform: translateY(-1px);
+}
+
+/* STATS */
+.statsRow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 36px;
+}
+
+@media (max-width: 700px) {
+    .statsRow {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.statCard {
+    background: white;
+    border-radius: 20px;
+    padding: 24px 20px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+    border: 1.5px solid #edf2f7;
+    transition: transform 0.2s;
+}
+
+.statCard:hover {
+    transform: translateY(-2px);
+}
+
+.statNum {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #1a2b5e;
+    line-height: 1;
+}
+
+.statLabel {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #8fa5be;
+    margin-top: 8px;
+}
+
+/* SECTION */
+.sectionTitle {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    color: #1a2b5e;
+    margin-bottom: 18px;
+}
+
+/* CÁTEDRAS GRID */
+.catedrasGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.catedraCard {
+    background: white;
+    border-radius: 18px;
+    padding: 22px 20px;
+    border: 1.5px solid #e2eaf2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.catedraCard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.09);
+}
+
+.catedraTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.catedraNom {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #1a2b5e;
+    line-height: 1.3;
+}
+
+.catedraCiclo {
+    font-size: 0.7rem;
+    color: #7bb5e8;
+    margin-top: 2px;
+}
+
+.activaBadge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 10px;
+    white-space: nowrap;
+}
+
+.activa {
+    background: #d0f5ec;
+    color: #1e8f7a;
+}
+
+.inactiva {
+    background: #f0f0f0;
+    color: #888;
+}
+
+.catedraStats {
+    display: flex;
+    gap: 16px;
+}
+
+.catedraStat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.catedrStatNum {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #1a2b5e;
+}
+
+.catedrStatLbl {
+    font-size: 0.65rem;
+    color: #5a7191;
+}
+
+.codigoRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.codigoLabel {
+    font-size: 0.72rem;
+    color: #5a7191;
+}
+
+.codigo {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1a2b5e;
+    background: #f0f5ff;
+    padding: 3px 10px;
+    border-radius: 8px;
+    letter-spacing: 2px;
+}
+
+.catedraArrow {
+    font-size: 0.78rem;
+    color: #3a6bc8;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+/* EMPTY */
+.emptyState {
+    text-align: center;
+    padding: 60px 24px;
+    background: white;
+    border-radius: 20px;
+    border: 2px dashed #e2eaf2;
+}
+
+.emptyIcon {
+    font-size: 3rem;
+    margin-bottom: 14px;
+}
+
+.emptyState h3 {
+    font-family: 'Syne', sans-serif;
+    color: #1a2b5e;
+    margin-bottom: 8px;
+}
+
+.emptyState p {
+    color: #5a7191;
+    font-size: 0.84rem;
+    margin-bottom: 20px;
+}
+
+/* LOADING */
+.loadingWrap {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: #5a7191;
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #e2eaf2;
+    border-top-color: #2dc9a8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* BALANCE WIDGET */
+.balanceSection {
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 20px rgba(26, 43, 94, 0.05);
+    border: 1px solid #edf2f7;
+}
+
+.balanceHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.balanceHeader h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    color: #1a2b5e;
+}
+
+.balanceGrid {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.rolStats {
+    flex: 1;
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.rolIcon {
+    font-size: 1.5rem;
+}
+
+.rolBarTrack {
+    width: 100%;
+    height: 80px;
+    background: #f8fafc;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column-reverse;
+    overflow: hidden;
+}
+
+.rolBarFill {
+    width: 100%;
+    border-radius: 2px;
+    transition: height 0.8s ease;
+}
+
+.rolCount {
+    font-weight: 700;
+    color: #1a2b5e;
+    font-size: 0.9rem;
+}
+
+.rolName {
+    font-size: 0.7rem;
+    color: #8fa5be;
+    font-weight: 600;
+    text-transform: capitalize;
+}

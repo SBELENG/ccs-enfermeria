@@ -1,0 +1,145 @@
+/* CCS · Nueva Cátedra */
+
+.wrap {
+    min-height: 100vh;
+    background: #f0f5fb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.card {
+    background: white;
+    border-radius: 24px;
+    padding: 36px 36px 32px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(26, 43, 94, 0.1);
+    border: 1.5px solid #e2eaf2;
+}
+
+.back {
+    display: block;
+    color: #7bb5e8;
+    font-size: 0.78rem;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+
+.back:hover {
+    color: #1a2b5e;
+}
+
+.card h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    color: #1a2b5e;
+    margin-bottom: 6px;
+}
+
+.sub {
+    color: #5a7191;
+    font-size: 0.82rem;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.errorBox {
+    background: #fde8e8;
+    color: #c42b2b;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    margin-bottom: 16px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #1a2b5e;
+    margin-top: 10px;
+}
+
+.input {
+    padding: 11px 14px;
+    border: 2px solid #e2eaf2;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    color: #16243a;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input:focus {
+    border-color: #3a6bc8;
+}
+
+.codigoRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.codigoDisplay {
+    flex: 1;
+    font-family: 'Courier New', monospace;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 6px;
+    color: #1a2b5e;
+    background: #f0f5ff;
+    text-align: center;
+    padding: 12px;
+    border-radius: 12px;
+}
+
+.btnRefresh {
+    padding: 10px 14px;
+    border: 2px solid #e2eaf2;
+    border-radius: 12px;
+    background: white;
+    font-size: 0.82rem;
+    cursor: pointer;
+    color: #5a7191;
+    white-space: nowrap;
+    transition: border-color 0.2s;
+}
+
+.btnRefresh:hover {
+    border-color: #3a6bc8;
+    color: #1a2b5e;
+}
+
+.codigoHint {
+    font-size: 0.72rem;
+    color: #b0bec5;
+    margin-top: 4px;
+}
+
+.btnCrear {
+    margin-top: 20px;
+    padding: 13px;
+    background: linear-gradient(135deg, #1a2b5e, #3a6bc8);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btnCrear:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

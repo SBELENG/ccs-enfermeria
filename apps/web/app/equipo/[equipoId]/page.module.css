@@ -1,0 +1,462 @@
+/* CCS · Página de Equipo */
+
+.page {
+    min-height: 100vh;
+    background: #f8fafb;
+}
+
+/* HEADER */
+.header {
+    background: #1a2b5e;
+    padding: 0 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+.headerInner {
+    max-width: 900px;
+    margin: 0 auto;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.back {
+    color: #7bb5e8;
+    font-size: 0.82rem;
+    text-decoration: none;
+}
+
+.back:hover {
+    color: white;
+}
+
+.headerCenter {
+    flex: 1;
+    text-align: center;
+}
+
+.headerCenter h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    color: white;
+    font-weight: 700;
+}
+
+.headerCenter p {
+    font-size: 0.72rem;
+    color: #7bb5e8;
+}
+
+.btnKanban {
+    padding: 7px 14px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    color: white;
+    font-size: 0.82rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s;
+}
+
+.btnKanban:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+/* MAIN */
+.main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 24px 80px;
+}
+
+/* DESAFÍO CARD */
+.desafioCard {
+    background: linear-gradient(135deg, #1a2b5e, #1e4080);
+    border-radius: 20px;
+    padding: 28px 28px;
+    margin-bottom: 28px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.desafioLabel {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #7bb5e8;
+    margin-bottom: 6px;
+}
+
+.desafioCard h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.fechaRow {
+    font-size: 0.84rem;
+    color: #b8d9f5;
+    margin-bottom: 8px;
+}
+
+.docLink {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #7eecd8;
+    text-decoration: none;
+    background: rgba(126, 236, 216, 0.1);
+    padding: 2px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(126, 236, 216, 0.3);
+    margin-top: 8px;
+    transition: background 0.2s;
+}
+
+.docLink:hover {
+    background: rgba(126, 236, 216, 0.2);
+}
+
+.btnGo {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #2dc9a8, #1e8f7a);
+    color: white;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(45, 201, 168, 0.35);
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+
+.btnGo:hover {
+    transform: translateY(-2px);
+}
+
+.desafioActions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.btnLogrado {
+    padding: 10px 20px;
+    background: #ffffff;
+    color: #1e8f7a;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+}
+
+.btnLogrado:hover {
+    background: #7eecd8;
+    color: #1e8f7a;
+    transform: translateY(-2px);
+}
+
+.logradoBadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(126, 236, 216, 0.2);
+    color: #7eecd8;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border: 1px solid rgba(126, 236, 216, 0.4);
+}
+
+
+/* LAYOUT GRID */
+.contentGrid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 28px;
+    align-items: flex-start;
+}
+
+@media (max-width: 850px) {
+    .contentGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.checkinSection {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.checkinSection h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    color: #1a2b5e;
+    margin-bottom: 4px;
+}
+
+.sub {
+    color: #5a7191;
+    font-size: 0.82rem;
+    margin-bottom: 18px;
+}
+
+.checkinForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.checkinInput {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #e2eaf2;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    resize: vertical;
+    outline: none;
+    color: #16243a;
+    transition: border-color 0.2s;
+}
+
+.checkinInput:focus {
+    border-color: #3a6bc8;
+}
+
+.btnEnviar {
+    align-self: flex-end;
+    padding: 10px 22px;
+    background: linear-gradient(135deg, #1a2b5e, #3a6bc8);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btnEnviar:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* FEED */
+.feed {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.checkinItem {
+    display: flex;
+    gap: 12px;
+}
+
+.checkinAvatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a2b5e, #3a6bc8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+}
+
+.checkinBody {
+    flex: 1;
+}
+
+.checkinMeta {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.checkinMeta strong {
+    font-size: 0.82rem;
+    color: #1a2b5e;
+}
+
+.checkinTime {
+    font-size: 0.7rem;
+    color: #b0bec5;
+}
+
+.checkinBody p {
+    font-size: 0.84rem;
+    color: #16243a;
+    line-height: 1.5;
+}
+
+.emptyFeed {
+    text-align: center;
+    padding: 32px;
+    color: #b0bec5;
+    font-size: 0.85rem;
+}
+
+/* LOADING */
+.loadingWrap {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: #5a7191;
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #e2eaf2;
+    border-top-color: #2dc9a8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.btnEval {
+    padding: 7px 14px;
+    background: rgba(45, 201, 168, 0.22);
+    border: 1px solid rgba(45, 201, 168, 0.4);
+    border-radius: 10px;
+    color: #7eecd8;
+    font-size: 0.82rem;
+    text-decoration: none;
+    white-space: nowrap;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.btnEval:hover {
+    background: rgba(45, 201, 168, 0.35);
+}
+
+/* SIDEBAR & MIEMBROS */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.miembrosCard {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.cardHeader h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    color: #1a2b5e;
+}
+
+.btnInvitar {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #3a6bc8;
+    text-decoration: none;
+    padding: 6px 12px;
+    background: #f0f4f8;
+    border-radius: 8px;
+}
+
+.miembrosList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.miembroItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mAvatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #eef2f7;
+    color: #5a7191;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.mInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.mName {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #16243a;
+}
+
+.mRol {
+    font-size: 0.7rem;
+    color: #8fa5be;
+    text-transform: capitalize;
+}
+
+.btnAbandonar {
+    padding: 12px;
+    background: transparent;
+    border: 1.5px solid #fecaca;
+    color: #ef4444;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btnAbandonar:hover {
+    background: #fef2f2;
+    border-color: #ef4444;
+}

@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCS · Arquitectura de la Aplicación</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2b5e;
+    --blue-mid: #3a6bc8;
+    --blue-light: #7bb5e8;
+    --blue-pale: #b8d9f5;
+    --teal-dark: #1e8f7a;
+    --teal: #2dc9a8;
+    --teal-light: #7eecd8;
+    --white: #f8fafb;
+    --gray: #e2eaf2;
+    --text: #16243a;
+    --text-muted: #5a7191;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #1e3a8a 40%, var(--teal-dark) 100%);
+    padding: 60px 40px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(45,201,168,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 30%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(123,181,232,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .logo-hex {
+    width: 90px; height: 90px;
+    background: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    flex-shrink: 0;
+  }
+  .logo-hex svg { width: 60px; height: 60px; }
+
+  .hero-text h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: white;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+  .hero-text h1 span { color: var(--teal-light); }
+  .hero-text p {
+    color: var(--blue-pale);
+    margin-top: 12px;
+    font-size: 1.05rem;
+    max-width: 600px;
+    line-height: 1.6;
+  }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .tag {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  /* MAIN */
+  main { max-width: 1100px; margin: 0 auto; padding: 50px 24px 80px; }
+
+  /* SECTION HEADER */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+    margin-top: 56px;
+  }
+  .section-num {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--navy), var(--blue-mid));
+    color: white;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  /* VISION CARD */
+  .vision-card {
+    background: linear-gradient(135deg, var(--navy) 0%, #1e4080 100%);
+    border-radius: 20px;
+    padding: 36px 40px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .vision-card::before {
+    content: '"';
+    position: absolute;
+    top: -20px; left: 24px;
+    font-size: 160px;
+    color: rgba(255,255,255,0.06);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  .vision-card p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+  }
+  .vision-card .accent { color: var(--teal-light); font-weight: 600; }
+
+  /* PHASES TIMELINE */
+  .phases-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .phase-item {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    position: relative;
+  }
+  .phase-item:not(:last-child) .phase-line { display: block; }
+
+  .phase-left {
+    padding: 20px 24px 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: relative;
+  }
+  .phase-left::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--blue-mid), var(--teal));
+  }
+  .phase-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    position: absolute;
+    right: -7px;
+    top: 26px;
+  }
+  .phase-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+  .phase-label {
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 0.95rem;
+    text-align: right;
+    margin-top: 2px;
+  }
+  .phase-duration {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: right;
+    margin-top: 2px;
+  }
+
+  .phase-right {
+    padding: 20px 0 20px 28px;
+  }
+  .phase-right h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+  .deliverables {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .deliverable {
+    background: var(--gray);
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 0.78rem;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .deliverable.tech { background: #e8f4fd; color: var(--blue-mid); }
+  .deliverable.ux { background: #e8fdf7; color: var(--teal-dark); }
+  .deliverable.data { background: #fdf0e8; color: #c4600a; }
+  .deliverable.core { background: #eef1fd; color: var(--navy); }
+
+  /* ROLES GRID */
+  .roles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+  }
+  .role-card {
+    border-radius: 16px;
+    padding: 20px 16px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: default;
+  }
+  .role-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+  }
+  .role-card .role-icon { font-size: 1.8rem; margin-bottom: 10px; }
+  .role-card .role-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+  .role-card .role-desc { font-size: 0.76rem; margin-top: 4px; line-height: 1.4; opacity: 0.85; }
+
+  .r1 { background: linear-gradient(135deg, #1a2b5e22, #1a2b5e11); border: 1px solid #1a2b5e30; color: var(--navy); }
+  .r2 { background: linear-gradient(135deg, #3a6bc822, #3a6bc811); border: 1px solid #3a6bc830; color: #2a5ab8; }
+  .r3 { background: linear-gradient(135deg, #7bb5e822, #7bb5e811); border: 1px solid #7bb5e830; color: #2a6090; }
+  .r4 { background: linear-gradient(135deg, #1e8f7a22, #1e8f7a11); border: 1px solid #1e8f7a30; color: #1e6a5a; }
+  .r5 { background: linear-gradient(135deg, #2dc9a822, #2dc9a811); border: 1px solid #2dc9a830; color: #1a8a72; }
+  .r6 { background: linear-gradient(135deg, #7eecd822, #7eecd811); border: 1px solid #7eecd830; color: #1a7a6a; }
+
+  /* DATA MODEL */
+  .data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .entity-card {
+    border-radius: 16px;
+    border: 2px solid var(--gray);
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .entity-card:hover { border-color: var(--blue-light); }
+  .entity-header {
+    background: var(--navy);
+    color: white;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .entity-header span { font-size: 1.1rem; }
+  .entity-header h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+  .entity-body { padding: 14px 18px; }
+  .field-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--gray);
+    font-size: 0.8rem;
+  }
+  .field-row:last-child { border-bottom: none; }
+  .field-type {
+    font-size: 0.68rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--gray);
+    color: var(--text-muted);
+    font-weight: 600;
+    min-width: 40px;
+    text-align: center;
+  }
+  .field-type.pk { background: #fde8e8; color: #c42b2b; }
+  .field-type.fk { background: #e8f0fd; color: var(--blue-mid); }
+
+  /* STACK */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+  .stack-card {
+    background: white;
+    border-radius: 14px;
+    padding: 18px;
+    border: 1px solid var(--gray);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .stack-layer {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .stack-item { font-size: 0.88rem; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .stack-why { font-size: 0.76rem; color: var(--text-muted); line-height: 1.4; }
+
+  /* UX FLOW */
+  .ux-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .user-flow {
+    background: var(--gray);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .user-flow h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .step-num {
+    width: 22px; height: 22px;
+    background: var(--navy);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-text { font-size: 0.82rem; line-height: 1.5; color: var(--text); }
+  .step-text strong { color: var(--navy); }
+
+  /* KPIS */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .kpi-card {
+    background: linear-gradient(135deg, var(--navy), #1e4080);
+    border-radius: 16px;
+    padding: 24px 20px;
+    color: white;
+    text-align: center;
+  }
+  .kpi-icon { font-size: 2rem; margin-bottom: 8px; }
+  .kpi-title { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; }
+  .kpi-desc { font-size: 0.78rem; color: var(--blue-pale); margin-top: 6px; line-height: 1.4; }
+
+  /* QUESTIONS SECTION */
+  .questions-box {
+    background: linear-gradient(135deg, #fff8e8, #ffefd4);
+    border: 2px solid #f4b942;
+    border-radius: 20px;
+    padding: 32px 36px;
+    margin-top: 56px;
+  }
+  .questions-box h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #8a5a0a;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .q-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+  }
+  .q-num {
+    background: #f4b942;
+    color: white;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .q-text { font-size: 0.88rem; line-height: 1.5; color: #5a3a08; }
+  .q-text strong { color: #8a5a0a; }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy);
+    color: var(--blue-pale);
+    text-align: center;
+    padding: 24px;
+    font-size: 0.82rem;
+  }
+  footer strong { color: var(--teal-light); }
+
+  .divider {
+    height: 2px;
+    background: linear-gradient(to right, var(--blue-mid), var(--teal), transparent);
+    margin: 8px 0 0;
+    border-radius: 2px;
+  }
+
+  @media (max-width: 700px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .phase-item { grid-template-columns: 1fr; }
+    .phase-left { align-items: flex-start; }
+    .phase-left::after { display: none; }
+    .phase-dot { display: none; }
+    .ux-section { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="logo-hex">
+      <!-- CCS Hexagon Logo SVG recreation -->
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="50,8 85,27 85,73 50,92 15,73 15,27" fill="none" stroke="#e2eaf2" stroke-width="1"/>
+        <!-- Top dark blue triangle -->
+        <polygon points="50,8 85,27 50,45" fill="#1a2b5e"/>
+        <!-- Top right blue triangle -->
+        <polygon points="85,27 85,73 60,50" fill="#3a6bc8"/>
+        <!-- Top left light blue -->
+        <polygon points="15,27 50,8 50,45" fill="#b8d9f5"/>
+        <!-- Middle left light blue -->
+        <polygon points="15,27 50,45 25,60" fill="#7bb5e8"/>
+        <!-- Bottom left teal -->
+        <polygon points="15,73 50,92 40,55" fill="#1e8f7a"/>
+        <!-- Bottom right teal light -->
+        <polygon points="50,92 85,73 60,58" fill="#7eecd8"/>
+        <!-- Center teal -->
+        <polygon points="50,45 80,65 50,80 20,65" fill="#2dc9a8" opacity="0.7"/>
+        <!-- White separators -->
+        <polygon points="50,8 85,27 50,45" fill="none" stroke="white" stroke-width="1.5"/>
+        <polygon points="85,27 85,73 50,55" fill="none" stroke="white" stroke-width="1.5"/>
+        <polygon points="15,27 50,45 15,65" fill="none" stroke="white" stroke-width="1.5"/>
+        <polygon points="50,92 15,73 50,55" fill="none" stroke="white" stroke-width="1.5"/>
+        <polygon points="50,92 85,73 50,55" fill="none" stroke="white" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div class="hero-text">
+      <h1><span>CCS</span> · Competencias<br>Colaborativas en Salud</h1>
+      <p>Arquitectura y Plan de Desarrollo · Escuela de Enfermería UNRC</p>
+      <div class="tag-row">
+        <span class="tag">Plataforma Académica</span>
+        <span class="tag">Formación de Equipos</span>
+        <span class="tag">6 Roles Profesionales</span>
+        <span class="tag">SCRUM Académico</span>
+        <span class="tag">Evaluación 360°</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- VISION -->
+  <div class="section-header" style="margin-top: 40px;">
+    <div class="section-num">V</div>
+    <h2>Visión del Producto</h2>
+  </div>
+  <div class="vision-card">
+    <p>Transformar la dinámica de grupos de estudio en enfermería: <span class="accent">pasar de la selección por afinidad personal a la conformación de equipos por complementariedad de roles profesionales.</span> CCS facilita la integración de estudiantes que, por razones laborales o de trayectoria, tienen dificultades para socializar, garantizando que cada grupo posea las competencias necesarias para una práctica clínica segura.</p>
+  </div>
+
+  <!-- FASES -->
+  <div class="section-header">
+    <div class="section-num">F</div>
+    <h2>Fases de Desarrollo</h2>
+  </div>
+  <div class="divider" style="margin-bottom: 32px;"></div>
+
+  <div class="phases-grid">
+
+    <div class="phase-item">
+      <div class="phase-left">
+        <div class="phase-dot" style="background: var(--navy);"></div>
+        <div class="phase-num">Fase 01</div>
+        <div class="phase-label">Cimientos</div>
+        <div class="phase-duration">Semanas 1–4</div>
+      </div>
+      <div class="phase-right">
+        <h3>🏗️ Arquitectura Base & Diseño de Identidad</h3>
+        <div class="deliverables">
+          <span class="deliverable tech">Setup Next.js / React Native</span>
+          <span class="deliverable tech">Supabase (Auth + DB)</span>
+          <span class="deliverable ux">Design System CCS</span>
+          <span class="deliverable ux">Paleta hexagonal</span>
+          <span class="deliverable core">Modelo de datos core</span>
+          <span class="deliverable core">Roles & permisos (Docente / Estudiante)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-item">
+      <div class="phase-left">
+        <div class="phase-dot" style="background: var(--blue-mid);"></div>
+        <div class="phase-num">Fase 02</div>
+        <div class="phase-label">Test & Perfil</div>
+        <div class="phase-duration">Semanas 5–8</div>
+      </div>
+      <div class="phase-right">
+        <h3>🧪 Diagnóstico de Perfil Profesional</h3>
+        <div class="deliverables">
+          <span class="deliverable ux">Test situacional (4 preguntas)</span>
+          <span class="deliverable ux">1 pregunta por pantalla</span>
+          <span class="deliverable core">Lógica puntaje 6 roles</span>
+          <span class="deliverable tech">Gráfico radar SVG</span>
+          <span class="deliverable core">Rol Primario + Rol Secundario</span>
+          <span class="deliverable tech">Persistencia en Supabase</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-item">
+      <div class="phase-left">
+        <div class="phase-dot" style="background: var(--teal-dark);"></div>
+        <div class="phase-num">Fase 03</div>
+        <div class="phase-label">Marketplace</div>
+        <div class="phase-duration">Semanas 9–13</div>
+      </div>
+      <div class="phase-right">
+        <h3>🏪 Marketplace de Talentos por Cátedra</h3>
+        <div class="deliverables">
+          <span class="deliverable ux">Perfil público: foto + roles</span>
+          <span class="deliverable core">Código de acceso por cátedra</span>
+          <span class="deliverable core">Buscador por perfil faltante</span>
+          <span class="deliverable ux">Activación de rol por materia</span>
+          <span class="deliverable tech">Invitaciones push</span>
+          <span class="deliverable core">Radar de equilibrio del grupo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-item">
+      <div class="phase-left">
+        <div class="phase-dot" style="background: var(--teal);"></div>
+        <div class="phase-num">Fase 04</div>
+        <div class="phase-label">Desafíos</div>
+        <div class="phase-duration">Semanas 14–19</div>
+      </div>
+      <div class="phase-right">
+        <h3>⚡ Sprint Board & Gestión de Desafíos</h3>
+        <div class="deliverables">
+          <span class="deliverable core">Tablero Kanban (Backlog / Doing / Review / Done)</span>
+          <span class="deliverable core">Checklist dinámico por rol</span>
+          <span class="deliverable tech">Cuenta regresiva entrega</span>
+          <span class="deliverable ux">Daily check-in asincrónico</span>
+          <span class="deliverable core">Sugerencia automática de tareas por rol</span>
+          <span class="deliverable data">Notificaciones push</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-item">
+      <div class="phase-left">
+        <div class="phase-dot" style="background: var(--teal-light);"></div>
+        <div class="phase-num">Fase 05</div>
+        <div class="phase-label">Evaluación</div>
+        <div class="phase-duration">Semanas 20–24</div>
+      </div>
+      <div class="phase-right">
+        <h3>🏆 Evaluación 360°, Gamificación & Dashboard</h3>
+        <div class="deliverables">
+          <span class="deliverable ux">Formulario 360° (Qué + Cómo)</span>
+          <span class="deliverable core">Autoevaluación grupal retrospectiva</span>
+          <span class="deliverable tech">Insignias de competencia</span>
+          <span class="deliverable data">Dashboard docente (analytics)</span>
+          <span class="deliverable data">Historial de agilidad del grupo</span>
+          <span class="deliverable ux">Cierre pedagógico del equipo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-item">
+      <div class="phase-left">
+        <div class="phase-dot" style="background: #f4b942;"></div>
+        <div class="phase-num">Fase 06</div>
+        <div class="phase-label">Lanzamiento</div>
+        <div class="phase-duration">Semanas 25–28</div>
+      </div>
+      <div class="phase-right">
+        <h3>🚀 Piloto Escuela de Enfermería UNRC</h3>
+        <div class="deliverables">
+          <span class="deliverable data">Onboarding docentes cátedras piloto</span>
+          <span class="deliverable core">QA & testing con estudiantes reales</span>
+          <span class="deliverable tech">Deploy web + app móvil</span>
+          <span class="deliverable data">Métricas KPI iniciales</span>
+          <span class="deliverable ux">Iteración por feedback</span>
+          <span class="deliverable core">Expansión a más cátedras</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ROLES -->
+  <div class="section-header">
+    <div class="section-num">R</div>
+    <h2>Los 6 Roles Profesionales</h2>
+  </div>
+  <div class="roles-grid">
+    <div class="role-card r1">
+      <div class="role-icon">🗂️</div>
+      <div class="role-name">Organizador</div>
+      <div class="role-desc">Estructura, planifica y da seguimiento al trabajo grupal. Actúa como Scrum Master.</div>
+    </div>
+    <div class="role-card r2">
+      <div class="role-icon">📊</div>
+      <div class="role-name">Analítico</div>
+      <div class="role-desc">Interpreta información con mirada crítica. Valida fuentes (PubMed, SciELO). Revisa coherencia.</div>
+    </div>
+    <div class="role-card r3">
+      <div class="role-icon">🛠️</div>
+      <div class="role-name">Ejecutor</div>
+      <div class="role-desc">Transforma ideas en acciones concretas. Redacta, sistematiza, entrega. Avance constante.</div>
+    </div>
+    <div class="role-card r4">
+      <div class="role-icon">🎨</div>
+      <div class="role-name">Creativo</div>
+      <div class="role-desc">Aporta enfoques originales, formatos visuales e innovación en la presentación del trabajo.</div>
+    </div>
+    <div class="role-card r5">
+      <div class="role-icon">🤝</div>
+      <div class="role-name">Conciliador</div>
+      <div class="role-desc">Facilita el diálogo, gestiona conflictos y garantiza la participación equitativa del grupo.</div>
+    </div>
+    <div class="role-card r6">
+      <div class="role-icon">🔊</div>
+      <div class="role-name">Motivador</div>
+      <div class="role-desc">Sostiene el compromiso y el clima positivo. Reconoce aportes en momentos de cansancio.</div>
+    </div>
+  </div>
+
+  <!-- MODELO DE DATOS -->
+  <div class="section-header">
+    <div class="section-num">D</div>
+    <h2>Modelo de Datos (Entidades Principales)</h2>
+  </div>
+  <div class="data-grid">
+
+    <div class="entity-card">
+      <div class="entity-header">
+        <span>👤</span><h4>Usuario</h4>
+      </div>
+      <div class="entity-body">
+        <div class="field-row"><span class="field-type pk">PK</span> ID_Usuario</div>
+        <div class="field-row"><span class="field-type">STR</span> Nombre, Foto</div>
+        <div class="field-row"><span class="field-type">STR</span> Email</div>
+        <div class="field-row"><span class="field-type">ENUM</span> Tipo (Docente/Est.)</div>
+        <div class="field-row"><span class="field-type">JSON</span> Resultados_Test [6]</div>
+        <div class="field-row"><span class="field-type">ENUM</span> Rol_Primario</div>
+        <div class="field-row"><span class="field-type">ENUM</span> Rol_Secundario</div>
+      </div>
+    </div>
+
+    <div class="entity-card">
+      <div class="entity-header">
+        <span>📚</span><h4>Cátedra</h4>
+      </div>
+      <div class="entity-body">
+        <div class="field-row"><span class="field-type pk">PK</span> ID_Catedra</div>
+        <div class="field-row"><span class="field-type">STR</span> Nombre_Materia</div>
+        <div class="field-row"><span class="field-type fk">FK</span> Docente_Responsable</div>
+        <div class="field-row"><span class="field-type">STR</span> Código_Acceso</div>
+        <div class="field-row"><span class="field-type">BOOL</span> Activa</div>
+        <div class="field-row"><span class="field-type">DATE</span> Ciclo_Lectivo</div>
+      </div>
+    </div>
+
+    <div class="entity-card">
+      <div class="entity-header">
+        <span>⚡</span><h4>Desafío</h4>
+      </div>
+      <div class="entity-body">
+        <div class="field-row"><span class="field-type pk">PK</span> ID_Desafio</div>
+        <div class="field-row"><span class="field-type fk">FK</span> ID_Catedra</div>
+        <div class="field-row"><span class="field-type">FILE</span> Documento_Guía</div>
+        <div class="field-row"><span class="field-type">DATE</span> Fecha_Entrega</div>
+        <div class="field-row"><span class="field-type">JSON</span> Checklist_Sugerido</div>
+        <div class="field-row"><span class="field-type">ENUM</span> Estado</div>
+      </div>
+    </div>
+
+    <div class="entity-card">
+      <div class="entity-header">
+        <span>👥</span><h4>Equipo</h4>
+      </div>
+      <div class="entity-body">
+        <div class="field-row"><span class="field-type pk">PK</span> ID_Equipo</div>
+        <div class="field-row"><span class="field-type fk">FK</span> ID_Desafio</div>
+        <div class="field-row"><span class="field-type">STR</span> Nombre_Equipo</div>
+        <div class="field-row"><span class="field-type">JSON</span> Radar_Equilibrio</div>
+        <div class="field-row"><span class="field-type">BOOL</span> Estado_Entrega</div>
+        <div class="field-row"><span class="field-type">JSON</span> Evaluacion_360</div>
+      </div>
+    </div>
+
+    <div class="entity-card">
+      <div class="entity-header">
+        <span>✅</span><h4>Tarea</h4>
+      </div>
+      <div class="entity-body">
+        <div class="field-row"><span class="field-type pk">PK</span> ID_Tarea</div>
+        <div class="field-row"><span class="field-type fk">FK</span> ID_Equipo</div>
+        <div class="field-row"><span class="field-type fk">FK</span> ID_Usuario (dueño)</div>
+        <div class="field-row"><span class="field-type">STR</span> Descripcion</div>
+        <div class="field-row"><span class="field-type">ENUM</span> Rol_Asociado</div>
+        <div class="field-row"><span class="field-type">ENUM</span> Estado (Kanban)</div>
+      </div>
+    </div>
+
+    <div class="entity-card">
+      <div class="entity-header">
+        <span>🏅</span><h4>Insignia</h4>
+      </div>
+      <div class="entity-body">
+        <div class="field-row"><span class="field-type pk">PK</span> ID_Insignia</div>
+        <div class="field-row"><span class="field-type fk">FK</span> ID_Usuario</div>
+        <div class="field-row"><span class="field-type">STR</span> Tipo (Competencia)</div>
+        <div class="field-row"><span class="field-type">DATE</span> Otorgada_En</div>
+        <div class="field-row"><span class="field-type fk">FK</span> ID_Equipo (origen)</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- STACK TECNOLÓGICO -->
+  <div class="section-header">
+    <div class="section-num">T</div>
+    <h2>Stack Tecnológico Recomendado</h2>
+  </div>
+  <div class="stack-grid">
+    <div class="stack-card">
+      <div class="stack-layer">Frontend Web</div>
+      <div class="stack-item">Next.js 14 (App Router)</div>
+      <div class="stack-why">SSR + rutas limpias. Ideal para dashboard docente y perfiles públicos.</div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-layer">App Móvil</div>
+      <div class="stack-item">React Native / Expo</div>
+      <div class="stack-why">Código compartido iOS/Android. Crucial para alumnos que trabajan y usan el celular.</div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-layer">Backend & Auth</div>
+      <div class="stack-item">Supabase</div>
+      <div class="stack-why">PostgreSQL + Auth + Storage + Realtime. Gratuito hasta escala considerable. Open source.</div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-layer">Tiempo Real</div>
+      <div class="stack-item">Supabase Realtime</div>
+      <div class="stack-why">Tablero Kanban sincronizado. El sprint board se actualiza en vivo para todos.</div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-layer">Notificaciones</div>
+      <div class="stack-item">Expo Push / OneSignal</div>
+      <div class="stack-why">Avisos de check-in, nuevas tareas, fecha de entrega próxima.</div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-layer">Gráficos</div>
+      <div class="stack-item">Recharts / Victory Native</div>
+      <div class="stack-why">Radar de equilibrio y métricas de participación con animaciones fluidas.</div>
+    </div>
+  </div>
+
+  <!-- FLUJOS UX -->
+  <div class="section-header">
+    <div class="section-num">U</div>
+    <h2>Flujos de Usuario (UX)</h2>
+  </div>
+  <div class="ux-section">
+    <div class="user-flow">
+      <h4>👨‍🏫 Docente</h4>
+      <div class="flow-step"><div class="step-num">1</div><div class="step-text">Crea la <strong>cátedra</strong> y genera código de acceso único</div></div>
+      <div class="flow-step"><div class="step-num">2</div><div class="step-text">Sube el <strong>Desafío</strong> (PDF/link + criterios + fecha)</div></div>
+      <div class="flow-step"><div class="step-num">3</div><div class="step-text">Visualiza <strong>radar de equilibrio</strong> de cada equipo</div></div>
+      <div class="flow-step"><div class="step-num">4</div><div class="step-text">Monitorea el <strong>Sprint Board</strong> y participación por rol</div></div>
+      <div class="flow-step"><div class="step-num">5</div><div class="step-text">Recibe <strong>Dashboard</strong> con historial de agilidad y 360°</div></div>
+    </div>
+    <div class="user-flow">
+      <h4>🎓 Estudiante</h4>
+      <div class="flow-step"><div class="step-num">1</div><div class="step-text">Realiza el <strong>Test Situacional</strong> y obtiene Rol Primario + Secundario</div></div>
+      <div class="flow-step"><div class="step-num">2</div><div class="step-text">Se une a la cátedra con el <strong>código de acceso</strong></div></div>
+      <div class="flow-step"><div class="step-num">3</div><div class="step-text"><strong>Activa su rol</strong> para esa materia (puede diferir por asignatura)</div></div>
+      <div class="flow-step"><div class="step-num">4</div><div class="step-text">Se incorpora a un equipo o <strong>recibe invitación</strong> por complementariedad</div></div>
+      <div class="flow-step"><div class="step-num">5</div><div class="step-text">Trabaja con su <strong>checklist de rol</strong> y hace daily check-in</div></div>
+      <div class="flow-step"><div class="step-num">6</div><div class="step-text">Completa la <strong>Evaluación 360°</strong> y recibe insignias</div></div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="section-header">
+    <div class="section-num">K</div>
+    <h2>KPIs de Impacto</h2>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon">🤝</div>
+      <div class="kpi-title">Inclusión</div>
+      <div class="kpi-desc">Aumentar la tasa de integración de alumnos trabajadores en grupos de alto desempeño</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">📈</div>
+      <div class="kpi-title">Calidad Académica</div>
+      <div class="kpi-desc">Mejorar la fundamentación crítica y organización de los informes finales de práctica</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">🏥</div>
+      <div class="kpi-title">Identidad Profesional</div>
+      <div class="kpi-desc">Fortalecer la comprensión del propio rol y el de los demás en el equipo de salud</div>
+    </div>
+  </div>
+
+  <!-- PREGUNTAS PENDIENTES -->
+  <div class="questions-box">
+    <h2>⚠️ Preguntas Clave para Definir</h2>
+
+    <div class="q-item">
+      <div class="q-num">1</div>
+      <div class="q-text"><strong>¿Plataforma web, app móvil o ambas?</strong> ¿Los estudiantes usan más celular o computadora para sus trabajos académicos? Esto define si priorizamos web responsiva o una app nativa.</div>
+    </div>
+
+    <div class="q-item">
+      <div class="q-num">2</div>
+      <div class="q-text"><strong>¿Cuántas cátedras piloto iniciarán?</strong> ¿Hay docentes ya interesados en adherirse? Saber el volumen inicial ayuda a dimensionar el backend.</div>
+    </div>
+
+    <div class="q-item">
+      <div class="q-num">3</div>
+      <div class="q-text"><strong>¿Integración con el SIU Guaraní o sistema de la UNRC?</strong> ¿Debe la app conectarse con el sistema universitario oficial o funcionará de forma independiente?</div>
+    </div>
+
+    <div class="q-item">
+      <div class="q-num">4</div>
+      <div class="q-text"><strong>¿Idioma del test — habrá más preguntas?</strong> El documento describe 4 preguntas. ¿Se ampliará para mayor precisión estadística? ¿Habrá validación psicométrica?</div>
+    </div>
+
+    <div class="q-item">
+      <div class="q-num">5</div>
+      <div class="q-text"><strong>¿La nota 360° impacta la calificación oficial?</strong> ¿La evaluación dentro de la app es solo formativa o puede convertirse en insumo para la nota final del docente?</div>
+    </div>
+
+    <div class="q-item">
+      <div class="q-num">6</div>
+      <div class="q-text"><strong>¿Expansión a otras carreras de salud?</strong> El documento menciona Medicina, Kinesiología y Nutrición. ¿Es un objetivo de la primera versión o una fase posterior?</div>
+    </div>
+
+    <div class="q-item">
+      <div class="q-num">7</div>
+      <div class="q-text"><strong>¿Hay presupuesto o es un proyecto de extensión/tesis?</strong> Esto define si el stack puede ser 100% open source/gratuito (Supabase free tier) o si hay fondos para servicios pagos.</div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <strong>CCS · Competencias Colaborativas en Salud</strong> · Escuela de Enfermería · UNRC · Documento de Arquitectura v1.0
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,454 @@
+/* CCS · Vista Cátedra */
+
+.page {
+    min-height: 100vh;
+    background: #f0f5fb;
+}
+
+/* HEADER */
+.header {
+    background: linear-gradient(135deg, #1a2b5e, #1e4080);
+    padding: 0 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.headerInner {
+    max-width: 1100px;
+    margin: 0 auto;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.back {
+    color: #7bb5e8;
+    text-decoration: none;
+    font-size: 0.82rem;
+    flex-shrink: 0;
+}
+
+.back:hover {
+    color: white;
+}
+
+.headerCenter {
+    flex: 1;
+}
+
+.headerCenter h1 {
+    font-family: 'Syne', sans-serif;
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.headerSub {
+    font-size: 0.7rem;
+    color: #7bb5e8;
+}
+
+.headerRight {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.codigoBadge {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #7eecd8;
+    letter-spacing: 2px;
+}
+
+.toggleBtn {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.activa {
+    background: rgba(45, 201, 168, 0.2);
+    color: #7eecd8;
+}
+
+.inactiva {
+    background: rgba(255, 255, 255, 0.1);
+    color: #b8d9f5;
+}
+
+/* MAIN */
+.main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 24px 80px;
+}
+
+/* QUICK STATS */
+.quickStats {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+}
+
+.qStat {
+    background: white;
+    border-radius: 14px;
+    padding: 18px 22px;
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+    border: 1.5px solid #e2eaf2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.qNum {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #1a2b5e;
+}
+
+.qLbl {
+    font-size: 0.72rem;
+    color: #5a7191;
+    margin-top: 2px;
+}
+
+/* SECTION */
+.section {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.sectionHeader h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    color: #1a2b5e;
+}
+
+.btnAgregar {
+    padding: 8px 18px;
+    background: linear-gradient(135deg, #1a2b5e, #3a6bc8);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* FORM INLINE */
+.formInline {
+    background: #f8faff;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border: 1.5px solid #e2eaf2;
+}
+
+.inputInline {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #e2eaf2;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: #16243a;
+    outline: none;
+}
+
+.inputInline:focus {
+    border-color: #3a6bc8;
+}
+
+.formRow {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.formGroup label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #5a7191;
+}
+
+.btnCrearDes {
+    padding: 10px 18px;
+    background: #2dc9a8;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    align-items: flex-end;
+}
+
+.formActions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+.formInline h3 {
+    font-size: 0.9rem;
+    color: #1a2b5e;
+    font-family: 'Syne', sans-serif;
+    margin-bottom: 4px;
+}
+
+.checklistCreator {
+    background: #fdfdfd;
+    border: 1.5px dashed #d1dae8;
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 4px;
+}
+
+.checklistInputArea {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.btnAddCheck {
+    padding: 0 16px;
+    background: #1a2b5e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.checklistPills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.checklistPill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #eef2f8;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    color: #4a5d7e;
+    border: 1px solid #d1dae8;
+}
+
+.btnRemovePill {
+    background: none;
+    border: none;
+    color: #a1b0c8;
+    font-size: 1rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+}
+
+.btnRemovePill:hover {
+    color: #e07070;
+}
+
+/* DESAFÍOS GRID */
+.desafiosGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.desafioHorizontal {
+    display: flex;
+    background: #fafbfd;
+    border: 1.5px solid #e2eaf2;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.desafioHorizontal:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+}
+
+.desafioContent {
+    flex: 1;
+    padding: 16px 18px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.desafioTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.desafioTitulo {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a2b5e;
+}
+
+.estadoBadge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 8px;
+    text-transform: uppercase;
+}
+
+.activo {
+    background: #d0f5ec;
+    color: #1e8f7a;
+}
+
+.borrador {
+    background: #f0f0f0;
+    color: #888;
+}
+
+.cerrado {
+    background: #fde8e8;
+    color: #c42b2b;
+}
+
+.desafioMeta {
+    display: flex;
+    gap: 14px;
+    font-size: 0.73rem;
+    color: #5a7191;
+}
+
+.fechaEntrega {
+    font-size: 0.73rem;
+    color: #5a7191;
+}
+
+.vencido {
+    color: #c42b2b;
+}
+
+.urgente {
+    color: #b07000;
+}
+
+.ok {
+    color: #1e8f7a;
+}
+
+.verLink {
+    font-size: 0.75rem;
+    color: #3a6bc8;
+    font-weight: 600;
+}
+
+.desafioActions {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    background: #f1f4f9;
+    border-left: 1.5px solid #e2eaf2;
+}
+
+.btnEdit {
+    padding: 8px;
+    background: white;
+    border: 1.5px solid #e2eaf2;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.btnEdit:hover {
+    background: #e2eaf2;
+}
+
+.docCheck {
+    background: #e8f0fe;
+    color: #3a6bc8;
+    padding: 1px 6px;
+    border-radius: 6px;
+    font-weight: 700;
+}
+
+/* EMPTY */
+.emptyRow {
+    text-align: center;
+    padding: 32px;
+    color: #b0bec5;
+    font-size: 0.82rem;
+    background: #fafbfd;
+    border-radius: 12px;
+    border: 2px dashed #e2eaf2;
+}
+
+/* LOADING */
+.loadingWrap {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: #5a7191;
+}
+
+.spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid #e2eaf2;
+    border-top-color: #2dc9a8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

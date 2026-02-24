@@ -1,0 +1,329 @@
+/* CCS · Test Situacional – Estilos */
+
+.wrap {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f0f5ff 0%, #e8fdf7 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+}
+
+/* ── INTRO ── */
+.introCard {
+    background: white;
+    border-radius: 24px;
+    padding: 48px 44px;
+    max-width: 560px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(26, 43, 94, 0.10);
+    text-align: center;
+}
+
+.introIcon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+
+.introCard h1 {
+    font-family: 'Syne', sans-serif;
+    color: #1a2b5e;
+    font-size: 1.7rem;
+    margin-bottom: 12px;
+}
+
+.introCard p {
+    color: #5a7191;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.introTips {
+    list-style: none;
+    text-align: left;
+    background: #f0f5ff;
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+}
+
+.introTips li {
+    font-size: 0.88rem;
+    color: #1a2b5e;
+    padding: 4px 0;
+}
+
+.btnStart {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #1a2b5e, #3a6bc8);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(26, 43, 94, 0.3);
+}
+
+.btnStart:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26, 43, 94, 0.4);
+}
+
+/* ── PREGUNTA ── */
+.preguntaCard {
+    background: white;
+    border-radius: 24px;
+    padding: 40px 44px;
+    max-width: 640px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(26, 43, 94, 0.10);
+}
+
+.progressRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.progressLabel {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #5a7191;
+    white-space: nowrap;
+}
+
+.progressBar {
+    flex: 1;
+    height: 8px;
+    background: #e2eaf2;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #1e8f7a, #2dc9a8);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+
+.preguntaTexto {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    color: #16243a;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.opciones {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.opcionBtn {
+    padding: 14px 18px;
+    border: 2px solid #e2eaf2;
+    border-radius: 14px;
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: #16243a;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    line-height: 1.45;
+}
+
+.opcionBtn:hover {
+    border-color: #7bb5e8;
+    background: #f0f5ff;
+}
+
+.opcionSel {
+    border-color: #2dc9a8 !important;
+    background: #e8fdf7 !important;
+    font-weight: 600;
+}
+
+.btnSiguiente {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #1a2b5e, #3a6bc8);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(26, 43, 94, 0.25);
+}
+
+.btnSiguiente:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btnSiguiente:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26, 43, 94, 0.38);
+}
+
+/* ── RESULTADO ── */
+.resultCard {
+    background: white;
+    border-radius: 24px;
+    padding: 44px;
+    max-width: 780px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(26, 43, 94, 0.12);
+}
+
+.resultHeader {
+    margin-bottom: 28px;
+}
+
+.resultHeader h1 {
+    font-family: 'Syne', sans-serif;
+    color: #1a2b5e;
+    font-size: 1.7rem;
+    margin-bottom: 6px;
+}
+
+.resultHeader p {
+    color: #5a7191;
+}
+
+.rolPrimario,
+.rolSecundario {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+    border: 2px solid color-mix(in srgb, var(--rc) 30%, transparent);
+    background: color-mix(in srgb, var(--rc) 7%, white);
+}
+
+.rolIcon {
+    font-size: 2rem;
+}
+
+.rolLabel {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #5a7191;
+}
+
+.rolNombre {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: color-mix(in srgb, var(--rc) 90%, #000);
+}
+
+/* ── LAYOUT DOS COLUMNAS ── */
+.resultGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.rolesCol {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.radarCol {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.radarTitle {
+    font-family: var(--font-heading), sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #5a7191;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+@media (max-width: 580px) {
+    .resultGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .radarCol {
+        order: -1;
+        /* radar arriba en mobile */
+    }
+}
+
+.resultCtas {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btnPrimary {
+    flex: 1;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, #2dc9a8, #1e8f7a);
+    color: white;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(45, 201, 168, 0.3);
+    transition: transform 0.2s;
+}
+
+.btnPrimary:hover {
+    transform: translateY(-2px);
+}
+
+.btnGhost {
+    padding: 14px 20px;
+    background: transparent;
+    border: 2px solid #e2eaf2;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    color: #5a7191;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.btnGhost:hover {
+    border-color: #7bb5e8;
+    color: #1a2b5e;
+}
+
+@media (max-width: 600px) {
+
+    .preguntaCard,
+    .introCard,
+    .resultCard {
+        padding: 28px 20px;
+    }
+}

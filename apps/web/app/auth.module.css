@@ -1,0 +1,216 @@
+/* CCS · Auth pages (login / registro) – estilos compartidos */
+
+.wrap {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f0f5ff 0%, #e8fdf7 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 24px;
+    padding: 44px 40px;
+    max-width: 460px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(26, 43, 94, 0.10);
+    text-align: center;
+}
+
+.logoSmall {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.icon {
+    font-size: 2.8rem;
+    margin-bottom: 12px;
+}
+
+.card h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    color: #1a2b5e;
+    margin-bottom: 6px;
+}
+
+.sub {
+    color: #5a7191;
+    font-size: 0.82rem;
+    margin-bottom: 24px;
+}
+
+/* Selector Estudiante / Docente */
+.tipoRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tipoBtn {
+    padding: 12px;
+    border: 2px solid #e2eaf2;
+    border-radius: 12px;
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #5a7191;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tipoActive {
+    border-color: #2dc9a8;
+    background: #e8fdf7;
+    color: #1a2b5e;
+}
+
+.form {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #5a7191;
+    margin-top: 6px;
+}
+
+.input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #e2eaf2;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: #16243a;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+    border-color: #3a6bc8;
+    box-shadow: 0 0 0 3px rgba(58, 107, 200, 0.10);
+}
+
+.btnPrimary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #1a2b5e, #3a6bc8);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 10px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(26, 43, 94, 0.25);
+}
+
+.btnPrimary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26, 43, 94, 0.35);
+}
+
+.btnPrimary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0;
+    color: #b0bec5;
+    font-size: 0.82rem;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e2eaf2;
+}
+
+.btnOutline {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 2px solid #e2eaf2;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: #5a7191;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btnOutline:hover:not(:disabled) {
+    border-color: #3a6bc8;
+    color: #1a2b5e;
+}
+
+.btnOutline:disabled {
+    opacity: 0.5;
+}
+
+.btnGhost {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: #5a7191;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 8px;
+}
+
+.errorBox {
+    background: #fde8e8;
+    color: #c42b2b;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+.linkRow {
+    margin-top: 18px;
+    font-size: 0.85rem;
+    color: #5a7191;
+}
+
+.linkRow a {
+    color: #3a6bc8;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.linkRow a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 500px) {
+    .card {
+        padding: 28px 20px;
+    }
+}

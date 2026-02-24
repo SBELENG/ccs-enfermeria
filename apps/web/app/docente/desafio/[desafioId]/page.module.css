@@ -1,0 +1,404 @@
+/* CCS · Vista Desafío con Analytics */
+
+.page {
+    min-height: 100vh;
+    background: #f0f5fb;
+}
+
+/* HEADER */
+.header {
+    background: linear-gradient(135deg, #1a2b5e, #1e4080);
+    padding: 0 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.headerInner {
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.back {
+    color: #7bb5e8;
+    text-decoration: none;
+    font-size: 0.82rem;
+    flex-shrink: 0;
+}
+
+.back:hover {
+    color: white;
+}
+
+.headerCenter {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.headerTitle {
+    font-family: 'Syne', sans-serif;
+    color: white;
+    font-size: 0.98rem;
+    font-weight: 700;
+}
+
+.diasBadge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 10px;
+    white-space: nowrap;
+}
+
+.venc {
+    background: #fde8e8;
+    color: #c42b2b;
+}
+
+.urg {
+    background: #fff3d0;
+    color: #b07000;
+    animation: pulse 1.2s ease-in-out infinite;
+}
+
+.ok {
+    background: rgba(45, 201, 168, 0.2);
+    color: #7eecd8;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1
+    }
+
+    50% {
+        opacity: 0.7
+    }
+}
+
+.btnNE {
+    padding: 7px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    color: white;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btnNE:hover {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+/* MAIN */
+.main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 24px 80px;
+}
+
+/* FORM NUEVO EQUIPO */
+.formNuevoEquipo {
+    display: flex;
+    gap: 10px;
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border: 2px solid #e2eaf2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.inputNE {
+    flex: 1;
+    padding: 10px 14px;
+    border: 2px solid #e2eaf2;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    color: #16243a;
+}
+
+.inputNE:focus {
+    border-color: #3a6bc8;
+}
+
+.btnCrearEq {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #1a2b5e, #3a6bc8);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+/* RADAR GLOBAL */
+.radarGlobal {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.radarGlobal h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    color: #1a2b5e;
+    margin-bottom: 4px;
+}
+
+.radarSub {
+    font-size: 0.74rem;
+    color: #5a7191;
+    margin-bottom: 18px;
+}
+
+.radarBars {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.radarRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.radarIcon {
+    font-size: 1rem;
+    width: 22px;
+    text-align: center;
+}
+
+.radarLbl {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #1a2b5e;
+    width: 90px;
+}
+
+.radarTrack {
+    flex: 1;
+    height: 10px;
+    background: #f0f4fa;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.radarFill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.5s ease;
+}
+
+.radarNum {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1a2b5e;
+    width: 20px;
+    text-align: right;
+}
+
+.alertBadge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 8px;
+    background: #fff3d0;
+    color: #b07000;
+    white-space: nowrap;
+}
+
+/* SEC TITLE */
+.secTitle {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    color: #1a2b5e;
+    margin-bottom: 16px;
+}
+
+.secCount {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #7bb5e8;
+}
+
+/* EQUIPOS GRID */
+.equiposGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.equipoCard {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    border: 1.5px solid #e2eaf2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.equipoCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.equipoHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.equipoNombre {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a2b5e;
+}
+
+.equipoStats {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-end;
+    font-size: 0.7rem;
+    color: #5a7191;
+}
+
+/* PROGRESO KANBAN */
+.progSection {}
+
+.progLabel {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.73rem;
+    color: #5a7191;
+    margin-bottom: 5px;
+}
+
+.progLabel strong {
+    color: #1a2b5e;
+}
+
+.progTrack {
+    height: 8px;
+    background: #f0f4fa;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progFill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+/* MINI RADAR */
+.miniRadar {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.miniRow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+}
+
+.miniTrack {
+    flex: 1;
+    height: 6px;
+    background: #f0f4fa;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.miniFill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.4s ease;
+}
+
+.miniNum {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #5a7191;
+    width: 16px;
+    text-align: right;
+}
+
+.btnKanban {
+    display: block;
+    text-align: center;
+    padding: 9px;
+    background: linear-gradient(135deg, #1a2b5e, #3a6bc8);
+    border-radius: 10px;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.btnKanban:hover {
+    opacity: 0.88;
+}
+
+/* EMPTY */
+.emptyState {
+    text-align: center;
+    padding: 48px;
+    background: white;
+    border-radius: 18px;
+    border: 2px dashed #e2eaf2;
+    color: #b0bec5;
+    font-size: 0.84rem;
+}
+
+/* LOADING */
+.loadingWrap {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: #5a7191;
+}
+
+.spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid #e2eaf2;
+    border-top-color: #2dc9a8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

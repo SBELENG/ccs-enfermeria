@@ -1,0 +1,426 @@
+/* CCS · Evaluación 360° – Formulario */
+
+.page {
+    min-height: 100vh;
+    background: #f0f5fb;
+}
+
+/* HEADER */
+.header {
+    background: #1a2b5e;
+    padding: 0 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+.headerInner {
+    max-width: 920px;
+    margin: 0 auto;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.back {
+    color: #7bb5e8;
+    text-decoration: none;
+    font-size: 0.82rem;
+    flex-shrink: 0;
+}
+
+.back:hover {
+    color: white;
+}
+
+.headerCenter {
+    flex: 1;
+    text-align: center;
+}
+
+.headerCenter h1 {
+    font-family: 'Syne', sans-serif;
+    color: white;
+    font-size: 0.98rem;
+    font-weight: 700;
+}
+
+.headerCenter p {
+    font-size: 0.7rem;
+    color: #7bb5e8;
+}
+
+.progress360 {
+    font-size: 0.78rem;
+    color: #7eecd8;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* ── LISTA DE COMPAÑEROS ─────────────────────────── */
+.listaMain {
+    max-width: 680px;
+    margin: 32px auto;
+    padding: 0 24px 80px;
+}
+
+.instruccion {
+    color: #5a7191;
+    font-size: 0.85rem;
+    text-align: center;
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+.miembrosGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.miembroCard {
+    background: white;
+    border-radius: 16px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 1.5px solid #e2eaf2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s;
+}
+
+.miembroCard:hover {
+    transform: translateY(-2px);
+}
+
+.evaluado {
+    background: #f6fdf9;
+    border-color: #b0e8d4;
+}
+
+.miembroAvatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a2b5e, #3a6bc8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+}
+
+.miembroInfo {
+    flex: 1;
+}
+
+.miembroInfo strong {
+    font-size: 0.92rem;
+    color: #1a2b5e;
+    display: block;
+}
+
+.rolTag {
+    font-size: 0.7rem;
+    color: #5a7191;
+    margin-top: 2px;
+    display: block;
+}
+
+.evaluadoBadge {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #1e8f7a;
+    background: #d0f5ec;
+    padding: 6px 14px;
+    border-radius: 10px;
+    white-space: nowrap;
+}
+
+.btnIniciar {
+    padding: 8px 18px;
+    background: linear-gradient(135deg, #1a2b5e, #3a6bc8);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+}
+
+.btnIniciar:hover {
+    opacity: 0.88;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 60px;
+    color: #b0bec5;
+}
+
+/* ── FORMULARIO ──────────────────────────────────── */
+.formMain {
+    max-width: 680px;
+    margin: 28px auto;
+    padding: 0 24px 80px;
+}
+
+.formCard {
+    background: white;
+    border-radius: 20px;
+    padding: 28px 28px 24px;
+    box-shadow: 0 4px 20px rgba(26, 43, 94, 0.08);
+    border: 1.5px solid #e2eaf2;
+}
+
+.formEvaluado {
+    font-size: 0.82rem;
+    color: #5a7191;
+    background: #f0f5ff;
+    padding: 8px 14px;
+    border-radius: 10px;
+    margin-bottom: 24px;
+    border: 1px solid #d6e4ff;
+}
+
+.formEvaluado strong {
+    color: #1a2b5e;
+}
+
+/* Dimensión block */
+.dimensionBlock {
+    background: #fafbfd;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 16px;
+    border: 1px solid #e8eef7;
+}
+
+.dimensionTitle {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.dimensionIcon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.dimensionTitle h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    color: #1a2b5e;
+    margin-bottom: 2px;
+}
+
+.dimensionTitle p {
+    font-size: 0.73rem;
+    color: #5a7191;
+}
+
+/* Pregunta */
+.pregunta {
+    margin-bottom: 16px;
+}
+
+.pregunta:last-child {
+    margin-bottom: 0;
+}
+
+.preguntaTxt {
+    font-size: 0.82rem;
+    color: #16243a;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.estrellas {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.estrella {
+    font-size: 1.6rem;
+    color: #dde4ef;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.15s, transform 0.1s;
+    padding: 0;
+    line-height: 1;
+}
+
+.estrella:hover,
+.estrellaOn {
+    color: #f5c518;
+}
+
+.estrella:hover {
+    transform: scale(1.15);
+}
+
+.estrellaLabel {
+    font-size: 0.72rem;
+    color: #7bb5e8;
+    margin-left: 6px;
+    min-width: 60px;
+}
+
+/* Comentario */
+.comentarioBlock {
+    margin-bottom: 20px;
+}
+
+.comentarioLabel {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #5a7191;
+    margin-bottom: 6px;
+}
+
+.comentarioInput {
+    width: 100%;
+    padding: 11px 14px;
+    border: 2px solid #e2eaf2;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: #16243a;
+    resize: vertical;
+    outline: none;
+}
+
+.comentarioInput:focus {
+    border-color: #3a6bc8;
+}
+
+/* Acciones */
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btnCancelar {
+    padding: 10px 20px;
+    border: 2px solid #e2eaf2;
+    border-radius: 10px;
+    background: white;
+    color: #5a7191;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+}
+
+.btnEnviar {
+    padding: 10px 24px;
+    background: linear-gradient(135deg, #2dc9a8, #1e8f7a);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btnEnviar:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* COMPLETADO */
+.completadoWrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: linear-gradient(135deg, #f0f5fb 0%, #e8f5f0 100%);
+}
+
+.completadoCard {
+    background: white;
+    border-radius: 24px;
+    padding: 48px 36px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(26, 43, 94, 0.1);
+}
+
+.completadoIcon {
+    font-size: 4rem;
+    margin-bottom: 18px;
+}
+
+.completadoCard h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    color: #1a2b5e;
+    margin-bottom: 10px;
+}
+
+.completadoCard p {
+    color: #5a7191;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.btnResultados {
+    display: block;
+    padding: 13px;
+    background: linear-gradient(135deg, #2dc9a8, #1e8f7a);
+    color: white;
+    border-radius: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    margin-bottom: 10px;
+}
+
+.btnVolver {
+    display: block;
+    padding: 11px;
+    border: 2px solid #e2eaf2;
+    border-radius: 12px;
+    color: #5a7191;
+    text-decoration: none;
+    font-size: 0.88rem;
+}
+
+/* LOADING */
+.loadingWrap {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: #5a7191;
+}
+
+.spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid #e2eaf2;
+    border-top-color: #2dc9a8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

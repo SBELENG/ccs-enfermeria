@@ -1,0 +1,364 @@
+/* ============================================
+   CCS Design System – Tokens & Variables
+   Competencias Colaborativas en Salud · UNRC
+   ============================================ */
+
+:root {
+  /* === PALETA HEXAGONAL CCS === */
+  --navy: #1a2b5e;
+  /* Organizador */
+  --blue-mid: #3a6bc8;
+  /* Analítico */
+  --blue-light: #7bb5e8;
+  /* Ejecutor */
+  --teal-dark: #1e8f7a;
+  /* Creativo */
+  --teal: #2dc9a8;
+  /* Conciliador */
+  --teal-light: #7eecd8;
+  /* Motivador */
+
+  /* === Colores de soporte === */
+  --white: #f8fafb;
+  --gray-100: #e2eaf2;
+  --gray-200: #c5d5e9;
+  --text: #16243a;
+  --text-muted: #5a7191;
+  --gold: #f4b942;
+  --red-soft: #fde8e8;
+  --red: #c42b2b;
+  --green-soft: #e8fdf7;
+
+  /* === Gradientes === */
+  --gradient-hero: linear-gradient(135deg, var(--navy) 0%, #1e3a8a 40%, var(--teal-dark) 100%);
+  --gradient-card: linear-gradient(135deg, var(--navy), #1e4080);
+  --gradient-teal: linear-gradient(135deg, var(--teal-dark), var(--teal));
+
+  /* === Tipografías === */
+  --font-body: 'DM Sans', sans-serif;
+  --font-heading: var(--font-heading, 'Plus Jakarta Sans'), sans-serif;
+
+  /* === Espaciado === */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  /* === Sombras === */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.10);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.14);
+
+  /* === Transiciones === */
+  --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* === COLORES POR ROL === */
+.role-organizador {
+  --role-color: var(--navy);
+  --role-bg: #1a2b5e18;
+}
+
+.role-analitico {
+  --role-color: var(--blue-mid);
+  --role-bg: #3a6bc818;
+}
+
+.role-ejecutor {
+  --role-color: var(--blue-light);
+  --role-bg: #7bb5e818;
+}
+
+.role-creativo {
+  --role-color: var(--teal-dark);
+  --role-bg: #1e8f7a18;
+}
+
+.role-conciliador {
+  --role-color: var(--teal);
+  --role-bg: #2dc9a818;
+}
+
+.role-motivador {
+  --role-color: var(--teal-light);
+  --role-bg: #7eecd818;
+}
+
+/* === RESET Y BASE === */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--white);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* === TIPOGRAFÍA === */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  color: var(--navy);
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+h2 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+/* === COMPONENTES UI === */
+
+/* Card base */
+.card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-100);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* Botones */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--navy), var(--blue-mid));
+  color: white;
+  box-shadow: 0 4px 16px rgba(26, 43, 94, 0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(26, 43, 94, 0.45);
+}
+
+.btn-teal {
+  background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+  color: white;
+  box-shadow: 0 4px 16px rgba(45, 201, 168, 0.35);
+}
+
+.btn-teal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(45, 201, 168, 0.45);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--navy);
+  border: 2px solid var(--navy);
+}
+
+.btn-outline:hover {
+  background: var(--navy);
+  color: white;
+}
+
+/* Badge de rol */
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--role-bg);
+  color: var(--role-color);
+  border: 1px solid color-mix(in srgb, var(--role-color) 30%, transparent);
+}
+
+/* Kanban column */
+.kanban-col {
+  background: var(--gray-100);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  min-height: 200px;
+  min-width: 220px;
+}
+
+.kanban-col-header {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Input fields */
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--gray-100);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text);
+  background: white;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--blue-mid);
+  box-shadow: 0 0 0 3px rgba(58, 107, 200, 0.12);
+}
+
+/* Checkbox de tarea */
+.task-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: white;
+  border: 1px solid var(--gray-100);
+  margin-bottom: 8px;
+  transition: border-color var(--transition);
+  cursor: pointer;
+}
+
+.task-checkbox:hover {
+  border-color: var(--blue-light);
+}
+
+.task-checkbox.completed {
+  opacity: 0.6;
+}
+
+.task-checkbox.completed .task-text {
+  text-decoration: line-through;
+}
+
+/* Progress bar */
+.progress-bar {
+  height: 8px;
+  background: var(--gray-100);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal-dark), var(--teal));
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+/* =====================
+   UTILIDADES
+   ===================== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.text-muted {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.uppercase {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+.animate-pulse {
+  animation: pulse 2s ease infinite;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+}
