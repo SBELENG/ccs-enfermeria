@@ -143,6 +143,72 @@
     margin-bottom: 20px;
 }
 
+/* MIEMBROS EN CARD */
+.eqMembers {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px dashed #e2eaf2;
+}
+
+.memberMini {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: #1a2b5e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.memberMini img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.memberInitial {
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+.memberRoleIcon {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    font-size: 0.7rem;
+    background: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.memberSlot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px dashed #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    font-size: 0.8rem;
+    background: white;
+}
+
 .eqActions {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -206,4 +272,303 @@
 
 .btnStart:hover {
     background: #2dc9a8;
+}
+
+.btnCerrar {
+    width: 100%;
+    padding: 10px;
+    background: #eab308;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+}
+
+.btnCerrar:hover {
+    background: #ca8a04;
+    transform: translateY(-1px);
+}
+
+.closedBadge {
+    background: #f1f5f9;
+    color: #475569;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 1px solid #e2e8f0;
+}
+
+.kanbanLocked {
+    opacity: 0.6;
+    pointer-events: none;
+    filter: grayscale(1);
+    position: relative;
+}
+
+.lockIcon {
+    margin-right: 4px;
+}
+
+.catedrasInscritasGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.inscripcionCard {
+    background: white;
+    padding: 16px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid #f0f5ff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.insIcon {
+    width: 40px;
+    height: 40px;
+    background: #f0f5ff;
+    color: #1a2b5e;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.insInfo h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0;
+    color: #1a2b5e;
+}
+
+.insInfo p {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin: 4px 0 0;
+}
+
+.emptySmall {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* MODAL DESAFIO */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(26, 43, 94, 0.4);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 20px;
+}
+
+.modal {
+    background: white;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    animation: slideUp 0.3s ease-out;
+    overflow: hidden;
+    padding: 32px;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modalHeader {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.modalIcon {
+    font-size: 2rem;
+    background: #f0f5ff;
+    padding: 12px;
+    border-radius: 16px;
+}
+
+.modalSub {
+    font-size: 0.9rem;
+    color: #3b82f6;
+    font-weight: 700;
+}
+
+.modalBody {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.modalSection {
+    margin-bottom: 24px;
+}
+
+.modalSection h3 {
+    font-size: 0.9rem;
+    color: #1a2b5e;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.desDescripcion {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #4a5d7e;
+    white-space: pre-wrap;
+}
+
+.btnDoc {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 20px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    color: #1a2b5e;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btnDoc:hover {
+    background: #f1f5f9;
+    border-color: #3b82f6;
+}
+
+.modalChecklist {
+    list-style: none;
+    padding: 0;
+}
+
+.modalChecklist li {
+    padding: 10px 14px;
+    background: #f0fdf4;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #166534;
+}
+
+.btnConfirm {
+    width: 100%;
+    padding: 14px;
+    background: #1a2b5e;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 16px;
+}
+
+.btnInfo {
+    background: #f1f5f9;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.btnInfo:hover {
+    background: #1a2b5e;
+    color: white;
+}
+
+.btnDirectDoc {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: #f97316;
+    color: white;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+    transition: all 0.2s;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btnDirectDocCompact {
+    padding: 4px 8px;
+    background: #f97316;
+    color: white;
+    border-radius: 8px;
+    font-size: 0.65rem;
+    font-weight: 900;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(249, 115, 22, 0.4);
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.btnDirectDocCompact:hover {
+    background: #ea580c;
+    transform: scale(1.05);
+}
+
+.btnDirectDoc:hover {
+    transform: translateY(-2px);
+    background: #ea580c;
+    box-shadow: 0 6px 15px rgba(249, 115, 22, 0.5);
+}
+
+.cardDocBadge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: #f97316;
+    color: white;
+    font-size: 0.6rem;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1.5px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

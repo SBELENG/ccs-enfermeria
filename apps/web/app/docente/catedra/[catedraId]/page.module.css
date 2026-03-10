@@ -122,6 +122,576 @@
     margin-top: 2px;
 }
 
+/* ESTUDIANTES TABLE OPTIMIZED */
+.estTable {
+    width: 100%;
+    border: 1px solid #e2eaf2;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+}
+
+.estTableRowHeader {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    background: #f8faff;
+    padding: 10px 16px;
+    border-bottom: 1px solid #e2eaf2;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #1a2b5e;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.estTableRow {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    padding: 8px 16px;
+    border-bottom: 1px solid #f0f4f8;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.estTableRow:last-child {
+    border-bottom: none;
+}
+
+.estTableRow:hover {
+    background: #fcfdfe;
+}
+
+.estName {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #16243a;
+}
+
+.estAvatar {
+    width: 28px;
+    height: 28px;
+    background: #eef2f8;
+    color: #1a2b5e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.7rem;
+    flex-shrink: 0;
+}
+
+.estRol {
+    font-size: 0.75rem;
+}
+
+.rolBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.68rem;
+}
+
+.estTeam {
+    font-size: 0.75rem;
+}
+
+.sinEquipoBadge {
+    color: #e07070;
+    font-weight: 700;
+    font-size: 0.7rem;
+}
+
+.conEquipoBadge {
+    display: inline-block;
+    padding: 2px 10px;
+    background: #d0f5ec;
+    color: #1e8f7a;
+    border: 1px solid #2dc9a840;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.7rem;
+}
+
+.moreEq {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-style: italic;
+}
+
+.equiposStatusList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 8px 0;
+}
+
+.miniEqStatus {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.miniEqOpen {
+    background: #fffbeb;
+    color: #b07000;
+    border: 1px solid #fef3c7;
+}
+
+.miniEqClosed {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+/* METRICAS ACADEMICAS */
+.metricasSection {
+    margin-top: 10px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.metricasHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.metricasSub {
+    font-size: 0.8rem;
+    color: #5a7191;
+    font-weight: 500;
+}
+
+.btnExport {
+    padding: 6px 14px;
+    background: white;
+    border: 1.5px solid #e2eaf2;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1a2b5e;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btnExport:hover {
+    background: #f8fafc;
+    border-color: #3a6bc8;
+}
+
+.metVal {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.metReviewCount {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.metInsignias {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.metInsigniaChip {
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.metPart {
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.partOk {
+    color: #166534;
+    background: #f0fdf4;
+    padding: 2px 8px;
+    border-radius: 6px;
+    border: 1px solid #bbf7d0;
+}
+
+.partWait {
+    color: #92400e;
+    background: #fffbeb;
+    padding: 2px 8px;
+    border-radius: 6px;
+    border: 1px solid #fef3c7;
+}
+
+.metEmpty {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    font-style: italic;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.finishedTeamsRow {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1.5px dashed #e2eaf2;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.finishedLabel {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #1e8f7a;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.finishedList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.finishedChip {
+    padding: 3px 10px;
+    background: #d0f5ec;
+    color: #1e8f7a;
+    border: 1px solid rgba(45, 201, 168, 0.3);
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    box-shadow: 0 2px 5px rgba(30, 143, 122, 0.08);
+}
+
+.btnAddAviso {
+    margin-left: auto;
+    padding: 10px 20px;
+    background: #1a2b5e;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(26, 43, 94, 0.2);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btnAddAviso:hover {
+    background: #1e4080;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(26, 43, 94, 0.3);
+}
+
+/* MODAL */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modalContent {
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.modalHeader h3 {
+    margin: 0;
+    color: #1a2b5e;
+    font-family: 'Syne', sans-serif;
+}
+
+.btnCloseModal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #64748b;
+    cursor: pointer;
+}
+
+.modalSub {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-bottom: 20px;
+}
+
+.avisoTextArea {
+    width: 100%;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    margin-bottom: 20px;
+    transition: border-color 0.2s;
+}
+
+.avisoTextArea:focus {
+    border-color: #1a2b5e;
+}
+
+.modalActions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btnSendAviso {
+    background: #1a2b5e;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btnSendAviso:hover:not(:disabled) {
+    background: #1e4080;
+    transform: translateY(-1px);
+}
+
+.btnSendAviso:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.docIndicator {
+    margin-left: 8px;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    cursor: help;
+}
+
+.btnMiniDoc {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    background: #f1f5f9;
+    border: 1px solid #e2eaf2;
+    border-radius: 6px;
+    color: #475569;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btnMiniDoc:hover {
+    background: #e2eaf2;
+    color: #1a2b5e;
+}
+
+/* SUPERVISIÓN DE EQUIPOS */
+.progresoEquipo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.progBarTrack {
+    width: 100%;
+    height: 10px;
+    background: #f1f5f9;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+.progBarFill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progLabel {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #1a2b5e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.progTasks {
+    font-weight: 500;
+    color: #64748b;
+    font-size: 0.65rem;
+}
+
+.lockIcon {
+    font-size: 0.8rem;
+    opacity: 0.5;
+    margin-left: 6px;
+}
+
+.isLocked {
+    opacity: 1;
+}
+
+.eqActions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btnSupervisar {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: #f8fafc;
+    border: 1.5px solid #e2eaf2;
+    border-radius: 8px;
+    color: #1a2b5e;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btnSupervisar:hover {
+    background: white;
+    border-color: #3a6bc8;
+    box-shadow: 0 4px 12px rgba(26, 43, 94, 0.08);
+    transform: translateY(-1px);
+}
+
+/* BALANCE WIDGET */
+.balanceSection {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 12px rgba(26, 43, 94, 0.05);
+    border: 1px solid #edf2f7;
+}
+
+.balanceHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.balanceHeader h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    color: #1a2b5e;
+}
+
+.balanceGrid {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.rolStats {
+    flex: 1;
+    min-width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.rolIcon {
+    font-size: 1.2rem;
+}
+
+.rolBarTrack {
+    width: 100%;
+    height: 70px;
+    background: #f8fafc;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column-reverse;
+    overflow: hidden;
+    border: 1px solid #edf2f7;
+}
+
+.rolBarFill {
+    width: 100%;
+    border-radius: 1px;
+    transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rolCount {
+    font-weight: 800;
+    color: #1a2b5e;
+    font-size: 0.85rem;
+}
+
+.rolName {
+    font-size: 0.65rem;
+    color: #8fa5be;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.sub {
+    font-size: 0.75rem;
+    color: #5a7191;
+    font-weight: 600;
+}
+
 /* SECTION */
 .section {
     background: white;
@@ -179,6 +749,12 @@
 
 .inputInline:focus {
     border-color: #3a6bc8;
+}
+
+textarea.inputInline {
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.5;
 }
 
 .formRow {
@@ -451,4 +1027,112 @@
     to {
         transform: rotate(360deg);
     }
+}
+
+.progWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.miniProg {
+    width: 100px;
+    height: 12px;
+    background: #f1f5f9;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+}
+
+.miniProgFill {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.miniProgText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: #1a2b5e;
+}
+
+/* FILTROS ESTUDIANTES */
+.filtrosEstudiantes {
+    display: flex;
+    gap: 8px;
+    background: #f1f5f9;
+    padding: 4px;
+    border-radius: 12px;
+}
+
+.filterBtn {
+    padding: 6px 14px;
+    border: none;
+    background: none;
+    border-radius: 9px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filterBtn:hover {
+    color: #1a2b5e;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.filterActive {
+    background: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* VISTA DE EQUIPOS DOCENTE */
+.eqDocName {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.miembrosMini {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.miniAv {
+    width: 22px;
+    height: 22px;
+    background: #eef2f8;
+    color: #1a2b5e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    font-weight: 800;
+    border: 1px solid #d1dae8;
+}
+
+.miniEqStatus {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 0.65rem;
+    font-weight: 700;
+}
+
+.miniEqOpen {
+    background: #fffbeb;
+    color: #b07000;
+    border: 1px solid #fef3c7;
+}
+
+.miniEqClosed {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
 }

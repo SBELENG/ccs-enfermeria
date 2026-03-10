@@ -41,7 +41,8 @@ export default function EquipoPage({ params }: { params: Promise<{ equipoId: str
             }
 
             const { data: chs } = await supabase
-                .from('checkins').select('*')
+                .from('checkins')
+                .select('*, usuario:usuarios(nombre, foto_url)')
                 .eq('equipo_id', equipoId)
                 .order('created_at', { ascending: false })
                 .limit(20);
@@ -69,13 +70,28 @@ export default function EquipoPage({ params }: { params: Promise<{ equipoId: str
     async function enviarCheckin() {
         if (!texto.trim() || !usuario) return;
         setSending(true);
-        const { data: nuevo } = await supabase.from('checkins').insert({
+        console.log("Enviando checkin:", { usuario_id: usuario.id, equipo_id: equipoId, resumen: texto.trim() });
+
+        const { data: nuevo, error } = await supabase.from('checkins').insert({
             usuario_id: usuario.id,
             equipo_id: equipoId,
             resumen: texto.trim(),
         } as any).select().single();
-        if (nuevo) setCheckins(prev => [nuevo, ...prev]);
-        setTexto('');
+
+        if (error) {
+            console.error("Error al publicar checkin:", error);
+            alert(`Error: ${error.message} (Código: ${error.code})`);
+        } else if (nuevo) {
+            const miRol = miembros.find(m => m.id === usuario.id)?.rol_en_equipo;
+            // Inyectamos los datos del usuario y rol localmente
+            const nuevoEnriquecido = {
+                ...nuevo,
+                usuario: { nombre: usuario.nombre, foto_url: usuario.foto_url },
+                em: { rol_en_equipo: miRol }
+            };
+            setCheckins(prev => [nuevoEnriquecido, ...prev] as any);
+            setTexto('');
+        }
         setSending(false);
     }
 
@@ -90,16 +106,15 @@ export default function EquipoPage({ params }: { params: Promise<{ equipoId: str
         if (!confirm('¿Finalizar desafío? Esto habilitará la fase de evaluación grupal.')) return;
 
         setSending(true);
-        // Capturar snapshot del Kanban
-        const { data: tareas } = await supabase.from('tareas').select('*').eq('equipo_id', equipoId);
-
         const { error } = await (supabase.from('equipos') as any).update({
-            estado_entrega: true,
-            snapshot_kanban: tareas || []
+            estado_entrega: true
         }).eq('id', equipoId);
 
         if (!error) {
-            setEquipo(prev => prev ? { ...prev, estado_entrega: true, snapshot_kanban: tareas || [] } as any : null);
+            setEquipo(prev => prev ? { ...prev, estado_entrega: true } as any : null);
+        } else {
+            console.error("Error al finalizar desafío:", error);
+            alert(`Error al finalizar: ${error.message}`);
         }
         setSending(false);
     }
@@ -122,13 +137,65 @@ export default function EquipoPage({ params }: { params: Promise<{ equipoId: str
                     <Link href={`/kanban/${equipoId}`} className={styles.btnKanban} id="btn-ir-kanban">
                         📋 Kanban
                     </Link>
-                    <Link href={`/evaluacion-360/${equipoId}`} className={styles.btnEval} id="btn-ir-evaluacion">
-                        🏅 360°
-                    </Link>
+                    {equipo?.estado_entrega ? (
+                        <Link href={`/evaluacion-360/${equipoId}`} className={styles.btnEval} id="btn-ir-evaluacion">
+                            🏅 360°
+                        </Link>
+                    ) : (
+                        <button className={styles.btnEvalDisabled} id="btn-ir-evaluacion-locked" title="El desafío debe estar finalizado para evaluar" disabled>
+                            🔒 360° (Bloqueado)
+                        </button>
+                    )}
                 </div>
             </header>
 
             <main className={styles.main}>
+                {/* GUÍA DE ROL */}
+                {usuario && miembros.find(m => m.id === usuario.id) && (
+                    <div className={styles.roleGuide}>
+                        {miembros.find(m => m.id === usuario.id)?.rol_en_equipo?.toLowerCase() === 'organizador' && (
+                            <div className={styles.guideBox}>
+                                <div className={styles.guideTitle}>🚀 Guía del Organizador</div>
+                                <ul className={styles.guideList}>
+                                    <li>1. Inicia realizando una propuesta de equipo.</li>
+                                    <li>2. Continúas asignándole un nombre.</li>
+                                    <li>3. Invitar a un <strong>Conciliador</strong> para armar el equipo ideal.</li>
+                                </ul>
+                            </div>
+                        )}
+                        {miembros.find(m => m.id === usuario.id)?.rol_en_equipo?.toLowerCase() === 'conciliador' && (
+                            <div className={styles.guideBox}>
+                                <div className={styles.guideTitle}>🤝 Guía del Conciliador</div>
+                                <p>Tu tarea es equilibrar los talentos del equipo. Invitá a los perfiles que faltan desde la sección de <strong>Talentos</strong>.</p>
+                            </div>
+                        )}
+                        {miembros.find(m => m.id === usuario.id)?.rol_en_equipo?.toLowerCase() === 'ejecutor' && (
+                            <div className={`${styles.guideBox} ${styles.guideEjecutor}`}>
+                                <div className={styles.guideTitle}>🛠️ Guía del Ejecutor</div>
+                                <p>Tu responsabilidad principal es la **producción técnica**. Una vez que el Organizador finalice el desafío, recordá realizar la carga final en la plataforma oficial de la UNRC.</p>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* AVISO DE TAREAS COMPARTIDAS */}
+                {(() => {
+                    const counts: Record<string, number> = {};
+                    miembros.forEach(m => {
+                        const r = m.rol_en_equipo?.toLowerCase() || 'miembro';
+                        counts[r] = (counts[r] || 0) + 1;
+                    });
+                    const hasDuplicates = Object.values(counts).some(c => c > 1);
+                    if (hasDuplicates) {
+                        return (
+                            <div className={styles.sharedTasksAlert}>
+                                ⚠️ <strong>Tareas Compartidas:</strong> Hay más de un integrante con el mismo rol. Deberán coordinar la división de responsabilidades.
+                            </div>
+                        );
+                    }
+                    return null;
+                })()}
+
                 {/* Desafío info */}
                 {desafio && (
                     <div className={styles.desafioCard}>
@@ -138,9 +205,14 @@ export default function EquipoPage({ params }: { params: Promise<{ equipoId: str
                             <div className={styles.fechaRow}>
                                 📅 Entrega: <strong>{new Date(desafio.fecha_entrega).toLocaleString('es-AR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</strong>
                             </div>
+                            {((desafio as any).descripcion) && (
+                                <div className={styles.desDescripcion}>
+                                    {(desafio as any).descripcion}
+                                </div>
+                            )}
                             {desafio.documento_url && (
-                                <a href={desafio.documento_url} target="_blank" rel="noopener noreferrer" className={styles.docLink}>
-                                    📄 Descargar Documentación técnica
+                                <a href={desafio.documento_url} target="_blank" rel="noopener noreferrer" className={styles.btnDirectDocMain}>
+                                    📄 DESCARGAR CONSIGNAS TÉCNICAS (PDF/IMG)
                                 </a>
                             )}
                         </div>
@@ -151,9 +223,19 @@ export default function EquipoPage({ params }: { params: Promise<{ equipoId: str
                             {equipo?.estado_entrega ? (
                                 <div className={styles.logradoBadge}>✓ Desafío logrado</div>
                             ) : (
-                                <button className={styles.btnLogrado} onClick={finalizarDesafio} disabled={sending}>
-                                    {sending ? '...' : 'Desafío logrado ✓'}
-                                </button>
+                                <div className={styles.finishContainer}>
+                                    <button
+                                        className={styles.btnLogrado}
+                                        onClick={finalizarDesafio}
+                                        disabled={sending}
+                                        title={miembros.find(m => m.id === usuario?.id)?.rol_en_equipo !== 'organizador' ? "Solo el Organizador puede finalizar" : ""}
+                                    >
+                                        {sending ? '...' : 'Desafío logrado ✓'}
+                                    </button>
+                                    {miembros.find(m => m.id === usuario?.id)?.rol_en_equipo !== 'organizador' && (
+                                        <span className={styles.onlyOrgMsg}>Solo el Organizador puede dar el cierre final.</span>
+                                    )}
+                                </div>
                             )}
                         </div>
                     </div>
@@ -183,30 +265,41 @@ export default function EquipoPage({ params }: { params: Promise<{ equipoId: str
                         </div>
 
                         <div className={styles.feed}>
-                            {checkins.map(ch => (
-                                <div key={ch.id} className={styles.checkinItem}>
-                                    <div className={styles.checkinAvatar}>
-                                        {ch.usuario_id === usuario?.id ? usuario.nombre.charAt(0) : '👤'}
-                                    </div>
-                                    <div className={styles.checkinBody}>
-                                        <div className={styles.checkinMeta}>
-                                            <strong>{ch.usuario_id === usuario?.id ? 'Vos' : 'Compañero/a'}</strong>
-                                            <span className={styles.checkinTime}>
-                                                {new Date(ch.created_at).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}
-                                            </span>
+                            {checkins.map(ch => {
+                                const miembro = miembros.find(m => m.id === ch.usuario_id);
+                                const rol = miembro?.rol_en_equipo || 'Miembro';
+                                return (
+                                    <div key={ch.id} className={styles.checkinItem}>
+                                        <div className={styles.checkinAvatar}>
+                                            {miembro?.foto_url
+                                                ? <img src={miembro.foto_url} alt="Avatar" className={styles.avImg} />
+                                                : (miembro?.nombre?.charAt(0) || '👤')
+                                            }
                                         </div>
-                                        <p>{ch.resumen}</p>
+                                        <div className={styles.checkinBody}>
+                                            <div className={styles.checkinMeta}>
+                                                <strong>
+                                                    {ch.usuario_id === usuario?.id ? 'Vos' : miembro?.nombre}
+                                                    <span className={styles.checkinRol}> — {rol}</span>
+                                                </strong>
+                                                <span className={styles.checkinTime}>
+                                                    {new Date(ch.created_at).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}
+                                                </span>
+                                            </div>
+                                            <p>{ch.resumen}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
 
                     <div className={styles.sidebar}>
                         <div className={styles.miembrosCard}>
                             <div className={styles.cardHeader}>
-                                <h2>👥 Miembros</h2>
-                                <Link href="/marketplace" className={styles.btnInvitar}>+ Invitar</Link>
+                                <h2 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <span style={{ fontSize: '1.2rem' }}>👥</span> Miembros
+                                </h2>
                             </div>
                             <div className={styles.miembrosList}>
                                 {miembros.map(m => (
@@ -235,7 +328,7 @@ export default function EquipoPage({ params }: { params: Promise<{ equipoId: str
                         </button>
                     </div>
                 </div>
-            </main>
-        </div>
+            </main >
+        </div >
     );
 }

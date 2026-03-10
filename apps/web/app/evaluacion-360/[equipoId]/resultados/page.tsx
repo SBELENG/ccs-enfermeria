@@ -4,16 +4,22 @@ import { supabase } from '@ccs/supabase';
 import { ROLES, type RolKey } from '@ccs/ui';
 import type { Database } from '@ccs/supabase';
 import Link from 'next/link';
+import {
+    Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
+    ResponsiveContainer
+} from 'recharts';
 import styles from '../resultados.module.css';
 
 type UsuarioDB = Database['public']['Tables']['usuarios']['Row'];
 type Eval360DB = any;
 
 type ResultadoPar = {
-    evaluador: UsuarioDB;
+    evaluador_id: string;
     puntaje_que: number;
     puntaje_como: number;
     comentario: string | null;
+    respuestas: any;
+    es_autoevaluacion: boolean;
 };
 
 const INSIGNIAS: { rol: RolKey; condicion: (que: number, como: number) => boolean; label: string; desc: string; emoji: string }[] = [
@@ -47,14 +53,7 @@ export default function Resultados360Page({ params }: { params: Promise<{ equipo
                 .eq('equipo_id', equipoId);
 
             if (evals && evals.length > 0) {
-                // Cargar datos de evaluadores (anónimos — solo para contar)
-                const resultado: ResultadoPar[] = evals.map(e => ({
-                    evaluador: { id: e.evaluador_id } as UsuarioDB,
-                    puntaje_que: e.puntaje_que,
-                    puntaje_como: e.puntaje_como,
-                    comentario: e.comentario,
-                }));
-                setResultados(resultado);
+                setResultados(evals as ResultadoPar[]);
             }
             setLoading(false);
         }
@@ -65,12 +64,40 @@ export default function Resultados360Page({ params }: { params: Promise<{ equipo
         <div className={styles.loadingWrap}><div className={styles.spinner} /><p>Cargando resultados...</p></div>
     );
 
-    const n = resultados.length;
-    const avgQue = n > 0 ? resultados.reduce((s, r) => s + r.puntaje_que, 0) / n : 0;
-    const avgComo = n > 0 ? resultados.reduce((s, r) => s + r.puntaje_como, 0) / n : 0;
+    const pares = resultados.filter(r => !r.es_autoevaluacion);
+    const yoEval = resultados.find(r => r.es_autoevaluacion);
+
+    const n = pares.length;
+    const avgQue = n > 0 ? pares.reduce((s, r) => s + r.puntaje_que, 0) / n : 0;
+    const avgComo = n > 0 ? pares.reduce((s, r) => s + r.puntaje_como, 0) / n : 0;
     const avg360 = (avgQue + avgComo) / 2;
 
-    // Calcular insignias ganadas
+    // Data para el Radar
+    const dims = [
+        { key: 'Ejecución', indices: ['p0', 'p2'] },
+        { key: 'Iniciativa', indices: ['p1', 'p3'] },
+        { key: 'Clima', indices: ['p5', 'p6'] },
+        { key: 'Comunicación', indices: ['p4', 'p7'] },
+    ];
+
+    const calcAvg = (evals: ResultadoPar[], indices: string[]) => {
+        if (evals.length === 0) return 0;
+        const summed = evals.reduce((acc, current) => {
+            const respuestas = current.respuestas || {};
+            const rowSum = indices.reduce((s, idx) => s + (respuestas[idx] || 0), 0);
+            return acc + (rowSum / indices.length);
+        }, 0);
+        return Math.round((summed / evals.length) * 10) / 10;
+    };
+
+    const radarData = dims.map(d => ({
+        subject: d.key,
+        Yo: yoEval ? calcAvg([yoEval], d.indices) : 0,
+        Grupo: calcAvg(pares, d.indices),
+        fullMark: 5,
+    }));
+
+    // Calcular insignias ganadas (basado en pares)
     const insigniasGanadas = INSIGNIAS.filter(ins => ins.condicion(avgQue, avgComo));
     const topInsignia = insigniasGanadas[0];
 
@@ -84,11 +111,11 @@ export default function Resultados360Page({ params }: { params: Promise<{ equipo
             </header>
 
             <main className={styles.main}>
-                {n === 0 ? (
+                {resultados.length === 0 ? (
                     <div className={styles.emptyState}>
                         <div className={styles.emptyIcon}>⏳</div>
-                        <h2>Todavía no recibiste evaluaciones</h2>
-                        <p>Cuando tus compañeros te evalúen, acá vas a ver tus resultados.</p>
+                        <h2>Todavía no se generaron evaluaciones</h2>
+                        <p>Cuando completes tu autoevaluación o tus compañeros te evalúen, acá vas a ver tus resultados.</p>
                     </div>
                 ) : (
                     <>
@@ -108,7 +135,55 @@ export default function Resultados360Page({ params }: { params: Promise<{ equipo
                         )}
 
                         {/* PUNTUACIONES */}
+                        {n === 0 && yoEval && (
+                            <div className={styles.partialAlert}>
+                                ℹ️ <strong>Vista parcial activa:</strong> Ya completaste tu autoevaluación. Los promedios del grupo aparecerán a medida que tus compañeros completen sus revisiones.
+                            </div>
+                        )}
+
                         <div className={styles.scoresGrid}>
+                            {/* RADAR CHART INTERACTIVO */}
+                            <div className={styles.radarCard}>
+                                <h3>Dimensiones de Competencia</h3>
+                                <div className={styles.radarContainer}>
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
+                                            <PolarGrid stroke="#e2eaf2" />
+                                            <PolarAngleAxis dataKey="subject" tick={{ fill: '#5a7191', fontSize: 12, fontWeight: 600 }} />
+                                            <PolarRadiusAxis angle={30} domain={[0, 5]} tick={false} axisLine={false} />
+                                            {yoEval && (
+                                                <Radar
+                                                    name="Yo"
+                                                    dataKey="Yo"
+                                                    stroke="#2dc9a8"
+                                                    fill="#2dc9a8"
+                                                    fillOpacity={0.4}
+                                                />
+                                            )}
+                                            <Radar
+                                                name="Grupo"
+                                                dataKey="Grupo"
+                                                stroke="#3a6bc8"
+                                                fill="#3a6bc8"
+                                                fillOpacity={0.4}
+                                            />
+                                        </RadarChart>
+                                    </ResponsiveContainer>
+                                </div>
+                                <div className={styles.radarLegend}>
+                                    <div className={styles.legItem}>
+                                        <div className={styles.legDot} style={{ background: '#3a6bc8' }} />
+                                        <span>Promedio del Grupo</span>
+                                    </div>
+                                    {yoEval && (
+                                        <div className={styles.legItem}>
+                                            <div className={styles.legDot} style={{ background: '#2dc9a8' }} />
+                                            <span>Mi Autoevaluación</span>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
                             {/* Promedio global */}
                             <div className={styles.scoreCard}>
                                 <div className={styles.scoreCircle} style={{ '--score-color': avg360 >= 4 ? '#2dc9a8' : avg360 >= 3 ? '#3a6bc8' : '#e07070' } as React.CSSProperties}>
@@ -116,30 +191,22 @@ export default function Resultados360Page({ params }: { params: Promise<{ equipo
                                     <span className={styles.scoreMax}>/5</span>
                                 </div>
                                 <div className={styles.scoreLabel}>Promedio 360°</div>
-                                <div className={styles.scoreN}>{n} evaluaciones recibidas</div>
+                                <div className={styles.scoreN}>{n} evaluaciones de pares</div>
                             </div>
 
-                            {/* QUÉ */}
+                            {/* Detalle QUÉ y CÓMO resumido */}
                             <div className={styles.scoreCard}>
-                                <div className={styles.scoreDimension}>
-                                    <div className={styles.scoreDimTitle}>🎯 ¿Qué hice?</div>
+                                <div className={styles.scoreDimension} style={{ marginBottom: '20px' }}>
+                                    <div className={styles.scoreDimTitle}>🎯 Qué: {avgQue.toFixed(1)}</div>
                                     <div className={styles.scoreDimBar}>
                                         <div className={styles.scoreDimFill} style={{ width: `${(avgQue / 5) * 100}%`, background: '#1a2b5e' }} />
                                     </div>
-                                    <div className={styles.scoreDimNum}>{avgQue.toFixed(1)} / 5</div>
-                                    <p className={styles.scoreDimDesc}>Contribución concreta al trabajo grupal</p>
                                 </div>
-                            </div>
-
-                            {/* CÓMO */}
-                            <div className={styles.scoreCard}>
                                 <div className={styles.scoreDimension}>
-                                    <div className={styles.scoreDimTitle}>🤝 ¿Cómo colaboré?</div>
+                                    <div className={styles.scoreDimTitle}>🤝 Cómo: {avgComo.toFixed(1)}</div>
                                     <div className={styles.scoreDimBar}>
                                         <div className={styles.scoreDimFill} style={{ width: `${(avgComo / 5) * 100}%`, background: '#2dc9a8' }} />
                                     </div>
-                                    <div className={styles.scoreDimNum}>{avgComo.toFixed(1)} / 5</div>
-                                    <p className={styles.scoreDimDesc}>Calidad de comunicación y clima grupal</p>
                                 </div>
                             </div>
                         </div>

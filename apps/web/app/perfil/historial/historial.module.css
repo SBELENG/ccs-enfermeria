@@ -1,0 +1,158 @@
+.page {
+    min-height: 100vh;
+    background: #f8fafc;
+    padding: 0 0 40px 0;
+}
+
+.header {
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 20px 0;
+    margin-bottom: 40px;
+}
+
+.headerInner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.back {
+    color: #64748b;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a2b5e;
+}
+
+.main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid #e2eaf2;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chartContainer {
+    width: 100%;
+    height: 300px;
+    margin: 20px 0;
+}
+
+.timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.timelineItem {
+    padding: 16px;
+    border-left: 4px solid #3a6bc8;
+    background: #f1f5f9;
+    border-radius: 0 8px 8px 0;
+    position: relative;
+}
+
+.itemHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.itemName {
+    font-weight: 700;
+    color: #1a2b5e;
+}
+
+.itemDate {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.itemBadges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.badge {
+    background: #e0e7ff;
+    color: #4338ca;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.empty {
+    text-align: center;
+    padding: 60px;
+    color: #94a3b8;
+}
+
+.summaryCards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.miniStat {
+    background: #eff6ff;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.statVal {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #2563eb;
+}
+
+.statLabel {
+    font-size: 0.7rem;
+    color: #60a5fa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+@media (max-width: 900px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}

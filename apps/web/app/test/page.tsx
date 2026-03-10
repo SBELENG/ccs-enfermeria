@@ -6,7 +6,7 @@ import { supabase } from '@ccs/supabase';
 import RadarChart from '../components/RadarChart';
 import styles from './page.module.css';
 
-type Fase = 'intro' | 'pregunta' | 'resultado';
+type Fase = 'intro' | 'pregunta' | 'resultado' | 'seleccion';
 
 export default function TestPage() {
     const [fase, setFase] = useState<Fase>('intro');
@@ -15,6 +15,8 @@ export default function TestPage() {
     const [opcionSel, setOpcionSel] = useState<string | null>(null);
     const [resultado, setResultado] = useState<{ primario: RolKey; secundario: RolKey; scores: Record<RolKey, number> } | null>(null);
     const [tienesSesion, setTienesSesion] = useState(false);
+    const [prefSel, setPrefSel] = useState<'primario' | 'secundario'>('primario');
+    const [guardando, setGuardando] = useState(false);
 
     const totalPreguntas = TEST_SITUACIONAL.length;
     const pregunta = TEST_SITUACIONAL[pregActual];
@@ -37,16 +39,58 @@ export default function TestPage() {
             setResultado({ primario, secundario, scores });
             setFase('resultado');
 
-            // Guardar en la BD si el usuario está autenticado
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) setTienesSesion(true);
+        }
+    }
+
+    async function guardarPerfil() {
+        if (!resultado || guardando) return;
+        setGuardando(true);
+        try {
             const { data: { user } } = await supabase.auth.getUser();
             if (user) {
-                setTienesSesion(true);
-                await supabase.from('usuarios').update({
-                    resultados_test: scores,
-                    rol_primario: primario,
-                    rol_secundario: secundario,
-                }).eq('id', user.id);
+                const rolElegido = prefSel === 'primario' ? resultado.primario : resultado.secundario;
+
+                console.log("Guardando perfil... Payload:", { id: user.id, primario: resultado.primario });
+                const { error: errorUpdate } = await supabase.from('usuarios').upsert({
+                    id: user.id,
+                    nombre: user.user_metadata?.nombre || user.email?.split('@')[0] || 'Usuario',
+                    email: user.email,
+                    resultados_test: resultado.scores,
+                    rol_primario: resultado.primario,
+                    rol_secundario: resultado.secundario,
+                    preferencia_rol_busqueda: prefSel,
+                    buscando_equipo: true
+                } as any);
+
+                if (errorUpdate) {
+                    console.error("Error al guardar perfil:", errorUpdate);
+                    alert("Error al guardar tu perfil profesional: " + errorUpdate.message);
+                    setGuardando(false);
+                    return;
+                }
+
+                console.log("Perfil guardado. Sincronizando inscripciones...");
+                // Sincronizar con inscripciones previas que no tengan rol
+                const { error: errorSinc } = await (supabase.from('inscripciones') as any)
+                    .update({ rol_activo: rolElegido })
+                    .eq('usuario_id', user.id)
+                    .is('rol_activo', null);
+
+                if (errorSinc) {
+                    console.error("Error al sincronizar inscripciones:", errorSinc);
+                }
+
+                console.log("Todo OK. Redirigiendo al Dashboard...");
+                window.location.href = '/dashboard';
+            } else {
+                window.location.href = '/registro';
             }
+        } catch (err) {
+            console.error("Error inesperado en guardarPerfil:", err);
+            alert("Ocurrió un error inesperado. Por favor recargá la página e intentá de nuevo.");
+            setGuardando(false);
         }
     }
 
@@ -69,11 +113,55 @@ export default function TestPage() {
         </div>
     );
 
+    // — SELECCION —
+    if (fase === 'seleccion' && resultado) {
+        const rolP = ROLES[resultado.primario];
+        const rolS = ROLES[resultado.secundario];
+
+        return (
+            <div className={styles.wrap}>
+                <div className={styles.resultCard}>
+                    <div className={styles.resultHeader}>
+                        <h1>Elegí tu Perfil de Búsqueda</h1>
+                        <p>¿Cómo preferís que te vean tus compañeros en el listado de Talentos?</p>
+                    </div>
+
+                    <div className={styles.seleccionGrid}>
+                        <button
+                            className={`${styles.selBtn} ${prefSel === 'primario' ? styles.selBtnActive : ''}`}
+                            onClick={() => setPrefSel('primario')}
+                            style={{ '--rc': rolP.color } as React.CSSProperties}
+                        >
+                            <div className={styles.rolIcon}>{rolP.icon}</div>
+                            <div className={styles.rolNombre}>{rolP.label}</div>
+                            <span className={styles.rolLabel}>Rol Primario (Dominante)</span>
+                        </button>
+
+                        <button
+                            className={`${styles.selBtn} ${prefSel === 'secundario' ? styles.selBtnActive : ''}`}
+                            onClick={() => setPrefSel('secundario')}
+                            style={{ '--rc': rolS.color } as React.CSSProperties}
+                        >
+                            <div className={styles.rolIcon}>{rolS.icon}</div>
+                            <div className={styles.rolNombre}>{rolS.label}</div>
+                            <span className={styles.rolLabel}>Rol Secundario (Apoyo)</span>
+                        </button>
+                    </div>
+
+                    <div className={styles.resultCtas} style={{ marginTop: '24px' }}>
+                        <button className={styles.btnPrimary} onClick={guardarPerfil} disabled={guardando}>
+                            {guardando ? 'Guardando Perfil...' : 'Confirmar y Ver Dashboard →'}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     // — RESULTADO —
     if (fase === 'resultado' && resultado) {
         const rolP = ROLES[resultado.primario];
         const rolS = ROLES[resultado.secundario];
-        const maxScore = Math.max(...Object.values(resultado.scores));
 
         return (
             <div className={styles.wrap}>
@@ -83,8 +171,6 @@ export default function TestPage() {
                         <p>Basado en tus respuestas, este es tu rol dominante en el trabajo en equipo.</p>
                     </div>
 
-
-                    {/* Layout dos columnas: roles + radar */}
                     <div className={styles.resultGrid}>
                         <div className={styles.rolesCol}>
                             <div className={styles.rolPrimario} style={{ '--rc': rolP.color } as React.CSSProperties}>
@@ -111,20 +197,9 @@ export default function TestPage() {
                     </div>
 
                     <div className={styles.resultCtas}>
-                        {tienesSesion ? (
-                            <a href="/dashboard" className={styles.btnPrimary} id="btn-resultado-dashboard">
-                                Ver mi Dashboard →
-                            </a>
-                        ) : (
-                            <>
-                                <a href="/ingresar" className={styles.btnPrimary} id="btn-resultado-ingresar">
-                                    Ingresar para guardar mi perfil →
-                                </a>
-                                <a href="/registro" className={styles.btnGhost} id="btn-resultado-registro">
-                                    Crear cuenta
-                                </a>
-                            </>
-                        )}
+                        <button onClick={() => setFase('seleccion')} className={styles.btnPrimary} id="btn-continuar-seleccion">
+                            Continuar a selección de perfil →
+                        </button>
                         <button className={styles.btnGhost} onClick={() => { setFase('intro'); setPregActual(0); setRespuestas({}); setResultado(null); setTienesSesion(false); }}>
                             Repetir test
                         </button>

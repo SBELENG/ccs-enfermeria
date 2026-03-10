@@ -50,6 +50,12 @@ export default function Evaluacion360Page({ params }: { params: Promise<{ equipo
             const { data: eq } = await supabase.from('equipos').select('*').eq('id', equipoId).single();
             setEquipo(eq);
 
+            if (eq && !eq.estado_entrega) {
+                alert('El desafío debe estar finalizado para acceder a la evaluación 360°.');
+                window.location.href = `/equipo/${equipoId}`;
+                return;
+            }
+
             // Miembros del equipo (excluye al propio usuario)
             const { data: miembrosRaw } = await supabase
                 .from('equipo_miembros')
@@ -57,9 +63,9 @@ export default function Evaluacion360Page({ params }: { params: Promise<{ equipo
                 .eq('equipo_id', equipoId)
                 .neq('usuario_id', user.id);
 
-            if (miembrosRaw && miembrosRaw.length > 0) {
-                const ids = miembrosRaw.map(m => m.usuario_id);
-                const { data: users } = await supabase.from('usuarios').select('*').in('id', ids);
+            if (miembrosRaw && (miembrosRaw as any[]).length > 0) {
+                const ids = (miembrosRaw as any[]).map(m => m.usuario_id);
+                const { data: users } = await supabase.from('usuarios').select('*').in('id', [...ids, user.id]);
                 setMiembros(users ?? []);
             }
 
@@ -68,7 +74,7 @@ export default function Evaluacion360Page({ params }: { params: Promise<{ equipo
                 .select('evaluado_id')
                 .eq('evaluador_id', user.id)
                 .eq('equipo_id', equipoId);
-            setEnviadas(new Set(yaEnv?.map(e => e.evaluado_id) ?? []));
+            setEnviadas(new Set((yaEnv as any[])?.map((e: any) => e.evaluado_id) ?? []));
 
             setLoading(false);
         }
@@ -94,7 +100,7 @@ export default function Evaluacion360Page({ params }: { params: Promise<{ equipo
         const avgQue = queKeys.reduce((s, k) => s + (puntajes[k] ?? 0), 0) / PREGUNTAS_QUE.length;
         const avgComo = comoKeys.reduce((s, k) => s + (puntajes[k] ?? 0), 0) / PREGUNTAS_COMO.length;
 
-        await (supabase.from('evaluaciones_360') as any).insert({
+        const { error } = await (supabase.from('evaluaciones_360') as any).insert({
             evaluador_id: yo.id,
             evaluado_id: evaluando,
             equipo_id: equipoId,
@@ -102,7 +108,15 @@ export default function Evaluacion360Page({ params }: { params: Promise<{ equipo
             puntaje_como: Math.round(avgComo * 10) / 10,
             comentario: comentario.trim() || null,
             respuestas: puntajes,
+            es_autoevaluacion: yo.id === evaluando
         });
+
+        if (error) {
+            console.error("Error al guardar evaluación:", error);
+            alert(`Error al guardar: ${error.message} (Código: ${error.code})`);
+            setSaving(false);
+            return;
+        }
 
         setEnviadas(prev => new Set([...prev, evaluando]));
         setEvaluando(null);
@@ -260,7 +274,7 @@ export default function Evaluacion360Page({ params }: { params: Promise<{ equipo
                                         {m.nombre.charAt(0).toUpperCase()}
                                     </div>
                                     <div className={styles.miembroInfo}>
-                                        <strong>{m.nombre}</strong>
+                                        <strong>{m.nombre}{m.id === yo?.id ? ' (Yo)' : ''}</strong>
                                         {m.rol_primario && (
                                             <span className={styles.rolTag}>
                                                 {ROLES[m.rol_primario as RolKey]?.icon} {ROLES[m.rol_primario as RolKey]?.label}

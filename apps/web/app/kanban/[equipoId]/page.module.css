@@ -146,6 +146,81 @@
     transform: translateY(-1px);
 }
 
+.btnImport {
+    padding: 8px 18px;
+    background: #f1f5f9;
+    color: #1a2b5e;
+    border: 1.5px solid #e2eaf2;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.btnImport:hover:not(:disabled) {
+    background: white;
+    border-color: #3a6bc8;
+    box-shadow: 0 4px 12px rgba(26, 43, 94, 0.1);
+}
+
+.btnImport:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* FILTER BAR */
+.filterBar {
+    background: white;
+    padding: 10px 20px;
+    border-bottom: 2px solid #e2eaf2;
+    position: sticky;
+    top: 60px;
+    z-index: 90;
+    overflow-x: auto;
+}
+
+.filterGroup {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.filterBtn {
+    padding: 6px 14px;
+    background: #f8fafc;
+    border: 1.5px solid #e2eaf2;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.filterBtn:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.filterBtnActive {
+    background: color-mix(in srgb, var(--rc, #1a2b5e) 12%, white);
+    border-color: color-mix(in srgb, var(--rc, #1a2b5e) 40%, transparent);
+    color: color-mix(in srgb, var(--rc, #1a2b5e) 90%, #000);
+}
+
+.myTag {
+    font-size: 0.65rem;
+    opacity: 0.7;
+    font-weight: 400;
+}
+
 /* MODAL */
 .modalOverlay {
     position: fixed;
@@ -222,6 +297,68 @@
     background: color-mix(in srgb, var(--rc) 12%, white);
     color: color-mix(in srgb, var(--rc) 90%, #000);
     font-weight: 700;
+}
+
+.modalSub {
+    font-size: 0.85rem;
+    color: #5a7191;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.rolSelectorImport {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.rolChipBig {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: white;
+    border: 2px solid #f1f5f9;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    width: 100%;
+}
+
+.rolChipBig:hover {
+    border-color: color-mix(in srgb, var(--rc) 30%, transparent);
+    background: color-mix(in srgb, var(--rc) 5%, white);
+    transform: translateX(4px);
+}
+
+.rolChipIcon {
+    font-size: 2rem;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in srgb, var(--rc) 10%, white);
+    border-radius: 12px;
+}
+
+.rolChipInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.rolChipInfo strong {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    color: #1a2b5e;
+}
+
+.rolChipInfo span {
+    font-size: 0.75rem;
+    color: #5a7191;
+    font-weight: 600;
 }
 
 .modalActions {
@@ -364,7 +501,7 @@
     background: color-mix(in srgb, var(--rc) 12%, white);
     color: color-mix(in srgb, var(--rc) 90%, #000);
     border: 1px solid color-mix(in srgb, var(--rc) 25%, transparent);
-    margin-bottom: 8px;
+    margin-bottom: 0;
 }
 
 .cardDesc {
@@ -473,4 +610,257 @@
     to {
         transform: rotate(360deg);
     }
+}
+
+.lockBanner {
+    background: #fffbeb;
+    color: #b07000;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-bottom: 2px solid #f4b942;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.cardHeaderRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 8px;
+}
+
+.rolMiniSelect {
+    border: 1px solid #e2eaf2;
+    background: white;
+    font-size: 0.65rem;
+    padding: 2px 4px;
+    border-radius: 6px;
+    color: #64748b;
+    outline: none;
+    cursor: pointer;
+    max-width: 100px;
+}
+
+.rolMiniSelect:hover {
+    border-color: #3a6bc8;
+    color: #1a2b5e;
+}
+
+/* MODAL DESAFIO INFO REDISEÑADO */
+.btnDesInfoPill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(123, 181, 232, 0.2);
+    border: 1.5px solid rgba(123, 181, 232, 0.4);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btnDesInfoPill:hover {
+    background: rgba(123, 181, 232, 0.35);
+    border-color: #7bb5e8;
+}
+
+.pillIcon {
+    font-size: 1rem;
+}
+
+.pillText {
+    font-size: 0.75rem;
+    color: white;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+}
+
+.btnDirectDoc {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    background: #f97316;
+    /* Color naranja PDF/Alerta */
+    color: white;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+    transition: all 0.2s;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btnDirectDoc:hover {
+    transform: translateY(-2px);
+    background: #ea580c;
+    box-shadow: 0 6px 15px rgba(249, 115, 22, 0.6);
+}
+
+.btnDocDesMain {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 18px;
+    background: linear-gradient(135deg, #1a2b5e, #3a6bc8);
+    color: white;
+    border-radius: 16px;
+    font-weight: 800;
+    text-decoration: none;
+    font-size: 1rem;
+    box-shadow: 0 10px 20px rgba(26, 43, 94, 0.15);
+    transition: all 0.2s;
+}
+
+.btnDocDesMain:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 25px rgba(26, 43, 94, 0.25);
+}
+
+.modalDes {
+    background: white;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    animation: slideUp 0.3s ease-out;
+    overflow: hidden;
+    padding: 32px;
+}
+
+/* MODAL DESAFIO INFO */
+.btnDesInfo {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #7bb5e8;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btnDesInfo:hover {
+    background: white;
+    color: #1a2b5e;
+}
+
+.modalDes {
+    background: white;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    animation: slideUp 0.3s ease-out;
+    overflow: hidden;
+    padding: 32px;
+}
+
+.modalHeaderDes {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.modalIconDes {
+    font-size: 2rem;
+    background: #f0f5ff;
+    padding: 12px;
+    border-radius: 16px;
+}
+
+.modalSubDes {
+    font-size: 0.9rem;
+    color: #3b82f6;
+    font-weight: 700;
+}
+
+.modalBody {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.modalSection {
+    margin-bottom: 24px;
+}
+
+.modalSection h3 {
+    font-size: 0.9rem;
+    color: #1a2b5e;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.desDescripcion {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #4a5d7e;
+    white-space: pre-wrap;
+}
+
+.btnDocDes {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 20px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    color: #1a2b5e;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btnDocDes:hover {
+    background: #f1f5f9;
+    border-color: #3b82f6;
+}
+
+.modalChecklist {
+    list-style: none;
+    padding: 0;
+}
+
+.modalChecklist li {
+    padding: 10px 14px;
+    background: #f0fdf4;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #166534;
+}
+
+.btnConfirmDes {
+    width: 100%;
+    padding: 14px;
+    background: #1a2b5e;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 16px;
 }

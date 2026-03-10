@@ -56,6 +56,8 @@ export const TAREAS_POR_ROL: Record<RolKey, Omit<TareaOrientativa, 'estado'>[]> 
         { id: 'con-6', rol: 'conciliador', descripcion: 'Garantizar la participación equitativa de los integrantes' },
         { id: 'con-7', rol: 'conciliador', descripcion: 'Ser participante en exposiciones orales' },
         { id: 'con-8', rol: 'conciliador', descripcion: 'Colaborar en la integración de aportes individuales al trabajo final' },
+        { id: 'con-9', rol: 'conciliador', descripcion: 'Asegurar que todos los miembros tengan acceso a las herramientas compartidas' },
+        { id: 'con-10', rol: 'conciliador', descripcion: 'Realizar un seguimiento del bienestar del equipo durante el proceso' },
     ],
     motivador: [
         { id: 'mot-1', rol: 'motivador', descripcion: 'Estimular la participación activa del grupo' },

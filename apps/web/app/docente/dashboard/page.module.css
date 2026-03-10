@@ -396,3 +396,31 @@
     font-weight: 600;
     text-transform: capitalize;
 }
+
+/* MINI BALANCE POR CÁTEDRA */
+.catRolesMini {
+    display: flex;
+    justify-content: space-between;
+    background: #f8fafc;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px dashed #e2eaf2;
+    margin: 8px 0;
+}
+
+.roleTiny {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.tinyIcon {
+    font-size: 0.85rem;
+}
+
+.tinyCount {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #1a2b5e;
+}

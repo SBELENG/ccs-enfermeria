@@ -127,15 +127,82 @@
 /* SCORES GRID */
 .scoresGrid {
     display: grid;
-    grid-template-columns: auto 1fr 1fr;
-    gap: 16px;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
     margin-bottom: 28px;
 }
 
-@media (max-width: 700px) {
+.radarCard {
+    grid-column: span 2;
+    background: white;
+    border-radius: 20px;
+    padding: 32px 24px;
+    border: 1.5px solid #e2eaf2;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.radarCard h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    color: #1a2b5e;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.radarContainer {
+    width: 100%;
+    height: 350px;
+    margin-bottom: 20px;
+}
+
+.radarLegend {
+    display: flex;
+    gap: 24px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.legItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legDot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+}
+
+@media (max-width: 750px) {
     .scoresGrid {
         grid-template-columns: 1fr;
     }
+
+    .radarCard {
+        grid-column: span 1;
+    }
+
+    .radarContainer {
+        height: 300px;
+    }
+}
+
+.partialAlert {
+    background: #f0f7ff;
+    border: 1px solid #c2e0ff;
+    padding: 14px 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    font-size: 0.9rem;
+    color: #1e40af;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(30, 64, 175, 0.05);
 }
 
 .scoreCard {

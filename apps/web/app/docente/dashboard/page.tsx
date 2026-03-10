@@ -12,6 +12,7 @@ type UsuarioDB = Database['public']['Tables']['usuarios']['Row'];
 type CatedraConStats = CatedraDB & {
     inscripcionesCount: number;
     desafiosCount: number;
+    roles: Record<string, number>;
 };
 
 export default function DocenteDashboard() {
@@ -37,26 +38,27 @@ export default function DocenteDashboard() {
                 .order('created_at', { ascending: false });
 
             if (cats) {
-                // Para cada cátedra obtenemos conteos
-                const enriched = await Promise.all((cats as any[]).map(async (cat: any) => {
-                    const [{ count: ins }, { count: des }] = await Promise.all([
+                const enrichedFinal = await Promise.all((cats as any[]).map(async (cat: any) => {
+                    const [{ count: insCount }, { count: desCount }, { data: insRoles }] = await Promise.all([
                         supabase.from('inscripciones').select('*', { count: 'exact', head: true }).eq('catedra_id', cat.id),
                         supabase.from('desafios').select('*', { count: 'exact', head: true }).eq('catedra_id', cat.id),
+                        (supabase.from('inscripciones') as any).select('usuario:usuarios(rol_primario)').eq('catedra_id', cat.id)
                     ]);
-                    return { ...cat, inscripcionesCount: ins ?? 0, desafiosCount: des ?? 0 };
-                }));
-                setCatedras(enriched);
 
-                // Calcular balance global de roles
-                const roles: Record<string, number> = {};
-                for (const cat of (cats as any[])) {
-                    const { data: ins } = await (supabase.from('inscripciones') as any).select('usuario:usuarios(rol_primario)').eq('catedra_id', cat.id);
-                    ins?.forEach((i: any) => {
+                    const roles: Record<string, number> = {};
+                    (insRoles as any[])?.forEach((i: any) => {
                         const r = i.usuario?.rol_primario;
                         if (r) roles[r] = (roles[r] || 0) + 1;
                     });
-                }
-                setGlobalRoles(roles);
+
+                    return {
+                        ...cat,
+                        inscripcionesCount: insCount ?? 0,
+                        desafiosCount: desCount ?? 0,
+                        roles
+                    };
+                }));
+                setCatedras(enrichedFinal);
             }
             setLoading(false);
         }
@@ -121,33 +123,7 @@ export default function DocenteDashboard() {
                     </div>
                 </div>
 
-                {/* BALANCE GLOBAL DE ROLES */}
-                <div className={styles.balanceSection}>
-                    <div className={styles.balanceHeader}>
-                        <h2>🎯 Balance Global de Roles</h2>
-                        <span className={styles.sub}>Distribución de talentos en todas tus materias</span>
-                    </div>
-                    <div className={styles.balanceGrid}>
-                        {(Object.entries(ROLES) as [RolKey, any][]).map(([key, rol]) => {
-                            const count = globalRoles[key] || 0;
-                            const max = Math.max(...Object.values(globalRoles), 1);
-                            const pct = Math.round((count / max) * 100);
-                            return (
-                                <div key={key} className={styles.rolStats}>
-                                    <span className={styles.rolIcon}>{rol.icon}</span>
-                                    <div className={styles.rolBarTrack}>
-                                        <div
-                                            className={styles.rolBarFill}
-                                            style={{ height: `${pct}%`, background: rol.color }}
-                                        />
-                                    </div>
-                                    <span className={styles.rolCount}>{count}</span>
-                                    <span className={styles.rolName}>{rol.label}</span>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
+                {/* Se eliminó la sección global por pedido del usuario para integrarla por cátedra */}
 
                 {/* CÁTEDRAS */}
                 <h2 className={styles.sectionTitle}>Mis cátedras</h2>
@@ -184,6 +160,16 @@ export default function DocenteDashboard() {
                                         <span className={styles.catedrStatNum}>{cat.desafiosCount}</span>
                                         <span className={styles.catedrStatLbl}>desafíos</span>
                                     </div>
+                                </div>
+
+                                {/* Mini Balance de Roles por Cátedra */}
+                                <div className={styles.catRolesMini}>
+                                    {(Object.entries(ROLES) as [RolKey, any][]).map(([key, rol]) => (
+                                        <div key={key} className={styles.roleTiny} title={rol.label}>
+                                            <span className={styles.tinyIcon}>{rol.icon}</span>
+                                            <span className={styles.tinyCount}>{cat.roles?.[key] || 0}</span>
+                                        </div>
+                                    ))}
                                 </div>
 
                                 <div className={styles.codigoRow}>

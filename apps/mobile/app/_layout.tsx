@@ -14,12 +14,13 @@ export default function RootLayout() {
                     animation: 'slide_from_right',
                 }}
             >
-                <Stack.Screen name="index" options={{ title: 'CCS', headerShown: false }} />
+                <Stack.Screen name="index" options={{ headerShown: false }} />
+                <Stack.Screen name="login" options={{ headerShown: false, animation: 'fade' }} />
                 <Stack.Screen name="test/index" options={{ title: 'Test de Perfil' }} />
-                <Stack.Screen name="perfil/index" options={{ title: 'Mi Perfil' }} />
                 <Stack.Screen name="catedra/[id]" options={{ title: 'Cátedra' }} />
                 <Stack.Screen name="equipo/[id]" options={{ title: 'Equipo' }} />
                 <Stack.Screen name="kanban/[id]" options={{ title: 'Sprint Board' }} />
+                <Stack.Screen name="mas" options={{ title: 'Más' }} />
             </Stack>
         </>
     );

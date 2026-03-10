@@ -58,8 +58,9 @@ export default function RegistroPage() {
             <div className={styles.card}>
                 <div className={styles.icon}>🎉</div>
                 <h1>¡Cuenta creada!</h1>
-                <p>Revisá tu email (<strong>{email}</strong>) para confirmar tu cuenta y empezar.</p>
-                <Link href="/ingresar" className={styles.btnPrimary}>Ir al login →</Link>
+                <p>Registramos tu perfil como <strong>{tipo}</strong>.</p>
+                <p>Revisá tu email (<strong>{email}</strong>) para confirmar tu cuenta. Una vez confirmada, podrás ingresar para realizar tu test profesional.</p>
+                <Link href="/ingresar" className={styles.btnPrimary}>Ir a Ingresar →</Link>
             </div>
         </div>
     );

@@ -1,3 +1,6 @@
+'use client';
+import { useEffect, useState } from 'react';
+import { supabase } from '@ccs/supabase';
 import Link from 'next/link';
 import styles from './page.module.css';
 
@@ -11,6 +14,23 @@ const roles = [
 ];
 
 export default function HomePage() {
+    const [user, setUser] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const [userProfile, setUserProfile] = useState<any>(null);
+
+    useEffect(() => {
+        async function checkUser() {
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+            if (user) {
+                const { data: profile } = await supabase.from('usuarios').select('tipo').eq('id', user.id).single();
+                setUserProfile(profile);
+            }
+            setLoading(false);
+        }
+        checkUser();
+    }, []);
+
     return (
         <div className={styles.page}>
             {/* HERO */}
@@ -22,14 +42,26 @@ export default function HomePage() {
                     <div className={styles.heroText}>
                         <h1><span className={styles.accent}>CCS</span> · Competencias<br />Colaborativas en Salud</h1>
                         <p>Formá equipos por complementariedad de roles, no por afinidad personal. Plataforma académica para la Escuela de Enfermería · UNRC.</p>
-                        <div className={styles.heroCtas}>
-                            <Link href="/test" className={styles.btnPrimary} id="cta-test">
-                                🧪 Hacer mi Test de Perfil
-                            </Link>
-                            <Link href="/ingresar" className={styles.btnOutline} id="cta-login">
-                                Ingresar
-                            </Link>
-                        </div>
+                        {!loading && (
+                            <div className={styles.heroCtas}>
+                                {user ? (
+                                    <>
+                                        {userProfile?.tipo !== 'docente' && (
+                                            <Link href="/test" className={styles.btnPrimary} id="cta-test">
+                                                🧪 Hacer mi Test de Perfil
+                                            </Link>
+                                        )}
+                                        <Link href={userProfile?.tipo === 'docente' ? "/docente/dashboard" : "/dashboard"} className={styles.btnOutline} id="cta-dashboard">
+                                            Ir al Panel →
+                                        </Link>
+                                    </>
+                                ) : (
+                                    <Link href="/ingresar" className={styles.btnPrimary} id="cta-login">
+                                        Comenzar Ahora / Ingresar
+                                    </Link>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className={styles.heroDecor1} aria-hidden />
@@ -69,7 +101,7 @@ export default function HomePage() {
                         {[
                             { n: '1', titulo: 'Hacé el Test', desc: '4 preguntas situacionales. Descubrís tu Rol Primario y Secundario.', icon: '🧪' },
                             { n: '2', titulo: 'Ingresá a tu Cátedra', desc: 'Tu docente te da un código de acceso único por materia.', icon: '🔑' },
-                            { n: '3', titulo: 'Formá tu Equipo', desc: 'Buscá compañeros por los roles que le faltan a tu equipo.', icon: '👥' },
+                            { n: '3', titulo: 'Formá tu Equipo', desc: 'El Organizador convoca al Conciliador, quien luego busca los perfiles que faltan (Ejecutor, Analítico, etc.) para equilibrar el grupo.', icon: '👥' },
                             { n: '4', titulo: 'Trabajá con tu Checklist', desc: 'Cada rol tiene tareas orientativas y un Sprint Board Kanban.', icon: '✅' },
                             { n: '5', titulo: 'Evaluá con 360°', desc: 'Al finalizar, el grupo se evalúa mutuamente y recibe insignias.', icon: '🏅' },
                         ].map(step => (

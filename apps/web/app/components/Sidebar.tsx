@@ -1,25 +1,37 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { supabase } from '@ccs/supabase';
 import styles from './Sidebar.module.css';
 import NotificationBell from './NotificationBell';
+import { sanitizeFileName } from '../lib/utils';
+
+import { ROLES, type RolKey } from '@ccs/ui';
 
 interface SidebarProps {
     userId: string;
     userName: string;
     userEmail: string;
     userAvatar?: string;
+    userRoleP?: string;
+    userRoleS?: string;
+    userPref?: 'primario' | 'secundario';
+    isBlocked?: boolean;
 }
 
-export default function Sidebar({ userId, userName, userEmail, userAvatar }: SidebarProps) {
+export default function Sidebar({ userId, userName, userEmail, userAvatar, userRoleP, userRoleS, userPref, isBlocked }: SidebarProps) {
     const pathname = usePathname();
+    const [invCount, setInvCount] = useState(0);
+    const [notifCount, setNotifCount] = useState(0);
+
+    const activeRolKey = userPref === 'secundario' ? userRoleS : userRoleP;
+    const activeRol = activeRolKey ? ROLES[activeRolKey as RolKey] : null;
 
     const menuItems = [
         { label: 'Inicio', icon: '🏠', href: '/dashboard' },
-        { label: 'Mis Equipos', icon: '👥', href: '/mis-equipos' },
-        { label: 'Marketplace', icon: '🏪', href: '/marketplace' },
+        { label: 'Mis Proyectos', icon: '👥', href: '/mis-equipos' },
+        { label: 'Búsqueda Talentos', icon: '🏪', href: '/talentos' },
     ];
 
     const [uploading, setUploading] = useState(false);
@@ -27,6 +39,8 @@ export default function Sidebar({ userId, userName, userEmail, userAvatar }: Sid
 
     async function cerrarSesion() {
         await supabase.auth.signOut();
+        localStorage.clear();
+        sessionStorage.clear();
         window.location.href = '/';
     }
 
@@ -36,7 +50,7 @@ export default function Sidebar({ userId, userName, userEmail, userAvatar }: Sid
 
         try {
             setUploading(true);
-            const fileExt = file.name.split('.').pop();
+            const fileExt = sanitizeFileName(file.name.split('.').pop() || 'png');
             const filePath = `${userId}/avatar-${Math.random()}.${fileExt}`;
 
             // 1. Subir a Storage
@@ -52,8 +66,8 @@ export default function Sidebar({ userId, userName, userEmail, userAvatar }: Sid
                 .getPublicUrl(filePath);
 
             // 3. Actualizar tabla usuarios
-            const { error: updateError } = await supabase
-                .from('usuarios')
+            const { error: updateError } = await (supabase
+                .from('usuarios') as any)
                 .update({ foto_url: publicUrl })
                 .eq('id', userId);
 
@@ -68,6 +82,37 @@ export default function Sidebar({ userId, userName, userEmail, userAvatar }: Sid
         }
     }
 
+    // Cargar conteos para alertas visuales
+    useEffect(() => {
+        if (!userId) return;
+
+        async function updateCounts() {
+            const { count: sCount } = await supabase.from('solicitudes_equipo').select('*', { count: 'exact', head: true }).eq('usuario_id', userId).eq('estado', 'pendiente');
+            setInvCount(sCount || 0);
+
+            const { count: nCount } = await supabase.from('notificaciones').select('*', { count: 'exact', head: true }).eq('usuario_id', userId).eq('leida', false);
+            setNotifCount(nCount || 0);
+        }
+
+        updateCounts();
+
+        const sub = supabase.channel('sidebar-alerts')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'solicitudes_equipo', filter: `usuario_id=eq.${userId}` }, updateCounts)
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'notificaciones', filter: `usuario_id=eq.${userId}` }, updateCounts)
+            .subscribe();
+
+        // Escuchar eventos locales de lectura desde NotificationBell
+        const handleLocalRead = () => updateCounts();
+        window.addEventListener('notif-read', handleLocalRead);
+        window.addEventListener('notif-read-all', handleLocalRead);
+
+        return () => {
+            supabase.removeChannel(sub);
+            window.removeEventListener('notif-read', handleLocalRead);
+            window.removeEventListener('notif-read-all', handleLocalRead);
+        };
+    }, [userId]);
+
     return (
         <aside className={styles.sidebar}>
             <div className={styles.top}>
@@ -77,23 +122,33 @@ export default function Sidebar({ userId, userName, userEmail, userAvatar }: Sid
                 </div>
 
                 <nav className={styles.nav}>
-                    {menuItems.map((item) => (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            className={`${styles.navItem} ${pathname === item.href ? styles.active : ''}`}
-                        >
-                            <span className={styles.icon}>{item.icon}</span>
-                            <span className={styles.label}>{item.label}</span>
-                        </Link>
-                    ))}
+                    {menuItems.map((item) => {
+                        const blocked = isBlocked && (item.href === '/talentos' || item.href === '/mis-equipos');
+                        const isMisProyectos = item.href === '/mis-equipos';
+                        return (
+                            <Link
+                                key={item.href}
+                                href={blocked ? '#' : item.href}
+                                className={`${styles.navItem} ${pathname === item.href ? styles.active : ''} ${blocked ? styles.disabled : ''}`}
+                                title={blocked ? "Completá la evaluación 360 para acceder" : ""}
+                            >
+                                <span className={styles.icon}>
+                                    {item.icon}
+                                    {isMisProyectos && invCount > 0 && (
+                                        <span className={styles.navBadge}>{invCount}</span>
+                                    )}
+                                </span>
+                                <span className={styles.label}>{item.label}</span>
+                            </Link>
+                        );
+                    })}
                 </nav>
             </div>
 
             <div className={styles.bottom}>
                 <div className={styles.notifWrap}>
                     <span>Notificaciones</span>
-                    <NotificationBell userId={userId} />
+                    <NotificationBell userId={userId} initialCounts={{ notifs: notifCount, invs: invCount }} />
                 </div>
 
                 <div className={styles.userProfile}>
@@ -119,6 +174,11 @@ export default function Sidebar({ userId, userName, userEmail, userAvatar }: Sid
                     </div>
                     <div className={styles.userInfo}>
                         <div className={styles.userName}>{userName}</div>
+                        {activeRol && (
+                            <div className={styles.userRoleBadge} style={{ background: activeRol.color }}>
+                                {activeRol.icon} {activeRol.label}
+                            </div>
+                        )}
                         <div className={styles.userEmail}>{userEmail}</div>
                     </div>
                 </div>

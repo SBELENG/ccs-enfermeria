@@ -319,6 +319,55 @@
     color: #1a2b5e;
 }
 
+/* ── SELECCION ── */
+.seleccionGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.selBtn {
+    background: white;
+    border: 2px solid #e2eaf2;
+    border-radius: 20px;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.selBtn:hover {
+    border-color: #7bb5e8;
+    background: #f8faff;
+    transform: translateY(-4px);
+}
+
+.selBtnActive {
+    border-color: var(--rc) !important;
+    background: color-mix(in srgb, var(--rc) 8%, white) !important;
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--rc) 15%, transparent);
+}
+
+.prefBadge {
+    background: #eef2f8;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    margin-left: 6px;
+}
+
+@media (max-width: 500px) {
+    .seleccionGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 600px) {
 
     .preguntaCard,
