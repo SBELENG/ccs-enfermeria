@@ -352,13 +352,23 @@ h3 {
   animation: pulse 2s ease infinite;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
+  .mainContent {
+    margin-left: 0;
+    padding: 24px 16px 90px 16px; /* Despegado izq-der (16px) y 90px inferior para evitar que lo pise la barra */
+    width: 100%;
+    max-width: 100vw;
+  }
+
   .container {
     padding: 0 16px;
+    width: 100%;
+    max-width: 100vw;
   }
 
   .card {
     padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
