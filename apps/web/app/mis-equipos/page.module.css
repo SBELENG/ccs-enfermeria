@@ -574,6 +574,70 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* MODAL DE ROL (SELECCIONAR ROL) */
+.rolOptions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 24px 0;
+}
+
+.rolOpt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #5a7191;
+    font-family: inherit;
+    text-align: left;
+}
+
+.rolOpt:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    transform: translateY(-2px);
+}
+
+.rolOpt strong {
+    font-size: 1.05rem;
+    color: #1a2b5e;
+    flex: 1;
+}
+
+.rolOptActive {
+    background: #eff6ff !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.15);
+}
+
+.rolOptActive strong {
+    color: #1d4ed8 !important;
+}
+
+.btnCancel {
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    color: #64748b;
+    border: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-top: 8px;
+    border-radius: 14px;
+    transition: background 0.2s;
+}
+
+.btnCancel:hover {
+    background: #f1f5f9;
+    color: #475569;
+}
+
 @media (max-width: 768px) {
     .codigoCard {
         flex-direction: column;
