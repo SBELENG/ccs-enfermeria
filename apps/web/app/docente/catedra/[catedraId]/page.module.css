@@ -142,6 +142,9 @@
     color: #1a2b5e;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    white-space: nowrap !important;
+    word-break: normal !important;
+    min-width: max-content;
 }
 
 .estTableRow {
@@ -282,6 +285,9 @@
     color: #1a2b5e;
     cursor: pointer;
     transition: all 0.2s;
+    white-space: nowrap !important;
+    word-break: normal !important;
+    flex-shrink: 0;
 }
 
 .btnExport:hover {
@@ -1066,6 +1072,8 @@ textarea.inputInline {
     background: #f1f5f9;
     padding: 4px;
     border-radius: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .filterBtn {
@@ -1078,6 +1086,9 @@ textarea.inputInline {
     color: #64748b;
     cursor: pointer;
     transition: all 0.2s;
+    white-space: nowrap !important;
+    word-break: normal !important;
+    flex-shrink: 0;
 }
 
 .filterBtn:hover {
@@ -1088,6 +1099,58 @@ textarea.inputInline {
 .filterActive {
     background: white;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* MOBILE: Tabla de métricas scroll horizontal */
+@media (max-width: 768px) {
+    .estTable {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .estTableRowHeader,
+    .estTableRow {
+        min-width: 500px;
+    }
+
+    .metricasHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .headerInner {
+        height: auto;
+        min-height: 64px;
+        padding: 8px 0;
+        flex-wrap: wrap;
+    }
+
+    .quickStats {
+        gap: 8px;
+    }
+
+    .qStat {
+        min-width: 80px;
+        padding: 12px 10px;
+    }
+
+    .qNum {
+        font-size: 1.3rem;
+    }
+
+    .main {
+        padding: 16px 12px 60px;
+    }
+
+    .section {
+        padding: 16px;
+    }
+
+    .formRow {
+        flex-direction: column;
+        align-items: stretch;
+    }
 }
 
 /* VISTA DE EQUIPOS DOCENTE */
