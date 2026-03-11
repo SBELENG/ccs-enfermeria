@@ -111,6 +111,16 @@ export default function EquipoPage({ params }: { params: Promise<{ equipoId: str
         }).eq('id', equipoId);
 
         if (!error) {
+            // Emisión de notificaciones a todos los miembros
+            const notifs = miembros.map(m => ({
+                usuario_id: m.id,
+                tipo: 'general',
+                estado: 'pendiente',
+                equipo_id: equipoId,
+                mensaje: `✅ ¡Equipo Cerrado! El Organizador ${usuario.nombre} cerró la formación. Ya podéis ingresar al Kanban a distribuir tareas.`,
+            }));
+            
+            await (supabase.from('notificaciones') as any).insert(notifs);
             setEquipo(prev => prev ? { ...prev, estado_entrega: true } as any : null);
         } else {
             console.error("Error al finalizar desafío:", error);
