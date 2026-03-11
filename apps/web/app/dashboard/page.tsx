@@ -97,12 +97,15 @@ export default function DashboardPage() {
                 }
 
                 // Chequear evaluaciones 360 pendientes
-                const { data: misEquipos } = await supabase
+                const { data: misEquipos, error: eqMbErr } = await supabase
                     .from('equipo_miembros')
                     .select('equipo_id, equipo:equipos(id, nombre_equipo, estado_entrega)')
                     .eq('usuario_id', user.id);
 
+                console.log('[360-DEBUG] misEquipos:', JSON.stringify(misEquipos), 'error:', eqMbErr);
+
                 const equiposFinalizados = (misEquipos as any[])?.filter(e => e.equipo?.estado_entrega) || [];
+                console.log('[360-DEBUG] equiposFinalizados:', equiposFinalizados.length, JSON.stringify(equiposFinalizados));
                 setTieneEquipoActivo(Array.isArray(misEquipos) && misEquipos.length > 0);
 
                 const pendientes = [];
@@ -110,8 +113,12 @@ export default function DashboardPage() {
                     const { data: miembros } = await supabase.from('equipo_miembros').select('usuario_id').eq('equipo_id', eq.equipo_id);
                     const { data: yaEval } = await supabase.from('evaluaciones_360').select('evaluado_id').eq('evaluador_id', user.id).eq('equipo_id', eq.equipo_id);
 
+                    console.log('[360-DEBUG] equipo:', eq.equipo?.nombre_equipo, 'miembros:', miembros?.length, 'yaEval:', yaEval?.length);
+
                     const evaluadosIds = new Set((yaEval as any[])?.map(y => y.evaluado_id) || []);
                     const faltan = (miembros as any[])?.filter(m => !evaluadosIds.has(m.usuario_id)) || [];
+
+                    console.log('[360-DEBUG] faltan evaluar:', faltan.length);
 
                     if (faltan.length > 0) {
                         pendientes.push({
@@ -121,6 +128,7 @@ export default function DashboardPage() {
                         });
                     }
                 }
+                console.log('[360-DEBUG] RESULTADO pendientes:', pendientes.length, JSON.stringify(pendientes));
                 setEvaluacionesPendientes(pendientes);
 
                 // Chequear Invitaciones Pendientes
