@@ -177,9 +177,16 @@ export default function KanbanPage({ params }: { params: Promise<{ equipoId: str
     async function crearTarea() {
         if (!newDesc.trim()) return;
         setSaving(true);
+        
+        let finalDesc = newDesc.trim();
+        // Si no es Organizador y no es Docente, la tarea nace como propuesta
+        if (myRol !== 'organizador' && userType !== 'docente') {
+            finalDesc = `[SUGERENCIA] ${finalDesc}`;
+        }
+
         await (supabase.from('tareas') as any).insert({
             equipo_id: equipoId,
-            descripcion: newDesc.trim(),
+            descripcion: finalDesc,
             rol_asociado: newRol,
             estado: 'backlog',
         });
@@ -237,10 +244,23 @@ export default function KanbanPage({ params }: { params: Promise<{ equipoId: str
         setShowImport(false);
     }
 
-    // ── Stats ─────────────────────────────────────────────────────
-    const total = tareas.length;
-    const doneCount = tareas.filter(t => t.estado === 'done').length;
+    async function aprobarSugerencia(t: TareaDB) {
+        const cleanDesc = t.descripcion.replace('[SUGERENCIA] ', '');
+        setTareas(prev => prev.map(x => x.id === t.id ? { ...x, descripcion: cleanDesc } : x));
+        await (supabase.from('tareas') as any).update({ descripcion: cleanDesc }).eq('id', t.id);
+    }
+
+    // ── Stats y Filtros ───────────────────────────────────────────
+    const sugerenciasPendientes = tareas.filter(t => t.descripcion.startsWith('[SUGERENCIA] '));
+    const tareasTablero = tareas.filter(t => !t.descripcion.startsWith('[SUGERENCIA] '));
+
+    const total = tareasTablero.length;
+    const doneCount = tareasTablero.filter(t => t.estado === 'done').length;
     const progreso = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+
+    const hayChecklist = (desafio?.checklist_sugerido as any)?.length > 0;
+    const checklistNoImportado = tareasTablero.length === 0 && hayChecklist;
+    const mostrarInboxBtn = myRol === 'organizador' && (checklistNoImportado || sugerenciasPendientes.length > 0);
 
     if (loading) return (
         <div className={styles.loadingWrap}>
@@ -300,14 +320,13 @@ export default function KanbanPage({ params }: { params: Promise<{ equipoId: str
                         </div>
                     </div>
 
-                    {tareas.length === 0 && desafio?.checklist_sugerido && (desafio.checklist_sugerido as any).length > 0 && myRol === 'organizador' && (
+                    {mostrarInboxBtn && (
                         <button
                             className={styles.btnImport}
                             onClick={() => equipo?.cerrado ? setShowImport(true) : alert('Primero debés cerrar el grupo en "Mis Equipos".')}
                             disabled={saving}
-                            title="Solo el Organizador puede importar las tareas iniciales"
                         >
-                            ⚡ Importar guía
+                            {sugerenciasPendientes.length > 0 ? `⚡ Bandeja (${sugerenciasPendientes.length})` : '⚡ Importar Guía'}
                         </button>
                     )}
                     <button
@@ -315,7 +334,7 @@ export default function KanbanPage({ params }: { params: Promise<{ equipoId: str
                         onClick={() => equipo?.cerrado ? setShowNew(true) : alert('Primero debés cerrar el grupo en "Mis Equipos".')}
                         id="btn-nueva-tarea"
                     >
-                        + Nueva tarea
+                        {myRol === 'organizador' || userType === 'docente' ? '+ Nueva tarea' : '+ Proponer tarea'}
                     </button>
                 </div>
             </header>
@@ -337,7 +356,7 @@ export default function KanbanPage({ params }: { params: Promise<{ equipoId: str
                     </button>
                     {(Object.keys(ROLES) as RolKey[]).map(rk => {
                         const r = ROLES[rk];
-                        const count = tareas.filter(t => t.rol_asociado === rk).length;
+                        const count = tareasTablero.filter(t => t.rol_asociado === rk).length;
                         if (count === 0 && !rolesPresentes.includes(rk)) return null;
                         return (
                             <button
@@ -358,7 +377,7 @@ export default function KanbanPage({ params }: { params: Promise<{ equipoId: str
             {showNew && (
                 <div className={styles.modalOverlay} onClick={() => setShowNew(false)}>
                     <div className={styles.modal} onClick={e => e.stopPropagation()}>
-                        <h3>Nueva tarea</h3>
+                        <h3>{myRol === 'organizador' || userType === 'docente' ? 'Nueva tarea' : 'Proponer Tarea al Organizador'}</h3>
                         <textarea
                             className={styles.modalInput}
                             placeholder="Descripción de la tarea…"
@@ -383,40 +402,68 @@ export default function KanbanPage({ params }: { params: Promise<{ equipoId: str
                         <div className={styles.modalActions}>
                             <button className={styles.btnCancel} onClick={() => setShowNew(false)}>Cancelar</button>
                             <button className={styles.btnCreate} onClick={crearTarea} disabled={saving || !newDesc.trim()}>
-                                {saving ? 'Guardando...' : 'Crear tarea'}
+                                {saving ? 'Guardando...' : (myRol === 'organizador' || userType === 'docente' ? 'Crear tarea' : 'Enviar Propuesta')}
                             </button>
                         </div>
                     </div>
                 </div>
             )}
 
-            {/* MODAL IMPORTAR GUÍA */}
+            {/* MODAL BANDEJA DE ENTRADA (IMPORTAR + SUGERENCIAS) */}
             {showImport && (
                 <div className={styles.modalOverlay} onClick={() => setShowImport(false)}>
                     <div className={styles.modal} onClick={e => e.stopPropagation()}>
-                        <h3>Importar guía de tareas</h3>
-                        <p className={styles.modalSub}>Seleccioná a qué rol se le asignarán las tareas del desafío planteado por el docente:</p>
-
-                        <div className={styles.rolSelectorImport}>
-                            {rolesPresentes.map(rk => {
-                                const r = ROLES[rk];
-                                return (
-                                    <button
-                                        key={rk}
-                                        className={styles.rolChipBig}
-                                        style={{ '--rc': r.color } as React.CSSProperties}
-                                        onClick={() => importarChecklist(rk)}
-                                        disabled={saving}
-                                    >
-                                        <span className={styles.rolChipIcon}>{r.icon}</span>
-                                        <div className={styles.rolChipInfo}>
-                                            <strong>{r.label}</strong>
-                                            <span>{myRol === rk ? 'Tu rol' : 'Compañero'}</span>
+                        <h3>⚡ Bandeja de Entrada</h3>
+                        
+                        {sugerenciasPendientes.length > 0 && (
+                            <div className={styles.inboxSection}>
+                                <div className={styles.inboxTitle}>Aportes del Equipo ({sugerenciasPendientes.length})</div>
+                                {sugerenciasPendientes.map(sg => {
+                                    const rolSug = ROLES[sg.rol_asociado as RolKey];
+                                    return (
+                                        <div key={sg.id} className={styles.inboxItem}>
+                                            <div className={styles.inboxContent}>
+                                                <div className={styles.inboxDesc}>{sg.descripcion.replace('[SUGERENCIA] ', '')}</div>
+                                                <div className={styles.inboxMeta}>
+                                                    Sugiere {rolSug.icon} {rolSug.label}
+                                                </div>
+                                            </div>
+                                            <div className={styles.inboxActions}>
+                                                <button className={styles.btnApprove} onClick={() => aprobarSugerencia(sg)}>✓ Aprobar</button>
+                                                <button className={styles.btnReject} onClick={() => eliminarTarea(sg.id)}>✕ Rechazar</button>
+                                            </div>
                                         </div>
-                                    </button>
-                                );
-                            })}
-                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+
+                        {checklistNoImportado && (
+                            <div className={styles.inboxSection}>
+                                <div className={styles.inboxTitle}>📋 Guía Sugerida por el Docente</div>
+                                <p className={styles.modalSub}>Seleccioná a qué rol se le asignarán inicialmente las tareas del desafío planteado por el docente para ponerlas en tu Tablero:</p>
+                                <div className={styles.rolSelectorImport}>
+                                    {rolesPresentes.map(rk => {
+                                        const r = ROLES[rk];
+                                        return (
+                                            <button
+                                                key={rk}
+                                                className={styles.rolChipBig}
+                                                style={{ '--rc': r.color } as React.CSSProperties}
+                                                onClick={() => importarChecklist(rk)}
+                                                disabled={saving}
+                                            >
+                                                <span className={styles.rolChipIcon}>{r.icon}</span>
+                                                <div className={styles.rolChipInfo}>
+                                                    <strong>{r.label}</strong>
+                                                    <span>{myRol === rk ? 'Tu rol' : 'Compañero'}</span>
+                                                </div>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
 
                         <div className={styles.modalActions}>
                             <button className={styles.btnCancel} onClick={() => setShowImport(false)}>Cerrar</button>
@@ -428,7 +475,7 @@ export default function KanbanPage({ params }: { params: Promise<{ equipoId: str
             {/* TABLERO KANBAN */}
             <main className={styles.board}>
                 {COLUMNAS.map(col => {
-                    const tareasCol = tareas
+                    const tareasCol = tareasTablero
                         .filter(t => t.estado === col.id)
                         .filter(t => filtroRol === null || t.rol_asociado === filtroRol);
                     const isDragOver = dragging !== null;

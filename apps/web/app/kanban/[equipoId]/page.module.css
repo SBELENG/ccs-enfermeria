@@ -404,6 +404,84 @@
     cursor: not-allowed;
 }
 
+/* KANBAN SUGERENCIAS (INBOX) */
+.inboxSection {
+    margin-bottom: 24px;
+    border-bottom: 1.5px solid #f1f5f9;
+    padding-bottom: 16px;
+}
+.inboxSection:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.inboxTitle {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    color: #3b82f6;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+.inboxItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+    border: 1px solid #e2eaf2;
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    gap: 12px;
+}
+.inboxContent {
+    flex: 1;
+}
+.inboxDesc {
+    font-size: 0.82rem;
+    color: #16243a;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+.inboxMeta {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.inboxActions {
+    display: flex;
+    gap: 6px;
+}
+.btnApprove {
+    background: #e6f6ee;
+    color: #1e8f7a;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btnApprove:hover {
+    background: #c3ebd9;
+}
+.btnReject {
+    background: #fee2e2;
+    color: #ef4444;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btnReject:hover {
+    background: #fecaca;
+}
+
 /* KANBAN BOARD */
 .board {
     flex: 1;
