@@ -70,7 +70,9 @@ function RegistroInner() {
     return (
         <div className={styles.wrap}>
             <div className={styles.card}>
-                <img src="/logo-icon.png" alt="CCS Logo" className={styles.logo} />
+                <div className={styles.logoSmall}>
+                    <img src="/logo-icon.png" alt="Logo CCS" width="64" height="64" style={{ objectFit: 'contain' }} />
+                </div>
                 <h1>Crear cuenta {tipo === 'docente' ? '👨‍🏫' : ''}</h1>
                 <p>Sumate a CCS y participá en equipos.</p>
 
