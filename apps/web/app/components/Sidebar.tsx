@@ -142,6 +142,9 @@ export default function Sidebar({ userId, userName, userEmail, userAvatar, userR
                             </Link>
                         );
                     })}
+                    <div className={styles.mobileBellWrap}>
+                        <NotificationBell userId={userId} initialCounts={{ notifs: notifCount, invs: invCount }} />
+                    </div>
                     <button onClick={cerrarSesion} className={`${styles.navItem} ${styles.mobileLogoutBtn}`} title="Cerrar sesión">
                         <span className={styles.icon}>🚪</span>
                         <span className={styles.label}>Salir</span>
