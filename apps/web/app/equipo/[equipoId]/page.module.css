@@ -140,7 +140,8 @@
     font-size: 0.9rem;
     text-decoration: none;
     box-shadow: 0 4px 14px rgba(45, 201, 168, 0.35);
-    white-space: nowrap;
+    white-space: normal; /* Permite saltos de línea en celulares */
+    word-break: break-word;
     flex-shrink: 0;
     transition: transform 0.2s;
 }
@@ -187,6 +188,30 @@
     font-weight: 700;
     font-size: 0.85rem;
     border: 1px solid rgba(126, 236, 216, 0.4);
+    white-space: normal;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .desafioCard {
+        padding: 20px 16px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .desafioActions {
+        width: 100%;
+    }
+
+    .btnGo, .btnDirectDocMain, .logradoBadge, .btnLogrado {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .main {
+        padding: 20px 16px 90px;
+    }
 }
 
 

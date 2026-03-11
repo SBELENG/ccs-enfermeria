@@ -375,4 +375,10 @@ h3 {
     width: 100%;
     box-sizing: border-box;
   }
+
+  /* FORZAR AJUSTE DE TEXTOS LARGOS EN TODOS LOS BOTONES E INSIGNIAS */
+  button, .btn, [class*="btn"], [class*="Btn"], [class*="badge"], [class*="Badge"] {
+      white-space: normal !important;
+      word-break: break-word;
+  }
 }
