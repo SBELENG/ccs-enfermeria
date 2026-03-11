@@ -266,4 +266,13 @@
     font-size: 1rem;
     font-family: inherit;
     padding: 12px 16px;
+    color: #e8404a; /* texto rojo para destacar salida */
+}
+
+@media (max-width: 768px) {
+    .mobileLogoutBtn .label {
+        display: inline !important;
+        margin-left: 6px;
+        font-size: 0.8rem;
+    }
 }
