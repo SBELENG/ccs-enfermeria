@@ -318,7 +318,7 @@ export default function DashboardPage() {
                         <div className={styles.evalNoticeContent}>
                             <h3>Evaluación 360° pendiente</h3>
                             <p>Tu equipo <strong>{evaluacionesPendientes[0].nombre}</strong> finalizó el desafío. Debés completar la evaluación de tus compañeros para poder unirte a nuevos grupos o invitar talentos.</p>
-                            <Link href={`/equipo/${evaluacionesPendientes[0].equipoId}`} className={styles.btnEvalMini}>
+                            <Link href={`/evaluacion-360/${evaluacionesPendientes[0].equipoId}`} className={styles.btnEvalMini}>
                                 Ir a evaluar →
                             </Link>
                         </div>
