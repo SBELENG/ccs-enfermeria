@@ -142,6 +142,10 @@ export default function Sidebar({ userId, userName, userEmail, userAvatar, userR
                             </Link>
                         );
                     })}
+                    <button onClick={cerrarSesion} className={`${styles.navItem} ${styles.mobileLogoutBtn}`} title="Cerrar sesión">
+                        <span className={styles.icon}>🚪</span>
+                        <span className={styles.label}>Salir</span>
+                    </button>
                 </nav>
             </div>
 

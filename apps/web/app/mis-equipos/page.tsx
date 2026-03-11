@@ -301,22 +301,38 @@ export default function MisEquiposPage() {
             {catedrasPublicas.length > 0 && (
                 <div className={styles.section}>
                     <h2 className={styles.sectionTitle}>🏫 Otras cátedras disponibles</h2>
-                    <div className={styles.catedrasPublicas}>
-                        {catedrasPublicas.map(cat => (
-                            <div key={cat.id} className={styles.catPubCard}>
-                                <div>
-                                    <h3>{cat.nombre_materia}</h3>
-                                    <p className={styles.catPubDoc}>Ciclo: {cat.ciclo_lectivo}</p>
+                    {Object.entries(
+                        catedrasPublicas.reduce((acc, cat) => {
+                            const anio = (cat as any).anio_carrera ? `${(cat as any).anio_carrera}º Año` : 'Otros';
+                            if (!acc[anio]) acc[anio] = [];
+                            acc[anio].push(cat);
+                            return acc;
+                        }, {} as Record<string, typeof catedrasPublicas>)
+                    )
+                        .sort(([a], [b]) => a.localeCompare(b)) /* 1ro, 2do, 3ro orden alfabético/numérico */
+                        .map(([anio, cats]) => (
+                            <div key={anio} style={{ marginBottom: '24px' }}>
+                                <h3 style={{ fontSize: '1.05rem', color: '#5a7191', marginBottom: '12px', borderBottom: '2px solid #eef2f6', paddingBottom: '6px' }}>
+                                    {anio} - Plan de Estudio
+                                </h3>
+                                <div className={styles.catedrasPublicas}>
+                                    {cats.map(cat => (
+                                        <div key={cat.id} className={styles.catPubCard}>
+                                            <div>
+                                                <h3>{cat.nombre_materia}</h3>
+                                                <p className={styles.catPubDoc}>Materia Universitaria</p>
+                                            </div>
+                                            <button
+                                                className={styles.btnJoin}
+                                                onClick={() => { setCatToJoin(cat); setShowRolModal(true); }}
+                                            >
+                                                Inscribirse
+                                            </button>
+                                        </div>
+                                    ))}
                                 </div>
-                                <button
-                                    className={styles.btnJoin}
-                                    onClick={() => { setCatToJoin(cat); setShowRolModal(true); }}
-                                >
-                                    Inscribirse
-                                </button>
                             </div>
                         ))}
-                    </div>
                 </div>
             )}
 

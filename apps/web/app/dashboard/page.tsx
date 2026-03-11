@@ -293,9 +293,9 @@ export default function DashboardPage() {
                         <div className={styles.inductionContent}>
                             <h3 className={styles.inductionTitle}>Sugerencia para tu perfil {rolP.label}</h3>
                             <p className={styles.inductionText}>
-                                {usuario.rol_primario === 'organizador'
-                                    ? 'Como Organizador, el primer paso es unirte a una cátedra con el código docente. Una vez dentro, creá tu propuesta de equipo para el desafío, asignale un nombre definitivo (ej: Grupo Sócrates) e invitá a tu Conciliador para iniciar la gestión.'
-                                    : 'Como perfil de apoyo, lo ideal es que te unas a las cátedras donde quieras participar y mantengas tu estado como "Disponible" para recibir las convocatorias de los Conciliadores.'}
+                                {usuario.rol_primario === 'organizador' && 'Como Organizador, tu primer paso es unirte a una cátedra. Creá allí un nuevo equipo y convocá a un Conciliador; él se encargará de buscar y agregar a los demás talentos para balancear el grupo.'}
+                                {usuario.rol_primario === 'conciliador' && 'Como Conciliador, unite a las cátedras y esperá a ser convocado por un Organizador. Una vez en su equipo, tu principal misión será buscar y convocar a los perfiles restantes para lograr un balance perfecto.'}
+                                {usuario.rol_primario !== 'organizador' && usuario.rol_primario !== 'conciliador' && 'Como perfil de apoyo, lo ideal es que te unas a las cátedras donde quieras participar y esperes a ser convocado por un Conciliador que esté armando el equipo ideal.'}
                             </p>
                             <div className={styles.inductionActions}>
                                 <Link href="/mis-equipos" className={styles.btnInduction}>

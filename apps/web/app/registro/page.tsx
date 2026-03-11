@@ -108,17 +108,17 @@ function RegistroInner() {
                     {/* Selector tipo perfil invisible si vino de invitacion */}
                     <div className={styles.roleSelector} style={{ marginTop: '10px' }}>
                         <span style={{ fontSize: '0.85rem', fontWeight: 500, color: '#334155', display: 'block', marginBottom: '4px' }}>Soy:</span>
-                        <div style={{ display: 'flex', gap: '8px' }}>
+                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                             <button
                                 type="button"
-                                className={tipo === 'estudiante' ? styles.btnChoiceActive : styles.btnChoice}
+                                className={tipo === 'estudiante' ? styles.tipoActive : styles.tipoBtn}
                                 onClick={() => setTipo('estudiante')}
                             >
                                 Estudiante
                             </button>
                             <button
                                 type="button"
-                                className={tipo === 'docente' ? styles.btnChoiceActive : styles.btnChoice}
+                                className={tipo === 'docente' ? styles.tipoActive : styles.tipoBtn}
                                 onClick={() => setTipo('docente')}
                             >
                                 Docente (Probar)

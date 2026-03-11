@@ -12,6 +12,7 @@ function generarCodigo(): string {
 export default function NuevaCatedraPage() {
     const [nombre, setNombre] = useState('');
     const [ciclo, setCiclo] = useState(new Date().getFullYear().toString());
+    const [anioCarrera, setAnioCarrera] = useState<number>(1);
     const [codigo, setCodigo] = useState(generarCodigo());
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -29,6 +30,7 @@ export default function NuevaCatedraPage() {
             docente_id: user.id,
             codigo_acceso: codigo,
             ciclo_lectivo: ciclo,
+            anio_carrera: anioCarrera,
             activa: true,
         }).select().single();
 
@@ -57,7 +59,23 @@ export default function NuevaCatedraPage() {
                         required
                     />
 
-                    <label htmlFor="ciclo">Ciclo lectivo</label>
+                    <label htmlFor="anioCarrera">Año de la carrera (Plan de estudios)</label>
+                    <select
+                        id="anioCarrera"
+                        className={styles.input}
+                        value={anioCarrera}
+                        onChange={e => setAnioCarrera(Number(e.target.value))}
+                        required
+                    >
+                        <option value={1}>1º Año</option>
+                        <option value={2}>2º Año</option>
+                        <option value={3}>3º Año</option>
+                        <option value={4}>4º Año</option>
+                        <option value={5}>5º Año</option>
+                        <option value={6}>6º Año</option>
+                    </select>
+
+                    <label htmlFor="ciclo">Ciclo lectivo (Año calendario)</label>
                     <input
                         id="ciclo"
                         type="text"
