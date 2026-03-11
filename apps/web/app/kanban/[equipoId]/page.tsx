@@ -300,11 +300,12 @@ export default function KanbanPage({ params }: { params: Promise<{ equipoId: str
                         </div>
                     </div>
 
-                    {tareas.length === 0 && desafio?.checklist_sugerido && (desafio.checklist_sugerido as any).length > 0 && (
+                    {tareas.length === 0 && desafio?.checklist_sugerido && (desafio.checklist_sugerido as any).length > 0 && myRol === 'organizador' && (
                         <button
                             className={styles.btnImport}
                             onClick={() => equipo?.cerrado ? setShowImport(true) : alert('Primero debés cerrar el grupo en "Mis Equipos".')}
                             disabled={saving}
+                            title="Solo el Organizador puede importar las tareas iniciales"
                         >
                             ⚡ Importar guía
                         </button>
@@ -468,6 +469,8 @@ export default function KanbanPage({ params }: { params: Promise<{ equipoId: str
                                                         setTareas(prev => prev.map(x => x.id === t.id ? { ...x, rol_asociado: newR as any } : x));
                                                         await (supabase.from('tareas') as any).update({ rol_asociado: newR }).eq('id', t.id);
                                                     }}
+                                                    disabled={myRol !== 'organizador' && userType !== 'docente'}
+                                                    title={myRol !== 'organizador' && userType !== 'docente' ? 'Solo el Organizador puede reasignar tareas' : ''}
                                                 >
                                                     {(Object.keys(ROLES) as RolKey[]).map(rk => (
                                                         <option key={rk} value={rk}>{ROLES[rk].icon} {ROLES[rk].label}</option>
