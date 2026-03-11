@@ -51,6 +51,11 @@
     .main {
         margin-left: 0;
         margin-bottom: 70px;
-        padding: 32px 20px;
+        padding: 0;
+    }
+    
+    .content {
+        padding: 24px 16px 40px;
+        overflow-x: hidden;
     }
 }
