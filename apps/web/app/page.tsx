@@ -48,7 +48,7 @@ export default function HomePage() {
                                     <>
                                         {userProfile?.tipo !== 'docente' && (
                                             <Link href="/test" className={styles.btnPrimary} id="cta-test">
-                                                🧪 Hacer mi Test de Perfil
+                                                🧪 Test de Perfil
                                             </Link>
                                         )}
                                         <Link href={userProfile?.tipo === 'docente' ? "/docente/dashboard" : "/dashboard"} className={styles.btnOutline} id="cta-dashboard">
@@ -57,7 +57,7 @@ export default function HomePage() {
                                     </>
                                 ) : (
                                     <Link href="/ingresar" className={styles.btnPrimary} id="cta-login">
-                                        Comenzar Ahora / Ingresar
+                                        Ingresar / Comenzar Ahora
                                     </Link>
                                 )}
                             </div>
