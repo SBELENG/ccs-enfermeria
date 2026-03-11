@@ -113,7 +113,7 @@ export default function MisEquiposPage() {
             .from('inscripciones') as any)
             .select('id')
             .eq('usuario_id', (usuario as any).id)
-            .eq('catedra_id', catedra.id)
+            .eq('catedra_id', (catedra as any).id)
             .limit(1);
 
         if (ya && ya.length > 0) {
@@ -204,7 +204,7 @@ export default function MisEquiposPage() {
         }
 
         setLoading(true);
-        const { error } = await supabase.from('equipos')
+        const { error } = await (supabase.from('equipos') as any)
             .update({ nombre_equipo: nombre, iniciado: true } as any)
             .eq('id', equipoId);
 
@@ -223,7 +223,7 @@ export default function MisEquiposPage() {
         if (!resp) return;
 
         setLoading(true);
-        const { error } = await supabase.from('equipos')
+        const { error } = await (supabase.from('equipos') as any)
             .update({ cerrado: true } as any)
             .eq('id', equipoId);
 

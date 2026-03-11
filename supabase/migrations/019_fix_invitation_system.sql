@@ -42,7 +42,10 @@ CREATE POLICY "Remitentes pueden insertar notificaciones"
     WITH CHECK (auth.uid() = remitente_id);
 
 -- 5. Asegurar Realtime en estas tablas
-ALTER PUBLICATION supabase_realtime ADD TABLE notificaciones, solicitudes_equipo;
+DO $$
+BEGIN
+  ALTER PUBLICATION supabase_realtime ADD TABLE notificaciones, solicitudes_equipo;
 EXCEPTION WHEN OTHERS THEN 
     -- Si ya estaban en la publicación, capturamos el error silenciosamente
     NULL;
+END $$;

@@ -50,7 +50,7 @@ export default function Evaluacion360Page({ params }: { params: Promise<{ equipo
             const { data: eq } = await supabase.from('equipos').select('*').eq('id', equipoId).single();
             setEquipo(eq);
 
-            if (eq && !eq.estado_entrega) {
+            if (eq && !(eq as any).estado_entrega) {
                 alert('El desafío debe estar finalizado para acceder a la evaluación 360°.');
                 window.location.href = `/equipo/${equipoId}`;
                 return;

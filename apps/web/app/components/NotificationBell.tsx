@@ -26,21 +26,24 @@ export default function NotificationBell({ userId, initialCounts }: { userId: st
             // 2. Cargar solicitudes de equipo (invitaciones) pendientes
             const { data: sData } = await supabase.from('solicitudes_equipo').select('*, remitente:usuarios(nombre), equipo:equipos(nombre_equipo)').eq('usuario_id', userId).eq('estado', 'pendiente');
 
-            const normalizadas = (nData || []).map(n => ({ ...n, source: 'notif' }));
+            const normalizadas = (nData || []).map((n: any) => ({ ...n, source: 'notif' }));
 
             // Transformar solicitudes en notificaciones si no existe una ya vinculada
-            const virtuales = (sData || []).filter(s => !normalizadas.some(n => n.equipo_id === s.equipo_id && n.tipo === s.tipo)).map(s => ({
-                id: s.id,
-                usuario_id: s.usuario_id,
-                remitente_id: s.remitente_id,
-                tipo: s.tipo,
-                mensaje: (s as any).mensaje || `${(s as any).remitente?.nombre || 'Alguien'} te envió una ${(s as any).tipo === 'invitacion' ? 'invitación' : 'señal de interés'}`,
-                leida: false,
-                created_at: s.created_at,
-                equipo_id: s.equipo_id,
-                estado: 'pendiente',
-                source: 'solicitud'
-            }));
+            const sDataArray = (sData as any[]) || [];
+            const virtuales = sDataArray
+                .filter(s => !normalizadas.some(n => n.equipo_id === s.equipo_id && n.tipo === s.tipo))
+                .map(s => ({
+                    id: s.id,
+                    usuario_id: s.usuario_id,
+                    remitente_id: s.remitente_id,
+                    tipo: s.tipo,
+                    mensaje: s.mensaje || `${s.remitente?.nombre || 'Alguien'} te envió una ${s.tipo === 'invitacion' ? 'invitación' : 'señal de interés'}`,
+                    leida: false,
+                    created_at: s.created_at,
+                    equipo_id: s.equipo_id,
+                    estado: 'pendiente',
+                    source: 'solicitud'
+                }));
 
             // Unificar y ordenar
             const unificadas = [...(normalizadas || []), ...(virtuales || [])].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());

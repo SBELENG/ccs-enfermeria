@@ -1,12 +1,13 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { supabase } from '@ccs/supabase';
 import Link from 'next/link';
 import { traducirError } from '../lib/auth-errors';
 import styles from '../auth.module.css';
 
-export default function RegistroPage() {
+
+function RegistroInner() {
     const searchParams = useSearchParams();
     const [nombre, setNombre] = useState('');
     const [email, setEmail] = useState('');
@@ -40,7 +41,7 @@ export default function RegistroPage() {
 
         // 2. Insertar/actualizar perfil en tabla usuarios
         if (data.user) {
-            const { error: dbError } = await supabase.from('usuarios').upsert({
+            const { error: dbError } = await (supabase.from('usuarios') as any).upsert({
                 id: data.user.id,
                 nombre,
                 email,
@@ -58,9 +59,10 @@ export default function RegistroPage() {
             <div className={styles.card}>
                 <div className={styles.icon}>🎉</div>
                 <h1>¡Cuenta creada!</h1>
-                <p>Registramos tu perfil como <strong>{tipo}</strong>.</p>
-                <p>Revisá tu email (<strong>{email}</strong>) para confirmar tu cuenta. Una vez confirmada, podrás ingresar para realizar tu test profesional.</p>
-                <Link href="/ingresar" className={styles.btnPrimary}>Ir a Ingresar →</Link>
+                <p>Por favor revisá tu <strong>bandeja de entrada</strong> (o spam) para verificar tu email y activar la cuenta.</p>
+                <Link href="/ingresar" className={styles.btnSecondary} style={{ display: 'block', textAlign: 'center', marginTop: '16px' }}>
+                    Ir a iniciar sesión
+                </Link>
             </div>
         </div>
     );
@@ -68,71 +70,85 @@ export default function RegistroPage() {
     return (
         <div className={styles.wrap}>
             <div className={styles.card}>
-                <div className={styles.logoSmall}>
-                    <img src="/logo-icon.png" alt="Logo CCS" width="64" height="64" style={{ objectFit: 'contain' }} />
-                </div>
-                <h1>Crear cuenta CCS</h1>
-                <p className={styles.sub}>Competencias Colaborativas en Salud · UNRC</p>
+                <img src="/logo-icon.png" alt="CCS Logo" className={styles.logo} />
+                <h1>Crear cuenta {tipo === 'docente' ? '👨‍🏫' : ''}</h1>
+                <p>Sumate a CCS y participá en equipos.</p>
 
                 {error && <div className={styles.errorBox}>{error}</div>}
 
-                {/* Selector de tipo */}
-                <div className={styles.tipoRow}>
-                    <button
-                        type="button"
-                        className={`${styles.tipoBtn} ${tipo === 'estudiante' ? styles.tipoActive : ''}`}
-                        onClick={() => setTipo('estudiante')}
-                        id="btn-tipo-estudiante"
-                    >🎓 Estudiante</button>
-                    <button
-                        type="button"
-                        className={`${styles.tipoBtn} ${tipo === 'docente' ? styles.tipoActive : ''}`}
-                        onClick={() => setTipo('docente')}
-                        id="btn-tipo-docente"
-                    >👨‍🏫 Docente</button>
-                </div>
-
                 <form onSubmit={handleRegistro} className={styles.form}>
-                    <label htmlFor="nombre">Nombre completo</label>
                     <input
-                        id="nombre"
                         type="text"
+                        placeholder="Nombre completo..."
                         value={nombre}
                         onChange={e => setNombre(e.target.value)}
-                        placeholder="Ej: María González"
                         required
                         className={styles.input}
                     />
-                    <label htmlFor="email">Email institucional</label>
                     <input
-                        id="email"
                         type="email"
+                        placeholder="Email universitario o personal..."
                         value={email}
                         onChange={e => setEmail(e.target.value)}
-                        placeholder="estudiante@unrc.edu.ar"
                         required
                         className={styles.input}
                     />
-                    <label htmlFor="password">Contraseña</label>
                     <input
-                        id="password"
                         type="password"
+                        placeholder="Contraseña (mínimo 6 chars)..."
                         value={password}
                         onChange={e => setPassword(e.target.value)}
-                        placeholder="Mínimo 8 caracteres"
-                        minLength={8}
                         required
+                        minLength={6}
                         className={styles.input}
                     />
-                    <button type="submit" className={styles.btnPrimary} disabled={loading} id="btn-registro">
-                        {loading ? 'Creando cuenta...' : 'Crear cuenta →'}
+
+                    {/* Selector tipo perfil invisible si vino de invitacion */}
+                    <div className={styles.roleSelector} style={{ marginTop: '10px' }}>
+                        <span style={{ fontSize: '0.85rem', fontWeight: 500, color: '#334155', display: 'block', marginBottom: '4px' }}>Soy:</span>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                            <button
+                                type="button"
+                                className={tipo === 'estudiante' ? styles.btnChoiceActive : styles.btnChoice}
+                                onClick={() => setTipo('estudiante')}
+                            >
+                                Estudiante
+                            </button>
+                            <button
+                                type="button"
+                                className={tipo === 'docente' ? styles.btnChoiceActive : styles.btnChoice}
+                                onClick={() => setTipo('docente')}
+                            >
+                                Docente (Probar)
+                            </button>
+                        </div>
+                    </div>
+
+                    <p className={styles.hint} style={{ marginTop: '4px', marginBottom: '16px' }}>
+                        {tipo === 'estudiante' ?
+                            'Podrás ser invitado a equipos, inscribirte a cátedras y trabajar en tableros kanban.' :
+                            'Tendrás acceso completo al panel para crear cátedras, desafíos y gestionar evaluaciones.'}
+                    </p>
+
+                    <button type="submit" disabled={loading} className={styles.btnPrimary}>
+                        {loading ? 'Registrando...' : 'Registrarme'}
                     </button>
                 </form>
 
-                <p className={styles.linkRow}>
-                    ¿Ya tenés cuenta? <Link href="/ingresar">Ingresar</Link>
-                </p>
+                <div className={styles.footerLink}>
+                    ¿Ya tenés cuenta? <Link href="/ingresar">Iniciá sesión acá</Link>
+                </div>
             </div>
         </div>
+    );
+}
+
+const SuspenseWrapper = Suspense as any;
+
+export default function RegistroPage() {
+    return (
+        <SuspenseWrapper fallback={<div style={{ textAlign: 'center', padding: '50px' }}>Cargando página de registro...</div>}>
+            <RegistroInner />
+        </SuspenseWrapper>
     );
 }

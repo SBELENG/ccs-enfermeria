@@ -42,7 +42,7 @@ DO $$
 DECLARE 
     pol RECORD;
 BEGIN 
-    FOR pol IN (SELECT policyname, tablename FROM pg_policies WHERE schemaname = 'public' AND tablename IN ('desafios', 'equipos', 'equipo_miembros', 'tareas', 'inscripciones', 'solicitudes_equipo')) 
+    FOR pol IN (SELECT policyname, tablename FROM pg_policies WHERE schemaname = 'public' AND tablename IN ('desafios', 'equipos', 'equipo_miembros', 'tareas', 'inscripciones')) 
     LOOP 
         EXECUTE format('DROP POLICY IF EXISTS %I ON %I', pol.policyname, pol.tablename);
     END LOOP;
@@ -106,8 +106,8 @@ CREATE POLICY "inscripciones_all_docente" ON inscripciones FOR ALL USING (
     EXISTS (SELECT 1 FROM catedras WHERE id = inscripciones.catedra_id AND docente_id = auth.uid())
 );
 
--- 7. Políticas para SOLICITUDES_EQUIPO
-ALTER TABLE solicitudes_equipo ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "solicitudes_select" ON solicitudes_equipo FOR SELECT USING (usuario_id = auth.uid() OR remitente_id = auth.uid());
-CREATE POLICY "solicitudes_insert" ON solicitudes_equipo FOR INSERT WITH CHECK (remitente_id = auth.uid());
-CREATE POLICY "solicitudes_update" ON solicitudes_equipo FOR UPDATE USING (usuario_id = auth.uid());
+-- 7. Políticas para SOLICITUDES_EQUIPO (Movidas o gestionadas en 019)
+-- ALTER TABLE solicitudes_equipo ENABLE ROW LEVEL SECURITY;
+-- CREATE POLICY "solicitudes_select" ON solicitudes_equipo FOR SELECT USING (usuario_id = auth.uid() OR remitente_id = auth.uid());
+-- CREATE POLICY "solicitudes_insert" ON solicitudes_equipo FOR INSERT WITH CHECK (remitente_id = auth.uid());
+-- CREATE POLICY "solicitudes_update" ON solicitudes_equipo FOR UPDATE USING (usuario_id = auth.uid());

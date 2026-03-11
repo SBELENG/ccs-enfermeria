@@ -63,7 +63,7 @@ export default function KanbanPage({ params }: { params: Promise<{ equipoId: str
             setUserId(user.id);
 
             const { data: u } = await supabase.from('usuarios').select('tipo').eq('id', user.id).single();
-            setUserType(u?.tipo || null);
+            setUserType((u as any)?.tipo || null);
 
             // Cargar equipo
             const { data: eq } = await supabase
@@ -465,7 +465,7 @@ export default function KanbanPage({ params }: { params: Promise<{ equipoId: str
                                                     value={t.rol_asociado}
                                                     onChange={async (e) => {
                                                         const newR = e.target.value;
-                                                        setTareas(prev => prev.map(x => x.id === t.id ? { ...x, rol_asociado: newR } : x));
+                                                        setTareas(prev => prev.map(x => x.id === t.id ? { ...x, rol_asociado: newR as any } : x));
                                                         await (supabase.from('tareas') as any).update({ rol_asociado: newR }).eq('id', t.id);
                                                     }}
                                                 >

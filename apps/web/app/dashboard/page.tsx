@@ -60,12 +60,12 @@ export default function DashboardPage() {
                 data = nuevo;
             }
 
-            if (data?.tipo === 'docente') {
+            if ((data as any)?.tipo === 'docente') {
                 window.location.href = '/docente/dashboard';
                 return;
             }
 
-            setUsuario(data);
+            setUsuario(data as any);
 
             // Cargar cátedras inscritas
             const { data: inscripciones } = await supabase

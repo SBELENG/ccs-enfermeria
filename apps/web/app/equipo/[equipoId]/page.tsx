@@ -85,7 +85,7 @@ export default function EquipoPage({ params }: { params: Promise<{ equipoId: str
             const miRol = miembros.find(m => m.id === usuario.id)?.rol_en_equipo;
             // Inyectamos los datos del usuario y rol localmente
             const nuevoEnriquecido = {
-                ...nuevo,
+                ...(nuevo as any),
                 usuario: { nombre: usuario.nombre, foto_url: usuario.foto_url },
                 em: { rol_en_equipo: miRol }
             };

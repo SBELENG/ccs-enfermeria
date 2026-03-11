@@ -24,7 +24,7 @@ export default function NuevaCatedraPage() {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) { window.location.href = '/ingresar'; return; }
 
-        const { data, error: err } = await supabase.from('catedras').insert({
+        const { data, error: err } = await (supabase.from('catedras') as any).insert({
             nombre_materia: nombre.trim(),
             docente_id: user.id,
             codigo_acceso: codigo,

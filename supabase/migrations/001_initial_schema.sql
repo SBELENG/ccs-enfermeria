@@ -2,16 +2,28 @@
 -- CCS · Migración inicial de la base de datos (Supabase/PostgreSQL)
 -- ============================================================
 
--- Tipos ENUM
-CREATE TYPE tipo_usuario AS ENUM ('docente', 'estudiante');
-CREATE TYPE rol_nombre AS ENUM ('organizador', 'analitico', 'ejecutor', 'creativo', 'conciliador', 'motivador');
-CREATE TYPE estado_kanban AS ENUM ('backlog', 'doing', 'review', 'done');
-CREATE TYPE estado_desafio AS ENUM ('borrador', 'activo', 'cerrado');
+-- Tipos ENUM seguros
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+DO $$ BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'tipo_usuario') THEN
+        CREATE TYPE tipo_usuario AS ENUM ('docente', 'estudiante');
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'rol_nombre') THEN
+        CREATE TYPE rol_nombre AS ENUM ('organizador', 'analitico', 'ejecutor', 'creativo', 'conciliador', 'motivador');
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'estado_kanban') THEN
+        CREATE TYPE estado_kanban AS ENUM ('backlog', 'doing', 'review', 'done');
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'estado_desafio') THEN
+        CREATE TYPE estado_desafio AS ENUM ('borrador', 'activo', 'cerrado');
+    END IF;
+END $$;
 
 -- ============================================================
 -- Tabla: usuarios
 -- ============================================================
-CREATE TABLE usuarios (
+CREATE TABLE IF NOT EXISTS usuarios (
   id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   nombre          TEXT NOT NULL,
   foto_url        TEXT,

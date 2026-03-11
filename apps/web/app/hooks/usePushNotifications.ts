@@ -22,7 +22,7 @@ export function usePushNotifications() {
             });
 
             // Guardar en Supabase
-            await supabase.from('push_subscriptions').upsert({
+            await (supabase.from('push_subscriptions') as any).upsert({
                 usuario_id: userId,
                 subscription: subscription.toJSON() as any
             }, { onConflict: 'usuario_id' });

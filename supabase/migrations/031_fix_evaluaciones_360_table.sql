@@ -4,7 +4,7 @@
 
 -- 1. Crear la tabla si no existe
 CREATE TABLE IF NOT EXISTS public.evaluaciones_360 (
-    id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     evaluador_id  UUID NOT NULL REFERENCES public.usuarios(id) ON DELETE CASCADE,
     evaluado_id   UUID NOT NULL REFERENCES public.usuarios(id) ON DELETE CASCADE,
     equipo_id     UUID NOT NULL REFERENCES public.equipos(id)  ON DELETE CASCADE,

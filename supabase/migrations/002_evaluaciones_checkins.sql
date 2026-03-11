@@ -2,7 +2,7 @@
 -- Ejecutar en Supabase SQL Editor
 
 CREATE TABLE IF NOT EXISTS public.evaluaciones_360 (
-  id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   evaluador_id  UUID NOT NULL REFERENCES public.usuarios(id) ON DELETE CASCADE,
   evaluado_id   UUID NOT NULL REFERENCES public.usuarios(id) ON DELETE CASCADE,
   equipo_id     UUID NOT NULL REFERENCES public.equipos(id)  ON DELETE CASCADE,
@@ -50,7 +50,7 @@ CREATE POLICY "evaluaciones_select_docente" ON public.evaluaciones_360
 
 -- También agregar tabla de checkins si no existe
 CREATE TABLE IF NOT EXISTS public.checkins (
-  id          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   usuario_id  UUID NOT NULL REFERENCES public.usuarios(id)  ON DELETE CASCADE,
   equipo_id   UUID NOT NULL REFERENCES public.equipos(id)   ON DELETE CASCADE,
   resumen     TEXT NOT NULL,

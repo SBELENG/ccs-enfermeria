@@ -72,7 +72,7 @@ export default function CatedraPage({ params }: { params: Promise<{ catedraId: s
             if (!user) { window.location.href = '/ingresar'; return; }
 
             const { data: u } = await supabase.from('usuarios').select('tipo').eq('id', user.id).single();
-            setUserType(u?.tipo || null);
+            setUserType((u as any)?.tipo || null);
 
             const { data: cat } = await supabase.from('catedras').select('*').eq('id', catedraId).single();
             setCatedra(cat);
@@ -99,7 +99,7 @@ export default function CatedraPage({ params }: { params: Promise<{ catedraId: s
             const enrichedTeams = await Promise.all(allTeams.map(async (eq) => {
                 const { data: ts } = await supabase.from('tareas').select('estado').eq('equipo_id', eq.id);
                 const total = ts?.length || 0;
-                const listos = ts?.filter(t => t.estado === 'done').length || 0;
+                const listos = (ts as any[])?.filter((t: any) => t.estado === 'done').length || 0;
                 const pct = total > 0 ? Math.round((listos / total) * 100) : 0;
 
                 return { ...eq, progreso: pct, totalTareas: total };
@@ -165,7 +165,7 @@ export default function CatedraPage({ params }: { params: Promise<{ catedraId: s
                             .eq('equipo_id', equipoId);
 
                         if (tData) {
-                            const misTareas = tData.filter(t =>
+                            const misTareas = (tData as any[]).filter(t =>
                                 t.usuario_id === u.id ||
                                 (!t.usuario_id && t.rol_asociado === rolEnEquipo)
                             );
@@ -824,7 +824,7 @@ export default function CatedraPage({ params }: { params: Promise<{ catedraId: s
                                     </div>
                                     {equiposCatedra
                                         .filter(eq => {
-                                            if (filtroEstudiantes === 'cerrados') return eq.cerrado;
+                                            if (filtroEstudiantes === 'cerrados') return (eq as any).cerrado;
                                             return true;
                                         })
                                         .map(eq => (
@@ -832,8 +832,8 @@ export default function CatedraPage({ params }: { params: Promise<{ catedraId: s
                                                 <div className={styles.eqDocName}>
                                                     <div className={styles.estName}>
                                                         <strong>{eq.nombre_equipo}</strong>
-                                                        <span className={`${styles.lockIcon} ${eq.cerrado ? styles.isLocked : ''}`}>
-                                                            {eq.cerrado ? '🔒' : '🔓'}
+                                                        <span className={`${styles.lockIcon} ${(eq as any).cerrado ? styles.isLocked : ''}`}>
+                                                            {(eq as any).cerrado ? '🔒' : '🔓'}
                                                         </span>
                                                     </div>
                                                     <span style={{ fontSize: '0.7rem', color: '#64748b' }}>{(eq as any).desafio?.titulo}</span>
