@@ -324,6 +324,28 @@
     cursor: not-allowed;
 }
 
+.btnIncompatible {
+    padding: 6px 14px;
+    background: #f1f5f9;
+    color: #94a3b8;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: not-allowed;
+}
+
+.btnAvisado {
+    padding: 6px 14px;
+    background: #e8fdf7;
+    color: #1e8f7a;
+    border: 1px solid #7eecd8;
+    border-radius: 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: default;
+}
+
 @media (max-width: 768px) {
     .listHeader {
         display: none;

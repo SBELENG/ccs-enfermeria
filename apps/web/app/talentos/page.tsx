@@ -21,8 +21,10 @@ export default function TalentosPage() {
     const [usuarioActual, setUsuarioActual] = useState<Usuario | null>(null);
     const [idsEnCatedra, setIdsEnCatedra] = useState<string[] | null>(null);
     const [idsEnEquipo, setIdsEnEquipo] = useState<string[]>([]);
+    const [misRolesEnEquipo, setMisRolesEnEquipo] = useState<Record<string, string>>({});
     const [nombreCatedraSel, setNombreCatedraSel] = useState('');
     const [loadingCatedra, setLoadingCatedra] = useState(false);
+    const [solicitudesEnviadas, setSolicitudesEnviadas] = useState<string[]>([]);
 
     useEffect(() => {
         async function cargar() {
@@ -41,8 +43,12 @@ export default function TalentosPage() {
 
             setEstudiantes(data ?? []);
 
-            const { data: mms } = await (supabase.from('equipo_miembros') as any).select('equipo_id').eq('usuario_id', user.id);
+            const { data: mms } = await (supabase.from('equipo_miembros') as any).select('equipo_id, rol_en_equipo').eq('usuario_id', user.id);
             if (mms && mms.length > 0) {
+                const rolesMap: Record<string, string> = {};
+                mms.forEach((m: any) => { rolesMap[m.equipo_id] = m.rol_en_equipo; });
+                setMisRolesEnEquipo(rolesMap);
+
                 const { data: eqs } = await (supabase.from('equipos') as any).select('*').in('id', mms.map((m: any) => m.equipo_id));
                 setMisEquipos(eqs ?? []);
                 // No seteamos seleccion por defecto para que aparezcan todos al inicio como solicita el usuario
@@ -67,6 +73,12 @@ export default function TalentosPage() {
                 .is('estado_entrega', null)
                 .limit(10);
             setEquiposFormacion(eqsForm || []);
+
+            const { data: sols } = await supabase
+                .from('solicitudes_equipo')
+                .select('usuario_id')
+                .eq('remitente_id', user.id);
+            if (sols) setSolicitudesEnviadas(sols.map((s: any) => s.usuario_id));
 
             setLoading(false);
         }
@@ -181,6 +193,7 @@ export default function TalentosPage() {
                 estado: 'pendiente',
                 mensaje: `${usuarioActual.nombre} está interesado en tu perfil para su equipo "${eqNombre}".`,
             } as any);
+            setSolicitudesEnviadas(prev => [...prev, est.id]);
             alert('✅ Aviso de interés enviado con éxito.');
         }
     }
@@ -193,27 +206,14 @@ export default function TalentosPage() {
             return;
         }
 
-        const RolesMios = [usuarioActual.rol_primario, usuarioActual.rol_secundario];
+        const miRolAsumido = misRolesEnEquipo[eqSel];
         const RolesDest = [est.rol_primario, est.rol_secundario];
 
-        const soyOrganizador = RolesMios.includes('organizador');
-        const soyConciliador = RolesMios.includes('conciliador');
-        const destEsOrganizador = RolesDest.includes('organizador');
-        const destEsConciliador = RolesDest.includes('conciliador');
+        const soyOrganizador = miRolAsumido === 'organizador';
+        const soyConciliador = miRolAsumido === 'conciliador';
 
         if (!est.rol_primario) {
             alert('Este alumno aún no ha completado el test profesional.');
-            return;
-        }
-
-        // Lógica de Jerarquía
-        if (soyOrganizador && !destEsConciliador) {
-            alert('Como Organizador, solo podés invitar a un Conciliador. Él se encargará de reclutar al resto del equipo.');
-            return;
-        }
-
-        if (soyConciliador && !soyOrganizador && destEsOrganizador) {
-            alert('No podés invitar a otro Organizador al equipo.');
             return;
         }
 
@@ -257,6 +257,7 @@ export default function TalentosPage() {
                 estado: 'pendiente',
                 mensaje: `${usuarioActual.nombre} te invita como ${ROLES[rolInvitadoRaw as RolKey]?.label || 'miembro'} a su equipo "${eqNombre}".`,
             } as any);
+            setSolicitudesEnviadas(prev => [...prev, est.id]);
             alert('✅ Invitación enviada.');
         }
     }
@@ -418,20 +419,36 @@ export default function TalentosPage() {
 
                                     {misEquipos.length > 0 && est.id !== myId && (
                                         (() => {
-                                            const RolesMios = [usuarioActual?.rol_primario, usuarioActual?.rol_secundario];
+                                            if (!eqSel) {
+                                                return (
+                                                    <button
+                                                        onClick={() => alert('Debes seleccionar un equipo en el "Contexto de Búsqueda" arriba para poder invitar.')}
+                                                        className={styles.btnInviteCompact}
+                                                        style={{ opacity: 0.5 }}
+                                                    >
+                                                        ➕ Invitar
+                                                    </button>
+                                                );
+                                            }
+
+                                            const miRolAsumido = misRolesEnEquipo[eqSel];
                                             const RolesDest = [est.rol_primario, est.rol_secundario];
 
-                                            const soyOrganizador = RolesMios.includes('organizador');
-                                            const soyConciliador = RolesMios.includes('conciliador');
+                                            const soyOrganizador = miRolAsumido === 'organizador';
+                                            const soyConciliador = miRolAsumido === 'conciliador';
                                             const puedeInvitar = soyOrganizador || soyConciliador;
 
-                                            // Un Organizador solo invita a Conciliadores. 
-                                            // Un Conciliador puede invitar a todos excepto Organizadores.
-                                            const destinoValido = soyOrganizador
-                                                ? RolesDest.includes('conciliador')
-                                                : !RolesDest.includes('organizador');
+                                            if (solicitudesEnviadas.includes(est.id)) {
+                                                return <button className={styles.btnAvisado} disabled title="Ya invitaste a este talento a tu equipo.">✅ Invitado</button>;
+                                            }
 
-                                            if (!puedeInvitar || !destinoValido) return null;
+                                            if (!puedeInvitar) {
+                                                return <button className={styles.btnIncompatible} disabled title={`Asumiste rol de ${ROLES[miRolAsumido as RolKey]?.label || miRolAsumido}. Solo Organizadores y Conciliadores invitan.`}>🚫 Solo líderes</button>;
+                                            }
+
+                                            if (soyOrganizador && !RolesDest.includes('conciliador')) {
+                                                return <button className={styles.btnIncompatible} disabled title="Como Organizador, debes reclutar a un Conciliador.">🚫 Solo Conciliadores</button>;
+                                            }
 
                                             return est.buscando_equipo ? (
                                                 <button
