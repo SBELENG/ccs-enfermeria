@@ -53,10 +53,12 @@ export default function MisEquiposPage() {
                 setEquipos((eqs as any[]) ?? []);
             }
 
+            // Cargar inscripciones activas (no archivadas)
             const { data: insData, error: insErr } = await supabase
                 .from('inscripciones')
                 .select('*, catedra:catedras(*)')
-                .eq('usuario_id', user.id);
+                .eq('usuario_id', user.id)
+                .eq('oculta', false);
 
             if (insData && insData.length > 0) {
                 setInscripciones(insData);
@@ -269,6 +271,13 @@ export default function MisEquiposPage() {
         window.location.reload();
     }
 
+    async function archivarCatedra(inscripcionId: string) {
+        if (!confirm('¿Seguro querés archivar esta cátedra? Ya no la verás en tu lista principal, pero se conserva tu historial de equipos.')) return;
+        setLoading(true);
+        await (supabase.from('inscripciones') as any).update({ oculta: true }).eq('id', inscripcionId);
+        window.location.reload();
+    }
+
     return (
         <AuthenticatedLayout>
             <div className={styles.header}>
@@ -465,11 +474,20 @@ export default function MisEquiposPage() {
                         ) : (
                             inscripciones.map(ins => (
                                 <div key={ins.id} className={styles.inscripcionCard}>
-                                    <div className={styles.insIcon}>🏛️</div>
-                                    <div className={styles.insInfo}>
-                                        <h3>{ins.catedra?.nombre_materia}</h3>
-                                        <p>Ciclo: {ins.catedra?.ciclo_lectivo} · Rol: <strong>{ROLES[ins.rol_activo as RolKey]?.label || 'Estudiante'}</strong></p>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flex: 1 }}>
+                                        <div className={styles.insIcon}>🏛️</div>
+                                        <div className={styles.insInfo}>
+                                            <h3>{ins.catedra?.nombre_materia}</h3>
+                                            <p>Ciclo: {ins.catedra?.ciclo_lectivo} · Rol: <strong>{ROLES[ins.rol_activo as RolKey]?.label || 'Estudiante'}</strong></p>
+                                        </div>
                                     </div>
+                                    <button
+                                        onClick={() => archivarCatedra(ins.id)}
+                                        className={styles.btnArchivar}
+                                        title="Ocultar de mi lista de cátedras activas"
+                                    >
+                                        👁️‍🗨️ Archivar
+                                    </button>
                                 </div>
                             ))
                         )}

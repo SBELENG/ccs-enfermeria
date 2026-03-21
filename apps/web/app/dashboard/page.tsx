@@ -67,11 +67,12 @@ export default function DashboardPage() {
 
             setUsuario(data as any);
 
-            // Cargar cátedras inscritas
+            // Cargar cátedras inscritas no ocultas
             const { data: inscripciones } = await supabase
                 .from('inscripciones')
                 .select('*, catedra:catedras(*)')
-                .eq('usuario_id', user.id);
+                .eq('usuario_id', user.id)
+                .eq('oculta', false);
 
             if (inscripciones && inscripciones.length > 0) {
                 const map = new Map();

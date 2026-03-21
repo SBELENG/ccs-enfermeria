@@ -364,6 +364,26 @@
     font-weight: 500;
 }
 
+.btnArchivar {
+    background: #f1f5f9;
+    border: none;
+    color: #64748b;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btnArchivar:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
 /* MODAL DESAFIO */
 .modalOverlay {
     position: fixed;
