@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Manual del Usuario – CCS</title>
+<style>
+@page { size: A4; margin: 25mm 20mm; }
+@media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+* { box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #1a2b5e;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+h1 {
+  font-size: 26px;
+  color: #1a2b5e;
+  border-bottom: 3px solid #2dc9a8;
+  padding-bottom: 10px;
+  margin-top: 0;
+}
+h1 + h2 { margin-top: 8px; }
+h2 {
+  font-size: 17px;
+  color: #1a2b5e;
+  margin-top: 34px;
+  border-left: 4px solid #2dc9a8;
+  padding-left: 12px;
+}
+h3 {
+  font-size: 14px;
+  color: #3a6bc8;
+  margin-top: 20px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 14px 0;
+  font-size: 12px;
+}
+th, td {
+  border: 1px solid #e2eaf2;
+  padding: 8px 12px;
+  text-align: left;
+}
+th {
+  background: #f0f5fb;
+  font-weight: 700;
+  color: #1a2b5e;
+}
+ul, ol { padding-left: 22px; }
+li { margin-bottom: 5px; }
+hr {
+  border: none;
+  border-top: 1.5px solid #e2eaf2;
+  margin: 28px 0;
+}
+strong { color: #1a2b5e; }
+a { color: #3a6bc8; text-decoration: none; }
+.intro {
+  font-size: 14px;
+  color: #3a5e8a;
+  margin-bottom: 8px;
+}
+.accent { color: #2dc9a8; }
+.footer-pdf {
+  margin-top: 40px;
+  padding-top: 16px;
+  border-top: 2px solid #2dc9a8;
+  text-align: center;
+  font-size: 11px;
+  color: #64748b;
+}
+.print-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 24px;
+  background: #1a2b5e;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(26,43,94,0.3);
+  z-index: 999;
+}
+.print-btn:hover { background: #2a4080; }
+@media print { .print-btn { display: none; } }
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+
+<h1>Manual del Usuario</h1>
+<h2 style="border:none;padding:0;margin-top:4px;color:#3a6bc8">Competencias Colaborativas en Salud (CCS)</h2>
+
+<p class="intro"><strong>CCS</strong> es una plataforma educativa diseñada para la Escuela de Enfermería (UNRC) que rompe con el esquema tradicional de "armar grupos por afinidad". Aquí, <strong>los equipos se forman estratégicamente por complementariedad de roles</strong>, simulando un entorno profesional real de salud donde cada miembro aporta un talento único.</p>
+
+<hr>
+
+<h2>1. Apertura de Cátedra y Desafíos (Visión del Docente)</h2>
+<p>Todo el proceso inicia con el docente. Al ingresar a su panel, el profesor puede:</p>
+<ul>
+  <li><strong>Crear una Cátedra:</strong> Define el nombre de la materia y el ciclo lectivo. El sistema genera automáticamente un <strong>código de acceso único</strong> que deberá compartir con sus alumnos.</li>
+  <li><strong>Diseñar Desafíos:</strong> Dentro de la cátedra, el docente crea "Desafíos" (los trabajos prácticos o proyectos). Establece los objetivos, los requerimientos, la fecha de cierre y el límite de integrantes por equipo.</li>
+  <li><strong>Adjuntar Consignas:</strong> Puede subir un archivo PDF o imagen con las consignas técnicas del trabajo práctico y definir un checklist sugerido de tareas.</li>
+</ul>
+
+<hr>
+
+<h2>2. Descubrir tu Perfil Profesional (El Test)</h2>
+<p>Cuando el estudiante ingresa por primera vez, realiza un test situacional de 4 preguntas. El sistema le asigna un <strong>Rol Primario</strong> y un <strong>Rol Secundario</strong> entre 6 perfiles:</p>
+<ul>
+  <li>🗂️ <strong>Organizador:</strong> Estructura, planifica y lidera la formación del equipo.</li>
+  <li>🤝 <strong>Conciliador:</strong> Facilita el diálogo y tiene la capacidad de invitar a todos los roles.</li>
+  <li>🛠️ <strong>Ejecutor:</strong> Transforma ideas en acciones concretas.</li>
+  <li>📊 <strong>Analítico:</strong> Aporta mirada crítica y basada en datos.</li>
+  <li>🔊 <strong>Motivador:</strong> Sostiene el compromiso y clima grupal.</li>
+  <li>🎨 <strong>Creativo:</strong> Aporta enfoques originales e innovadores.</li>
+</ul>
+<p>El estudiante puede elegir destacar su rol primario o secundario para la búsqueda de equipos.</p>
+
+<hr>
+
+<h2>3. Formación Estratégica del Equipo (Marketplace de Talentos)</h2>
+<h3>Flujo de Formación</h3>
+<ol>
+  <li><strong>El Organizador</strong> crea la propuesta de equipo para el desafío y le asigna un nombre.</li>
+  <li><strong>Invita a un Conciliador</strong>, quien será su mano derecha para completar el grupo.</li>
+  <li><strong>Juntos acceden al Marketplace de Talentos</strong>, donde filtran compañeros por los roles que les faltan.</li>
+</ol>
+
+<h3>Reglas de Invitación</h3>
+<ul>
+  <li><strong>El Organizador</strong> (después de formar el equipo) solo puede invitar a Conciliadores.</li>
+  <li><strong>El Conciliador</strong> puede invitar a todos los roles disponibles, salvo Organizadores que ya tengan equipo.</li>
+  <li>Las invitaciones muestran estados claros: botón activo, <em>✅ Enviada</em>, o <em>🚫 Incompatible</em>.</li>
+  <li>Los permisos se basan en el <strong>rol asumido dentro del equipo</strong>, no en el perfil general.</li>
+</ul>
+
+<h3>Cierre del Equipo</h3>
+<p>Una vez conforme, el Organizador <strong>cierra la formación</strong>. Todos los miembros reciben una <strong>notificación automática</strong> indicando que pueden comenzar a trabajar en el Tablero Kanban.</p>
+
+<hr>
+
+<h2>4. Trabajo y Gestión (Tablero Kanban)</h2>
+<p>El nombre <strong>Kanban</strong> proviene de la metodología japonesa de gestión visual. Los estudiantes aprenden a gestionar proyectos de forma profesional.</p>
+
+<table>
+  <thead><tr><th>Columna</th><th>Significado</th></tr></thead>
+  <tbody>
+    <tr><td>📋 <strong>Backlog</strong></td><td>Tareas pendientes de iniciar</td></tr>
+    <tr><td>🔄 <strong>En Curso</strong></td><td>Trabajo actualmente en progreso</td></tr>
+    <tr><td>👀 <strong>Revisión</strong></td><td>Tareas terminadas esperando validación</td></tr>
+    <tr><td>✅ <strong>Listo</strong></td><td>Trabajo completado y aprobado</td></tr>
+  </tbody>
+</table>
+
+<h3>Roles dentro del Kanban</h3>
+<ul>
+  <li><strong>El Organizador</strong> tiene el control inicial: es el único que puede <strong>importar las tareas sugeridas</strong> por el docente (botón ⚡ Importar Guía), <strong>reasignar roles</strong> a cada tarjeta y distribuir el trabajo.</li>
+  <li><strong>Todos los demás roles</strong> pueden <strong>proponer tareas</strong> nuevas (botón "+ Proponer tarea"). Estas propuestas llegan a la <strong>Bandeja de Entrada</strong> del Organizador, quien decide aprobarlas o rechazarlas.</li>
+  <li><strong>Todos los miembros</strong> pueden mover tarjetas entre columnas, y los cambios se reflejan <strong>en tiempo real</strong>.</li>
+</ul>
+
+<h3>Funcionalidades Adicionales</h3>
+<ul>
+  <li>📖 <strong>Leer el Desafío:</strong> Acceso directo a las consignas del docente.</li>
+  <li>📄 <strong>Descargar PDF:</strong> Archivo de consignas técnicas.</li>
+  <li>⏰ <strong>Cuenta Regresiva:</strong> Días restantes para la entrega.</li>
+  <li>📊 <strong>Barra de Progreso:</strong> Porcentaje de tareas completadas.</li>
+  <li>🏷️ <strong>Filtro por Rol:</strong> Ver solo las tareas de un rol específico.</li>
+</ul>
+
+<hr>
+
+<h2>5. El Cierre: Evaluación 360°</h2>
+<p>Una vez entregado el trabajo, se activa la <strong>Evaluación 360°</strong>. Cada estudiante evalúa de forma <strong>anónima</strong> a sus compañeros en dos dimensiones:</p>
+<ul>
+  <li>🎯 <strong>Qué:</strong> Desempeño técnico y calidad de sus aportes.</li>
+  <li>🤝 <strong>Cómo:</strong> Habilidades blandas, comunicación y empatía.</li>
+</ul>
+<h3>Flujo de Evaluación</h3>
+<ol>
+  <li>Aparece una <strong>alerta prominente</strong> en el panel de inicio: <em>"Evaluación 360° pendiente"</em>.</li>
+  <li>El botón <strong>"Ir a evaluar →"</strong> lleva directamente a la lista de compañeros.</li>
+  <li>La alerta <strong>desaparece automáticamente</strong> al completar todas las evaluaciones.</li>
+  <li><strong>Bloqueo:</strong> Con evaluaciones pendientes, no puede unirse a nuevos equipos.</li>
+</ol>
+
+<hr>
+
+<h2>6. Monitoreo y Métricas Finales (Panel Docente)</h2>
+
+<table>
+  <thead><tr><th>Pestaña</th><th>Contenido</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Todos</strong></td><td>Lista completa de estudiantes inscritos</td></tr>
+    <tr><td><strong>Sin equipo</strong></td><td>Alumnos que aún no fueron invitados</td></tr>
+    <tr><td><strong>Formados</strong></td><td>Equipos en proceso de armado</td></tr>
+    <tr><td><strong>Cerrados</strong></td><td>Equipos consolidados trabajando</td></tr>
+    <tr><td>📊 <strong>Métricas</strong></td><td>Reporte consolidado de evaluaciones 360°</td></tr>
+  </tbody>
+</table>
+
+<h3>En el Panel de Métricas, el docente ve:</h3>
+<ul>
+  <li><strong>Participación (✅ / ⚠️):</strong> Quién ya evaluó a sus pares.</li>
+  <li><strong>Reviews Completadas:</strong> Cuántas evaluaciones recibió cada estudiante.</li>
+  <li><strong>Promedios Ponderados:</strong> Cálculo de "Qué" y "Cómo".</li>
+  <li><strong>Insignias Ganadas:</strong> Premios automáticos (ej: "Ejecutor Estrella" 🌟).</li>
+</ul>
+<p>Con un clic en <strong>"Descargar PDF"</strong>, el docente obtiene el acta formal.</p>
+
+<hr>
+
+<h2>7. Notificaciones</h2>
+<ul>
+  <li>📧 <strong>Invitación a equipo:</strong> Cuando un compañero te invita a su grupo.</li>
+  <li>🔒 <strong>Equipo cerrado:</strong> Cuando el Organizador finaliza la formación.</li>
+  <li>⚠️ <strong>Evaluación pendiente:</strong> Recordatorio de la evaluación 360°.</li>
+  <li>📢 <strong>Avisos del docente:</strong> Mensajes directos del profesor.</li>
+</ul>
+
+<hr>
+
+<h2>Acceso a la Plataforma</h2>
+<p>🔗 <strong>URL:</strong> <a href="https://app-ccs.vercel.app">https://app-ccs.vercel.app</a></p>
+<p>Para ingresar, cada usuario se registra con su email institucional. Los docentes acceden al panel de gestión; los estudiantes, al panel de trabajo colaborativo.</p>
+
+<div class="footer-pdf">
+  <strong>CCS · Competencias Colaborativas en Salud</strong><br>
+  Escuela de Enfermería · Universidad Nacional de Río Cuarto<br>
+  🔗 https://app-ccs.vercel.app
+</div>
+
+</body>
+</html>

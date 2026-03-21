@@ -45,16 +45,9 @@ export default function HomePage() {
                         {!loading && (
                             <div className={styles.heroCtas}>
                                 {user ? (
-                                    <>
-                                        {userProfile?.tipo !== 'docente' && (
-                                            <Link href="/test" className={styles.btnPrimary} id="cta-test">
-                                                🧪 Hacer mi Test de Perfil
-                                            </Link>
-                                        )}
-                                        <Link href={userProfile?.tipo === 'docente' ? "/docente/dashboard" : "/dashboard"} className={styles.btnOutline} id="cta-dashboard">
-                                            Ir al Panel →
-                                        </Link>
-                                    </>
+                                    <Link href={userProfile?.tipo === 'docente' ? "/docente/dashboard" : "/dashboard"} className={styles.btnPrimary} id="cta-dashboard">
+                                        Ir a mi Panel →
+                                    </Link>
                                 ) : (
                                     <Link href="/ingresar" className={styles.btnPrimary} id="cta-login">
                                         Comenzar Ahora / Ingresar
