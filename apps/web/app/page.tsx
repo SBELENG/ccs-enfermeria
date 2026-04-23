@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@ccs/supabase';
 import Link from 'next/link';
+import { traducirError } from './lib/auth-errors';
 import styles from './page.module.css';
 
 const roles = [
@@ -17,16 +18,26 @@ export default function HomePage() {
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [userProfile, setUserProfile] = useState<any>(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         async function checkUser() {
-            const { data: { user } } = await supabase.auth.getUser();
-            setUser(user);
-            if (user) {
-                const { data: profile } = await supabase.from('usuarios').select('tipo').eq('id', user.id).single();
-                setUserProfile(profile);
+            try {
+                const { data: { user }, error: authError } = await supabase.auth.getUser();
+                if (authError) throw authError;
+
+                setUser(user);
+                if (user) {
+                    const { data: profile, error: dbError } = await supabase.from('usuarios').select('tipo').eq('id', user.id).single();
+                    if (dbError && dbError.code !== 'PGRST116') throw dbError; // PGRST116 is 'no rows'
+                    setUserProfile(profile);
+                }
+            } catch (err: any) {
+                console.error("Error checking user:", err);
+                setError(traducirError(err.message || String(err)));
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
         }
         checkUser();
     }, []);
@@ -42,7 +53,16 @@ export default function HomePage() {
                     <div className={styles.heroText}>
                         <h1><span className={styles.accent}>CCS</span> · Competencias<br />Colaborativas en Salud</h1>
                         <p>Formá equipos por complementariedad de roles, no por afinidad personal. Plataforma académica para la Escuela de Enfermería · UNRC.</p>
-                        {!loading && (
+                        {error && (
+                            <div className={styles.errorBox}>
+                                <p>⚠️ {error}</p>
+                                <button onClick={() => window.location.reload()} className={styles.btnSmall}>
+                                    Reintentar
+                                </button>
+                            </div>
+                        )}
+
+                        {!loading && !error && (
                             <div className={styles.heroCtas}>
                                 {user ? (
                                     <Link href={userProfile?.tipo === 'docente' ? "/docente/dashboard" : "/dashboard"} className={styles.btnPrimary} id="cta-dashboard">
