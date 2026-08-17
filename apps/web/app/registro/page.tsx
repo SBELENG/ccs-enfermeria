@@ -15,6 +15,7 @@ function RegistroInner() {
     const [tipo, setTipo] = useState<'estudiante' | 'docente'>('estudiante');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [codigoDocente, setCodigoDocente] = useState('');
 
     useEffect(() => {
         const t = searchParams.get('tipo');
@@ -26,6 +27,12 @@ function RegistroInner() {
         e.preventDefault();
         setLoading(true);
         setError(null);
+
+        if (tipo === 'docente' && codigoDocente !== 'UNRC-DOCENTE') {
+            setError('Código de autorización para docente incorrecto.');
+            setLoading(false);
+            return;
+        }
 
         // 1. Crear usuario en Supabase Auth
         const { data, error: authError } = await supabase.auth.signUp({
@@ -121,10 +128,22 @@ function RegistroInner() {
                                 className={tipo === 'docente' ? styles.tipoActive : styles.tipoBtn}
                                 onClick={() => setTipo('docente')}
                             >
-                                Docente (Probar)
+                                Docente
                             </button>
                         </div>
                     </div>
+
+                    {tipo === 'docente' && (
+                        <input
+                            type="text"
+                            placeholder="Código de autorización docente..."
+                            value={codigoDocente}
+                            onChange={e => setCodigoDocente(e.target.value)}
+                            required
+                            className={styles.input}
+                            style={{ marginTop: '10px' }}
+                        />
+                    )}
 
                     <p className={styles.hint} style={{ marginTop: '4px', marginBottom: '16px' }}>
                         {tipo === 'estudiante' ?
