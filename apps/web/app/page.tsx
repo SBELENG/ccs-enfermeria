@@ -24,9 +24,13 @@ export default function HomePage() {
         async function checkUser() {
             try {
                 const { data: { user }, error: authError } = await supabase.auth.getUser();
-                if (authError) throw authError;
+                
+                // Ignorar el error si simplemente es que no hay sesión activa
+                if (authError && !authError.message.includes('session missing')) {
+                    console.warn("Auth check warning:", authError.message);
+                }
 
-                setUser(user);
+                setUser(user || null);
                 if (user) {
                     const { data: profile, error: dbError } = await supabase.from('usuarios').select('tipo').eq('id', user.id).single();
                     if (dbError && dbError.code !== 'PGRST116') throw dbError; // PGRST116 is 'no rows'
