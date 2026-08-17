@@ -75,7 +75,7 @@ export default function MisEquiposPage() {
             // Cargar solicitudes (Invitaciones e Intereses)
             const { data: invs } = await supabase
                 .from('solicitudes_equipo')
-                .select('*, equipo:equipos(*), remitente:usuarios!solicitudes_equipo_remitente_id_fkey(*)')
+                .select('*, equipo:equipos(*), remitente:usuarios!remitente_id(*)')
                 .eq('usuario_id', user.id)
                 .eq('estado', 'pendiente');
             setInvitaciones(invs as any ?? []);
@@ -182,7 +182,8 @@ export default function MisEquiposPage() {
         const { error: errorMiembro } = await (supabase.from('equipo_miembros') as any).insert({
             equipo_id: eq.id,
             usuario_id: usuario.id,
-            rol_en_equipo: (usuario as any).rol_primario || 'ejecutor',
+            rol_en_equipo: usuario.rol_primario === 'organizador' ? 'organizador' : 
+                           (usuario.rol_secundario === 'organizador' ? 'organizador' : (usuario.rol_primario || 'ejecutor')),
         });
 
         if (errorMiembro) {
@@ -248,7 +249,7 @@ export default function MisEquiposPage() {
                 await (supabase.from('equipo_miembros') as any).insert({
                     equipo_id: inv.equipo_id,
                     usuario_id: usuario.id,
-                    rol_en_equipo: (usuario as any).rol_primario || 'ejecutor',
+                    rol_en_equipo: usuario.preferencia_rol_busqueda === 'secundario' && usuario.rol_secundario ? usuario.rol_secundario : (usuario.rol_primario || 'ejecutor'),
                 });
 
                 // Aceptar la invitación actual
@@ -595,28 +596,36 @@ export default function MisEquiposPage() {
             </div>
 
             {/* DESAFÍOS LIBRES */}
-            {desafiosLibres.length > 0 && (
+            {inscripciones.length > 0 && (
                 <div className={styles.section}>
                     <h2 className={styles.sectionTitle}>🚀 Desafíos Disponibles</h2>
-                    <div className={styles.libresGrid}>
-                        {desafiosLibres.map(d => (
-                            <div key={d.id} className={styles.libreCard}>
-                                <div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                        <h3>{d.titulo}</h3>
-                                        <button
-                                            className={styles.btnInfo}
-                                            onClick={() => { setSelectedDes(d); setShowDesModal(true); }}
-                                        >
-                                            ℹ️
-                                        </button>
+                    {desafiosLibres.length > 0 ? (
+                        <div className={styles.libresGrid}>
+                            {desafiosLibres.map(d => (
+                                <div key={d.id} className={styles.libreCard}>
+                                    <div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                            <h3>{d.titulo}</h3>
+                                            <button
+                                                className={styles.btnInfo}
+                                                onClick={() => { setSelectedDes(d); setShowDesModal(true); }}
+                                            >
+                                                ℹ️
+                                            </button>
+                                        </div>
+                                        <p>{d.catedra.nombre_materia}</p>
                                     </div>
-                                    <p>{d.catedra.nombre_materia}</p>
+                                    <button onClick={() => crearEquipo(d.id)} className={styles.btnCrear}>+ Nuevo Equipo</button>
                                 </div>
-                                <button onClick={() => crearEquipo(d.id)} className={styles.btnCrear}>+ Nuevo Equipo</button>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className={styles.emptyState} style={{ padding: '24px', background: '#f8fafc', borderRadius: '12px', border: '1px dashed #cbd5e1', textAlign: 'center' }}>
+                            <div style={{ fontSize: '2rem', marginBottom: '8px' }}>📭</div>
+                            <h3 style={{ fontSize: '1.1rem', color: '#334155', marginBottom: '4px' }}>Sin desafíos activos</h3>
+                            <p style={{ color: '#64748b', fontSize: '0.9rem', maxWidth: '400px', margin: '0 auto' }}>No hay desafíos publicados en tus cátedras. Esperá a que tu docente publique uno para poder crear una propuesta de equipo.</p>
+                        </div>
+                    )}
                 </div>
             )}
         </AuthenticatedLayout>

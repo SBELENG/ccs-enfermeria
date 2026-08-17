@@ -127,7 +127,7 @@ export default function DashboardPage() {
                 // Chequear Invitaciones Pendientes
                 const { data: invs } = await supabase
                     .from('solicitudes_equipo')
-                    .select('*, equipo:equipos(nombre_equipo), remitente:usuarios(nombre)')
+                    .select('*, equipo:equipos(nombre_equipo), remitente:usuarios!remitente_id(nombre)')
                     .eq('usuario_id', user.id)
                     .eq('estado', 'pendiente');
                 setInvitacionesPendientes(invs || []);
@@ -203,6 +203,11 @@ export default function DashboardPage() {
     const rolS = usuario.rol_secundario ? ROLES[usuario.rol_secundario as RolKey] : null;
     const scores = usuario.resultados_test as Record<RolKey, number> | null;
     const completitud = calcularCompletitud(tareas);
+
+    const isSec = usuario.preferencia_rol_busqueda === 'secundario';
+    const activeRol = isSec && rolS ? rolS : rolP;
+    const otherRol = isSec ? rolP : rolS;
+    const activeRolKey = isSec ? usuario.rol_secundario : usuario.rol_primario;
 
     return (
         <AuthenticatedLayout>
@@ -288,21 +293,21 @@ export default function DashboardPage() {
                 </div>
 
                 {/* INDUCCIÓN POR ROL (Sugerencia de Próximo Paso) */}
-                {rolP && (
+                {activeRol && (
                     <div className={styles.inductionCard}>
                         <div className={styles.inductionIcon}>🚀</div>
                         <div className={styles.inductionContent}>
-                            <h3 className={styles.inductionTitle}>Sugerencia para tu perfil {rolP.label}</h3>
+                            <h3 className={styles.inductionTitle}>Sugerencia para tu perfil {activeRol.label}</h3>
                             <p className={styles.inductionText}>
-                                {usuario.rol_primario === 'organizador' && 'Como Organizador, tu primer paso es unirte a una cátedra. Creá allí un nuevo equipo y convocá a un Conciliador; él se encargará de buscar y agregar a los demás talentos para balancear el grupo.'}
-                                {usuario.rol_primario === 'conciliador' && 'Como Conciliador, unite a las cátedras y esperá a ser convocado por un Organizador. Una vez en su equipo, tu principal misión será buscar y convocar a los perfiles restantes para lograr un balance perfecto.'}
-                                {usuario.rol_primario !== 'organizador' && usuario.rol_primario !== 'conciliador' && 'Como perfil de apoyo, lo ideal es que te unas a las cátedras donde quieras participar y esperes a ser convocado por un Conciliador que esté armando el equipo ideal.'}
+                                {activeRolKey === 'organizador' && 'Como Organizador, tu primer paso es unirte a una cátedra. Creá allí un nuevo equipo y convocá a un Conciliador; él se encargará de buscar y agregar a los demás talentos para balancear el grupo.'}
+                                {activeRolKey === 'conciliador' && 'Como Conciliador, unite a las cátedras y esperá a ser convocado por un Organizador. Una vez en su equipo, tu principal misión será buscar y convocar a los perfiles restantes para lograr un balance perfecto.'}
+                                {activeRolKey !== 'organizador' && activeRolKey !== 'conciliador' && 'Como perfil de apoyo, lo ideal es que te unas a las cátedras donde quieras participar y esperes a ser convocado por un Conciliador que esté armando el equipo ideal.'}
                             </p>
                             <div className={styles.inductionActions}>
                                 <Link href="/mis-equipos" className={styles.btnInduction}>
                                     {catedras.length === 0 ? 'Unirse a mi primera cátedra' : 'Gestionar mis equipos'}
                                 </Link>
-                                {usuario.rol_primario === 'organizador' && (
+                                {activeRolKey === 'organizador' && (
                                     <Link href="/talentos" className={styles.btnInductionGhost}>
                                         Buscar Conciliadores →
                                     </Link>
@@ -375,27 +380,19 @@ export default function DashboardPage() {
                 )}
 
                 {/* PERFIL DE ROLES */}
-                {rolP && (
+                {activeRol && (
                     <div className={styles.grid2}>
                         {/* Rol Destacado */}
-                        {(() => {
-                            const isSec = usuario.preferencia_rol_busqueda === 'secundario';
-                            const activeRol = isSec && rolS ? rolS : rolP;
-                            const otherRol = isSec ? rolP : rolS;
-
-                            return (
-                                <div className={styles.rolCard} style={{ '--rc': activeRol.color } as React.CSSProperties}>
-                                    <div className={styles.rolBadge}>Rol Destacado {isSec ? '(Secundario)' : '(Primario)'}</div>
-                                    <div className={styles.rolIcon}>{activeRol.icon}</div>
-                                    <h2 className={styles.rolNombre}>{activeRol.label}</h2>
-                                    {otherRol && (
-                                        <div className={styles.rolSec}>
-                                            {otherRol.icon} Otros talentos: <strong>{otherRol.label}</strong>
-                                        </div>
-                                    )}
+                        <div className={styles.rolCard} style={{ '--rc': activeRol.color } as React.CSSProperties}>
+                            <div className={styles.rolBadge}>Rol Destacado {isSec ? '(Secundario)' : '(Primario)'}</div>
+                            <div className={styles.rolIcon}>{activeRol.icon}</div>
+                            <h2 className={styles.rolNombre}>{activeRol.label}</h2>
+                            {otherRol && (
+                                <div className={styles.rolSec}>
+                                    {otherRol.icon} Otros talentos: <strong>{otherRol.label}</strong>
                                 </div>
-                            );
-                        })()}
+                            )}
+                        </div>
 
                         {/* Radar de scores */}
                         {scores && (
@@ -410,12 +407,12 @@ export default function DashboardPage() {
                 )}
 
                 {/* GUÍA DE ROL (Orientativa, sin progreso si no hay equipo) */}
-                {rolP && tareas.length > 0 && !tieneEquipoActivo && (
-                    <div className={styles.infoSection} style={{ '--rc': rolP.color } as React.CSSProperties}>
+                {activeRol && tareas.length > 0 && !tieneEquipoActivo && (
+                    <div className={styles.infoSection} style={{ '--rc': activeRol.color } as React.CSSProperties}>
                         <div className={styles.infoTitle}>
-                            <span className={styles.infoIcon}>{rolP.icon}</span>
+                            <span className={styles.infoIcon}>{activeRol.icon}</span>
                             <div>
-                                <h2>Tu Rol: {rolP.label}</h2>
+                                <h2>Tu Rol: {activeRol.label}</h2>
                                 <p>Guía orientativa de tus funciones y responsabilidades iniciales.</p>
                             </div>
                         </div>
