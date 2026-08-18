@@ -24,7 +24,7 @@ export default function TalentosPage() {
     const [misRolesEnEquipo, setMisRolesEnEquipo] = useState<Record<string, string>>({});
     const [nombreCatedraSel, setNombreCatedraSel] = useState('');
     const [loadingCatedra, setLoadingCatedra] = useState(false);
-    const [solicitudesEnviadas, setSolicitudesEnviadas] = useState<string[]>([]);
+    const [solicitudesEnviadas, setSolicitudesEnviadas] = useState<any[]>([]);
 
     useEffect(() => {
         async function cargar() {
@@ -76,9 +76,10 @@ export default function TalentosPage() {
 
             const { data: sols } = await supabase
                 .from('solicitudes_equipo')
-                .select('usuario_id')
-                .eq('remitente_id', user.id);
-            if (sols) setSolicitudesEnviadas(sols.map((s: any) => s.usuario_id));
+                .select('usuario_id, equipo_id')
+                .eq('remitente_id', user.id)
+                .eq('estado', 'pendiente');
+            if (sols) setSolicitudesEnviadas(sols);
 
             setLoading(false);
         }
@@ -193,7 +194,7 @@ export default function TalentosPage() {
                 estado: 'pendiente',
                 mensaje: `${usuarioActual.nombre} está interesado en tu perfil para su equipo "${eqNombre}".`,
             } as any);
-            setSolicitudesEnviadas(prev => [...prev, est.id]);
+            setSolicitudesEnviadas(prev => [...prev, { usuario_id: est.id, equipo_id: eqSel }]);
             alert('✅ Aviso de interés enviado con éxito.');
         }
     }
@@ -257,7 +258,7 @@ export default function TalentosPage() {
                 estado: 'pendiente',
                 mensaje: `${usuarioActual.nombre} te invita como ${ROLES[rolInvitadoRaw as RolKey]?.label || 'miembro'} a su equipo "${eqNombre}".`,
             } as any);
-            setSolicitudesEnviadas(prev => [...prev, est.id]);
+            setSolicitudesEnviadas(prev => [...prev, { usuario_id: est.id, equipo_id: eqSel }]);
             alert('✅ Invitación enviada.');
         }
     }
@@ -438,7 +439,8 @@ export default function TalentosPage() {
                                             const soyConciliador = miRolAsumido === 'conciliador' || (usuarioActual?.preferencia_rol_busqueda === 'secundario' ? usuarioActual?.rol_secundario === 'conciliador' : usuarioActual?.rol_primario === 'conciliador');
                                             const puedeInvitar = soyOrganizador || soyConciliador;
 
-                                            if (solicitudesEnviadas.includes(est.id)) {
+                                            const yaInvitado = solicitudesEnviadas.some((s: any) => s.usuario_id === est.id && s.equipo_id === eqSel);
+                                            if (yaInvitado) {
                                                 return <button className={styles.btnAvisado} disabled title="Ya invitaste a este talento a tu equipo.">✅ Invitado</button>;
                                             }
 
