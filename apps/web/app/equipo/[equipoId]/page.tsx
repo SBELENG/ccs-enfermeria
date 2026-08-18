@@ -330,6 +330,7 @@ export default function EquipoPage({ params }: { params: Promise<{ equipoId: str
                             onClick={async () => {
                                 if (confirm('¿Estás seguro de que querés abandonar el equipo?')) {
                                     await (supabase.from('equipo_miembros') as any).delete().eq('equipo_id', equipoId).eq('usuario_id', usuario?.id);
+                                    await (supabase.from('usuarios') as any).update({ buscando_equipo: true }).eq('id', usuario?.id);
                                     window.location.href = '/mis-equipos';
                                 }
                             }}
