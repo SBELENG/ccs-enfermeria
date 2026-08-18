@@ -178,6 +178,11 @@ export default function DashboardPage() {
                 .update({ rol_activo: nuevoRol })
                 .eq('usuario_id', usuario.id);
                 
+            // Sincronizar también su rol dentro de los equipos
+            await (supabase.from('equipo_miembros') as any)
+                .update({ rol_en_equipo: nuevoRol })
+                .eq('usuario_id', usuario.id);
+
             setTareas(getTareasIniciales(nuevoRol as RolKey));
         }
     }

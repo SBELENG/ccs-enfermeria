@@ -434,8 +434,8 @@ export default function TalentosPage() {
                                             const miRolAsumido = misRolesEnEquipo[eqSel];
                                             const RolesDest = [est.rol_primario, est.rol_secundario];
 
-                                            const soyOrganizador = miRolAsumido === 'organizador';
-                                            const soyConciliador = miRolAsumido === 'conciliador';
+                                            const soyOrganizador = miRolAsumido === 'organizador' || (usuarioActual?.preferencia_rol_busqueda === 'secundario' ? usuarioActual?.rol_secundario === 'organizador' : usuarioActual?.rol_primario === 'organizador');
+                                            const soyConciliador = miRolAsumido === 'conciliador' || (usuarioActual?.preferencia_rol_busqueda === 'secundario' ? usuarioActual?.rol_secundario === 'conciliador' : usuarioActual?.rol_primario === 'conciliador');
                                             const puedeInvitar = soyOrganizador || soyConciliador;
 
                                             if (solicitudesEnviadas.includes(est.id)) {
