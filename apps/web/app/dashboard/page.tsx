@@ -171,9 +171,13 @@ export default function DashboardPage() {
         setUsuario(prev => prev ? { ...prev, preferencia_rol_busqueda: pref } : prev);
         await (supabase.from('usuarios') as any).update({ preferencia_rol_busqueda: pref }).eq('id', usuario.id);
 
-        // Actualizar tareas inmediatamente
+        // Actualizar el rol en todas las inscripciones activas
         const nuevoRol = pref === 'secundario' ? usuario.rol_secundario : usuario.rol_primario;
         if (nuevoRol) {
+            await (supabase.from('inscripciones') as any)
+                .update({ rol_activo: nuevoRol })
+                .eq('usuario_id', usuario.id);
+                
             setTareas(getTareasIniciales(nuevoRol as RolKey));
         }
     }
