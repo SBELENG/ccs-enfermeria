@@ -274,7 +274,7 @@ export default function CatedraPage({ params }: { params: Promise<{ catedraId: s
             catedra_id: catedraId,
             titulo: titulo.trim(),
             descripcion: descripcion.trim(),
-            fecha_entrega: fechaEnt,
+            fecha_entrega: new Date(fechaEnt).toISOString(),
             estado: estadoDes,
             checklist_sugerido: checklist.length > 0 ? checklist.map(t => ({ descripcion: t })) : null,
         };
