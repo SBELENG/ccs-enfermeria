@@ -341,7 +341,7 @@ export default function TalentosPage() {
                 <div className={styles.eqSelector}>
                     <span>Contexto de Búsqueda:</span>
                     <select value={eqSel} onChange={e => setEqSel(e.target.value)} disabled={loadingCatedra}>
-                        <option value="">✨ Todos los estudiantes (Sin cátedra)</option>
+                        <option value="">✨ Todos los estudiantes (Sin grupo)</option>
                         {misEquipos.map(e => <option key={e.id} value={e.id}>🏆 Equipo: {e.nombre_equipo}</option>)}
                     </select>
                     {loadingCatedra && <span className={styles.miniLoader}>Cargando cátedra...</span>}
