@@ -142,13 +142,17 @@ export default function TalentosPage() {
         // Excluir si ya está en el equipo seleccionado
         if (idsEnEquipo.includes(e.id)) return false;
 
-        const enCatedra = !eqSel || (idsEnCatedra && idsEnCatedra.includes(e.id));
+        // El chequeo de enCatedra se desactiva temporalmente en el frontend 
+        // debido a restricciones de RLS que impiden a los estudiantes leer inscripciones de otros.
+        // La validación real ocurre en el backend al aceptar la invitación.
+        // const enCatedra = !eqSel || (idsEnCatedra && idsEnCatedra.includes(e.id));
+        
         const cumpleRol = filtroRol === 'todos'
             || e.rol_primario === filtroRol
             || e.rol_secundario === filtroRol;
         const cumpleNombre = busqueda.trim() === ''
             || e.nombre.toLowerCase().includes(busqueda.toLowerCase());
-        return enCatedra && cumpleRol && cumpleNombre;
+        return cumpleRol && cumpleNombre;
     });
 
     const rolesList = Object.entries(ROLES) as [RolKey, typeof ROLES[RolKey]][];
