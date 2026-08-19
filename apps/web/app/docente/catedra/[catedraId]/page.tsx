@@ -124,8 +124,9 @@ export default function CatedraPage({ params }: { params: Promise<{ catedraId: s
 
                 const ests = await Promise.all((insData as any[]).map(async (i: any) => {
                     const u = i.usuario;
-                    // Chequeamos si está en algún equipo de esta cátedra para el desafío más reciente
-                    const currentDesId = desEnriched[0]?.id;
+                    // Chequeamos si está en algún equipo de esta cátedra para el desafío activo (o el más reciente)
+                    const activeDesafio = desEnriched.find(d => d.estado === 'activo') || desEnriched[0];
+                    const currentDesId = activeDesafio?.id;
                     let hasTeam = false;
                     let nombreEq = '';
                     let eqCerrado = false;
