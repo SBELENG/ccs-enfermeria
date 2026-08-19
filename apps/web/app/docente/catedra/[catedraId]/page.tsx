@@ -363,6 +363,25 @@ export default function CatedraPage({ params }: { params: Promise<{ catedraId: s
         setSaving(false);
     }
 
+    async function eliminarAlumno(usuarioId: string, nombre: string) {
+        if (!confirm(`¿Estás seguro de que deseas dar de baja a ${nombre} de la cátedra? Esto eliminará su inscripción.`)) return;
+        
+        setSaving(true);
+        const { error } = await supabase
+            .from('inscripciones')
+            .delete()
+            .eq('usuario_id', usuarioId)
+            .eq('catedra_id', catedraId);
+
+        if (error) {
+            alert('Error al dar de baja al alumno: ' + error.message);
+        } else {
+            setEstudiantes(prev => prev.filter(e => e.id !== usuarioId));
+            alert('Alumno dado de baja correctamente.');
+        }
+        setSaving(false);
+    }
+
     function exportarPDF() {
         if (estudiantes.length === 0) return;
 
@@ -712,10 +731,11 @@ export default function CatedraPage({ params }: { params: Promise<{ catedraId: s
                                 <p className={styles.emptyText}>No hay estudiantes inscriptos con el código {catedra?.codigo_acceso}.</p>
                             ) : (
                                 <div className={styles.estTable}>
-                                    <div className={styles.estTableRowHeader}>
+                                    <div className={styles.estTableRowHeader} style={{ gridTemplateColumns: '1.5fr 1fr 1fr 0.5fr' }}>
                                         <span>Nombre / Test</span>
                                         <span>Rol / Progreso Individual</span>
                                         <span>Estado Equipo</span>
+                                        <span style={{ textAlign: 'center' }}>Acción</span>
                                     </div>
                                     {estudiantes
                                         .filter(est => {
@@ -725,7 +745,7 @@ export default function CatedraPage({ params }: { params: Promise<{ catedraId: s
                                         .map(est => {
                                             const rol = est.rol_primario ? ROLES[est.rol_primario as RolKey] : null;
                                             return (
-                                                <div key={est.id} className={styles.estTableRow}>
+                                                <div key={est.id} className={styles.estTableRow} style={{ gridTemplateColumns: '1.5fr 1fr 1fr 0.5fr' }}>
                                                     <div className={styles.estName}>
                                                         <div className={styles.estAvatar}>
                                                             {est.nombre.charAt(0)}
@@ -753,6 +773,24 @@ export default function CatedraPage({ params }: { params: Promise<{ catedraId: s
                                                                 {est.nombreEquipo || '✅ En equipo'}
                                                             </span>
                                                         )}
+                                                    </div>
+                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                        <button 
+                                                            onClick={() => eliminarAlumno(est.id, est.nombre)}
+                                                            style={{ 
+                                                                backgroundColor: 'transparent', 
+                                                                color: '#ef4444', 
+                                                                border: '1px solid #fca5a5', 
+                                                                padding: '4px 8px', 
+                                                                borderRadius: '6px', 
+                                                                cursor: 'pointer', 
+                                                                fontSize: '0.75rem',
+                                                                fontWeight: '500'
+                                                            }}
+                                                            title="Dar de baja de la cátedra"
+                                                        >
+                                                            Dar de baja
+                                                        </button>
                                                     </div>
                                                 </div>
                                             );
