@@ -122,7 +122,9 @@ export default function CatedraPage({ params }: { params: Promise<{ catedraId: s
                     todasEvals = evalsData || [];
                 }
 
-                const ests = await Promise.all((insData as any[]).map(async (i: any) => {
+                const validInscripciones = (insData as any[]).filter(i => i.usuario && i.usuario.email && i.usuario.email.trim() !== '');
+
+                const ests = await Promise.all(validInscripciones.map(async (i: any) => {
                     const u = i.usuario;
                     // Buscamos si el estudiante está en algún equipo de esta cátedra
                     const misEquipos = enrichedTeams.filter(eq => 
