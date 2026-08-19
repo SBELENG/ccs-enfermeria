@@ -122,7 +122,10 @@ export default function CatedraPage({ params }: { params: Promise<{ catedraId: s
                     todasEvals = evalsData || [];
                 }
 
-                const validInscripciones = (insData as any[]).filter(i => i.usuario && i.usuario.email && i.usuario.email.trim() !== '');
+                const validInscripciones = (insData as any[]).filter(i => {
+                    const email = i.usuario?.email?.trim().toLowerCase() || '';
+                    return email !== '' && email !== 'null' && email.includes('@');
+                });
 
                 const ests = await Promise.all(validInscripciones.map(async (i: any) => {
                     const u = i.usuario;
