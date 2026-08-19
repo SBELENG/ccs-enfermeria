@@ -124,29 +124,25 @@ export default function CatedraPage({ params }: { params: Promise<{ catedraId: s
 
                 const ests = await Promise.all((insData as any[]).map(async (i: any) => {
                     const u = i.usuario;
-                    // Chequeamos si está en algún equipo de esta cátedra para el desafío activo (o el más reciente)
-                    const activeDesafio = desEnriched.find(d => d.estado === 'activo') || desEnriched[0];
-                    const currentDesId = activeDesafio?.id;
+                    // Buscamos si el estudiante está en algún equipo de esta cátedra
+                    const misEquipos = enrichedTeams.filter(eq => 
+                        eq.miembros?.some((m: any) => m.usuario_id === u.id || m.usuario?.id === u.id)
+                    );
+                    const equipoActual = misEquipos[0]; // El primero es el más reciente (por el order de desafios)
+
                     let hasTeam = false;
                     let nombreEq = '';
                     let eqCerrado = false;
                     let equipoId = '';
                     let rolEnEquipo = '';
 
-                    if (currentDesId) {
-                        const { data: mData } = await (supabase.from('equipo_miembros') as any)
-                            .select('*, equipo:equipos!inner(*)')
-                            .eq('usuario_id', u.id)
-                            .eq('equipo.desafio_id', currentDesId)
-                            .maybeSingle();
-
-                        if (mData) {
-                            hasTeam = true;
-                            nombreEq = (mData as any).equipo?.nombre_equipo || 'En equipo';
-                            eqCerrado = (mData as any).equipo?.cerrado || false;
-                            equipoId = mData.equipo_id;
-                            rolEnEquipo = mData.rol_en_equipo;
-                        }
+                    if (equipoActual) {
+                        hasTeam = true;
+                        nombreEq = equipoActual.nombre_equipo || 'En equipo';
+                        eqCerrado = equipoActual.cerrado || false;
+                        equipoId = equipoActual.id;
+                        const miMiembro = equipoActual.miembros?.find((m: any) => m.usuario_id === u.id || m.usuario?.id === u.id);
+                        rolEnEquipo = miMiembro?.rol_en_equipo || '';
                     }
 
                     // 1. Calcular progreso de rol (Inducción)
