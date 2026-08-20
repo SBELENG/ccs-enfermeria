@@ -259,7 +259,7 @@ export default function KanbanPage({ params }: { params: Promise<{ equipoId: str
     const progreso = total > 0 ? Math.round((doneCount / total) * 100) : 0;
 
     const hayChecklist = (desafio?.checklist_sugerido as any)?.length > 0;
-    const checklistNoImportado = tareasTablero.length === 0 && hayChecklist;
+    const checklistNoImportado = tareasTablero.length === 0;
     const mostrarInboxBtn = myRol === 'organizador' && (checklistNoImportado || sugerenciasPendientes.length > 0);
 
     if (loading) return (
@@ -440,8 +440,8 @@ export default function KanbanPage({ params }: { params: Promise<{ equipoId: str
 
                         {checklistNoImportado && (
                             <div className={styles.inboxSection}>
-                                <div className={styles.inboxTitle}>📋 Guía Sugerida por el Docente</div>
-                                <p className={styles.modalSub}>Seleccioná a qué rol se le asignarán inicialmente las tareas del desafío planteado por el docente para ponerlas en tu Tablero:</p>
+                                <div className={styles.inboxTitle}>📋 Inicializar Tablero</div>
+                                <p className={styles.modalSub}>Seleccioná a qué rol se le asignarán las tareas del desafío (si el docente dejó alguna). Se importarán también todas las tareas automáticas de cada rol:</p>
                                 <div className={styles.rolSelectorImport}>
                                     {rolesPresentes.map(rk => {
                                         const r = ROLES[rk];
