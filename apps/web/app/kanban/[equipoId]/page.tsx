@@ -230,13 +230,17 @@ export default function KanbanPage({ params }: { params: Promise<{ equipoId: str
             }
         });
 
-        if (nuevasTareas.length === 0) {
+        const descripcionesActuales = new Set(tareas.map(t => t.descripcion));
+        const tareasAInsertar = nuevasTareas.filter(t => !descripcionesActuales.has(t.descripcion));
+
+        if (tareasAInsertar.length === 0) {
             setSaving(false);
             setShowImport(false);
+            alert('Las tareas por defecto ya se encuentran en el tablero.');
             return;
         }
 
-        const { data, error } = await (supabase.from('tareas') as any).insert(nuevasTareas).select();
+        const { data, error } = await (supabase.from('tareas') as any).insert(tareasAInsertar).select();
         if (!error && data) {
             setTareas(prev => [...prev, ...data]);
         }
@@ -258,8 +262,12 @@ export default function KanbanPage({ params }: { params: Promise<{ equipoId: str
     const doneCount = tareasTablero.filter(t => t.estado === 'done').length;
     const progreso = total > 0 ? Math.round((doneCount / total) * 100) : 0;
 
-    const hayChecklist = (desafio?.checklist_sugerido as any)?.length > 0;
-    const checklistNoImportado = tareasTablero.length === 0;
+    const standardTasks = Object.values(TAREAS_POR_ROL).flat().map(t => t.descripcion);
+    const docTasks = desafio?.checklist_sugerido ? (desafio.checklist_sugerido as any).map((t: any) => `📌 [DOCENTE] ${t.descripcion}`) : [];
+    const allExpected = [...standardTasks, ...docTasks];
+    const missingTasks = allExpected.some(desc => !tareasTablero.find(t => t.descripcion === desc));
+
+    const checklistNoImportado = tareasTablero.length === 0 || missingTasks;
     const mostrarInboxBtn = myRol === 'organizador' && (checklistNoImportado || sugerenciasPendientes.length > 0);
 
     if (loading) return (
